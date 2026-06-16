@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Pierre Pistenon — Business Analyst Senior | Data Quality & Process Automation">
+  <title>Pierre Pistenon — Data Quality & Process Automation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #0D1117;
+      --bg2:       #161B22;
+      --bg3:       #1C2128;
+      --border:    #30363D;
+      --text:      #E6EDF3;
+      --muted:     #8B949E;
+      --accent:    #4FC3F7;
+      --accent2:   #0D47A1;
+      --success:   #3FB950;
+      --warn:      #D29922;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── NAV ─────────────────────────────────────────────── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      background: rgba(13,17,23,0.92);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 2rem; height: 56px;
+    }
+    .nav-brand {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.9rem;
+      color: var(--accent);
+      letter-spacing: 0.02em;
+    }
+    .nav-links { display: flex; gap: 1.5rem; align-items: center; }
+    .nav-links a {
+      color: var(--muted); text-decoration: none; font-size: 0.85rem;
+      transition: color .2s;
+    }
+    .nav-links a:hover { color: var(--text); }
+
+    /* Lang toggle */
+    .lang-toggle {
+      display: flex; gap: 0; border: 1px solid var(--border); border-radius: 6px;
+      overflow: hidden;
+    }
+    .lang-btn {
+      background: none; border: none; cursor: pointer;
+      padding: 4px 10px; font-size: 0.75rem; font-family: 'JetBrains Mono', monospace;
+      color: var(--muted); transition: all .2s;
+    }
+    .lang-btn.active { background: var(--accent); color: var(--bg); font-weight: 500; }
+
+    /* ── HERO ─────────────────────────────────────────────── */
+    .hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column; justify-content: center;
+      padding: 100px 2rem 60px;
+      max-width: 860px; margin: 0 auto;
+    }
+    .hero-eyebrow {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem; color: var(--accent);
+      letter-spacing: 0.08em; text-transform: uppercase;
+      margin-bottom: 1.5rem;
+    }
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 600; line-height: 1.15;
+      letter-spacing: -0.02em;
+      margin-bottom: 1.5rem;
+    }
+    .hero h1 span { color: var(--accent); }
+    .hero-sub {
+      font-size: 1.1rem; color: var(--muted);
+      max-width: 600px; margin-bottom: 2.5rem;
+      font-weight: 300; line-height: 1.7;
+    }
+
+    /* Terminal animé */
+    .terminal {
+      background: var(--bg2); border: 1px solid var(--border);
+      border-radius: 10px; padding: 1.2rem 1.5rem;
+      font-family: 'JetBrains Mono', monospace; font-size: 0.82rem;
+      max-width: 560px; margin-bottom: 2.5rem;
+    }
+    .terminal-bar {
+      display: flex; gap: 6px; margin-bottom: 1rem;
+    }
+    .dot { width: 10px; height: 10px; border-radius: 50%; }
+    .dot-r { background: #FF5F57; }
+    .dot-y { background: #FFBD2E; }
+    .dot-g { background: #28CA42; }
+    .terminal-line { color: var(--muted); margin-bottom: 4px; }
+    .terminal-line .prompt { color: var(--success); }
+    .terminal-line .cmd { color: var(--text); }
+    .terminal-line .out { color: var(--accent); }
+    .terminal-line .comment { color: #555; }
+    .cursor {
+      display: inline-block; width: 7px; height: 1em;
+      background: var(--accent); vertical-align: text-bottom;
+      animation: blink 1s step-end infinite;
+    }
+    @keyframes blink { 50% { opacity: 0; } }
+
+    .hero-cta { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 10px 20px; border-radius: 6px; font-size: 0.9rem;
+      font-weight: 500; text-decoration: none; transition: all .2s; cursor: pointer;
+      border: none;
+    }
+    .btn-primary { background: var(--accent); color: var(--bg); }
+    .btn-primary:hover { background: #81D4FA; }
+    .btn-ghost {
+      background: transparent; color: var(--text);
+      border: 1px solid var(--border);
+    }
+    .btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+
+    /* ── SECTIONS GÉNÉRIQUES ─────────────────────────────── */
+    section {
+      padding: 80px 2rem;
+      max-width: 860px; margin: 0 auto;
+    }
+    .section-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem; color: var(--accent);
+      letter-spacing: 0.1em; text-transform: uppercase;
+      margin-bottom: 0.75rem;
+    }
+    .section-title {
+      font-size: clamp(1.4rem, 3vw, 1.9rem);
+      font-weight: 600; margin-bottom: 1rem;
+      letter-spacing: -0.01em;
+    }
+    .section-sub {
+      color: var(--muted); font-size: 1rem;
+      max-width: 580px; margin-bottom: 2.5rem; line-height: 1.7;
+    }
+    .divider {
+      border: none; border-top: 1px solid var(--border);
+      max-width: 860px; margin: 0 auto;
+    }
+
+    /* ── DOMAINES ────────────────────────────────────────── */
+    .domains-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1px; background: var(--border); border: 1px solid var(--border);
+      border-radius: 10px; overflow: hidden;
+    }
+    .domain-card {
+      background: var(--bg2); padding: 1.5rem;
+      transition: background .2s;
+    }
+    .domain-card:hover { background: var(--bg3); }
+    .domain-icon {
+      font-size: 1.4rem; margin-bottom: 1rem;
+      display: block;
+    }
+    .domain-title {
+      font-size: 0.95rem; font-weight: 600;
+      margin-bottom: 0.5rem; color: var(--text);
+    }
+    .domain-body {
+      font-size: 0.85rem; color: var(--muted); line-height: 1.6;
+    }
+    .domain-tags {
+      display: flex; flex-wrap: wrap; gap: 4px; margin-top: 1rem;
+    }
+    .tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem; padding: 2px 8px;
+      background: var(--bg3); border: 1px solid var(--border);
+      border-radius: 4px; color: var(--muted);
+    }
+
+    /* ── CAS PRATIQUES ───────────────────────────────────── */
+    .cases { display: flex; flex-direction: column; gap: 1.5rem; }
+    .case-card {
+      background: var(--bg2); border: 1px solid var(--border);
+      border-radius: 10px; padding: 1.5rem 1.75rem;
+      transition: border-color .2s;
+    }
+    .case-card:hover { border-color: var(--accent); }
+    .case-header {
+      display: flex; align-items: flex-start;
+      justify-content: space-between; gap: 1rem;
+      margin-bottom: 0.75rem;
+    }
+    .case-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem; color: var(--accent);
+      background: rgba(79,195,247,0.08);
+      border: 1px solid rgba(79,195,247,0.2);
+      padding: 3px 8px; border-radius: 4px;
+      white-space: nowrap;
+    }
+    .case-title { font-size: 1rem; font-weight: 600; }
+    .case-body { font-size: 0.88rem; color: var(--muted); line-height: 1.65; }
+    .case-stack {
+      display: flex; flex-wrap: wrap; gap: 4px; margin-top: 1rem;
+    }
+    .case-insight {
+      margin-top: 1rem; padding: 0.75rem 1rem;
+      background: rgba(79,195,247,0.05);
+      border-left: 2px solid var(--accent);
+      font-size: 0.82rem; color: var(--muted);
+      font-style: italic;
+    }
+    .case-insight strong { color: var(--accent); font-style: normal; }
+
+    /* ── ARTICLES ────────────────────────────────────────── */
+    .articles { display: flex; flex-direction: column; gap: 1rem; }
+    .article-card {
+      background: var(--bg2); border: 1px solid var(--border);
+      border-radius: 10px; overflow: hidden;
+    }
+    .article-summary {
+      padding: 1.25rem 1.5rem; cursor: pointer;
+      display: flex; justify-content: space-between; align-items: center;
+      transition: background .2s; list-style: none;
+    }
+    .article-summary:hover { background: var(--bg3); }
+    .article-summary-left { flex: 1; }
+    .article-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem; color: var(--warn);
+      letter-spacing: 0.05em; text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+    .article-title { font-size: 0.95rem; font-weight: 600; }
+    .article-arrow {
+      color: var(--muted); font-size: 1rem;
+      transition: transform .2s;
+    }
+    details[open] .article-arrow { transform: rotate(90deg); }
+    .article-body {
+      padding: 0 1.5rem 1.5rem;
+      font-size: 0.88rem; color: var(--muted); line-height: 1.75;
+      border-top: 1px solid var(--border);
+    }
+    .article-body p { margin-top: 1rem; }
+    .article-body h3 {
+      color: var(--text); font-size: 0.9rem; margin-top: 1.5rem;
+      margin-bottom: 0.4rem;
+    }
+    .article-body ul { margin-left: 1.2rem; margin-top: 0.5rem; }
+    .article-body li { margin-bottom: 0.3rem; }
+    .article-body .highlight {
+      color: var(--accent); font-style: italic;
+      border-left: 2px solid var(--accent);
+      padding-left: 0.75rem; margin: 1rem 0;
+    }
+
+    /* ── APPROCHE ────────────────────────────────────────── */
+    .approach-steps {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1px; background: var(--border);
+      border: 1px solid var(--border); border-radius: 10px; overflow: hidden;
+    }
+    .step {
+      background: var(--bg2); padding: 1.25rem;
+    }
+    .step-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.6rem; font-weight: 500;
+      color: rgba(79,195,247,0.18); margin-bottom: 0.5rem;
+    }
+    .step-title { font-size: 0.9rem; font-weight: 600; margin-bottom: 0.4rem; }
+    .step-body { font-size: 0.82rem; color: var(--muted); line-height: 1.55; }
+
+    /* ── SECTEURS ─────────────────────────────────────────── */
+    .sectors {
+      display: flex; flex-wrap: wrap; gap: 0.5rem;
+    }
+    .sector {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem; padding: 6px 14px;
+      border: 1px solid var(--border); border-radius: 20px;
+      color: var(--muted);
+    }
+
+    /* ── PROFIL ───────────────────────────────────────────── */
+    .profile-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;
+    }
+    @media (max-width: 600px) { .profile-grid { grid-template-columns: 1fr; } }
+    .profile-block {
+      background: var(--bg2); border: 1px solid var(--border);
+      border-radius: 10px; padding: 1.25rem;
+    }
+    .profile-block-title {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem; color: var(--accent);
+      letter-spacing: 0.06em; text-transform: uppercase;
+      margin-bottom: 0.75rem;
+    }
+    .profile-block ul { list-style: none; }
+    .profile-block li {
+      font-size: 0.85rem; color: var(--muted);
+      padding: 3px 0; display: flex; gap: 0.5rem;
+    }
+    .profile-block li::before { content: "→"; color: var(--accent); flex-shrink: 0; }
+
+    /* ── CONTACT ─────────────────────────────────────────── */
+    .contact-box {
+      background: var(--bg2); border: 1px solid var(--border);
+      border-radius: 10px; padding: 2rem;
+      display: flex; flex-direction: column; gap: 1.5rem;
+    }
+    .contact-links { display: flex; gap: 1rem; flex-wrap: wrap; }
+
+    /* ── PLN LINKS ───────────────────────────────────────── */
+    .pln-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;
+    }
+    @media (max-width: 500px) { .pln-grid { grid-template-columns: 1fr; } }
+    .pln-card {
+      background: var(--bg2); border: 1px solid var(--border);
+      border-radius: 10px; padding: 1.25rem;
+      text-decoration: none; transition: border-color .2s; display: block;
+    }
+    .pln-card:hover { border-color: var(--accent); }
+    .pln-card-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem; color: var(--muted); margin-bottom: 0.4rem;
+    }
+    .pln-card-title { font-size: 0.95rem; font-weight: 600; color: var(--text); }
+    .pln-card-body { font-size: 0.82rem; color: var(--muted); margin-top: 0.4rem; }
+
+    /* ── FOOTER ──────────────────────────────────────────── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2rem; text-align: center;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem; color: var(--muted);
+    }
+
+    /* ── RESPONSIVE ──────────────────────────────────────── */
+    @media (max-width: 640px) {
+      nav { padding: 0 1rem; }
+      .nav-links a:not(.lang-toggle *) { display: none; }
+      section { padding: 60px 1.2rem; }
+      .hero { padding: 90px 1.2rem 50px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .cursor { animation: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <span class="nav-brand">pierre-pistenon.github.io</span>
+  <div class="nav-links">
+    <a href="#domaines" data-fr="Domaines" data-en="Domains">Domaines</a>
+    <a href="#cas" data-fr="Cas pratiques" data-en="Case studies">Cas pratiques</a>
+    <a href="#articles" data-fr="Articles" data-en="Articles">Articles</a>
+    <a href="#contact" data-fr="Contact" data-en="Contact">Contact</a>
+    <div class="lang-toggle">
+      <button class="lang-btn active" onclick="setLang('fr')">FR</button>
+      <button class="lang-btn" onclick="setLang('en')">EN</button>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <p class="hero-eyebrow" data-fr="Business Analyst Senior" data-en="Senior Business Analyst">Business Analyst Senior</p>
+  <h1 data-fr="J'interviens quand les données et les processus ont <span>perdu leur lisibilité</span>." data-en="I step in when data and processes have <span>lost their clarity</span>.">
+    J'interviens quand les données et les processus ont <span>perdu leur lisibilité</span>.
+  </h1>
+  <p class="hero-sub" data-fr="Data Quality, automatisation pragmatique et IA appliquée — pour produire des gains rapides et mesurables. Expérience senior sur des projets SI complexes, recentrée sur ce qui compte : analyser, structurer, fiabiliser." data-en="Data Quality, pragmatic automation and applied AI — to deliver fast, measurable results. Senior experience across complex IT projects, refocused on what matters: analyse, structure, fix.">
+    Data Quality, automatisation pragmatique et IA appliquée — pour produire des gains rapides et mesurables. Expérience senior sur des projets SI complexes, recentrée sur ce qui compte : analyser, structurer, fiabiliser.
+  </p>
+
+  <!-- Terminal -->
+  <div class="terminal">
+    <div class="terminal-bar">
+      <span class="dot dot-r"></span>
+      <span class="dot dot-y"></span>
+      <span class="dot dot-g"></span>
+    </div>
+    <div class="terminal-line"><span class="prompt">$</span> <span class="cmd">run data_quality_audit --source crm.csv</span></div>
+    <div class="terminal-line"><span class="out">→ 20 records scanned</span></div>
+    <div class="terminal-line"><span class="out">→ 9 anomalies detected (EMAIL_INVALID, PHONE_SHORT, STATUS_MISSING)</span></div>
+    <div class="terminal-line"><span class="out">→ Hybrid analysis: rules + LLM contextualisation</span></div>
+    <div class="terminal-line"><span class="out">→ Corrective actions generated ✓</span></div>
+    <div class="terminal-line"><span class="comment"># Key insight: LLM alone ≠ reliable. Rules first, AI enriches.</span></div>
+    <div class="terminal-line"><span class="prompt">$</span> <span class="cursor"></span></div>
+  </div>
+
+  <div class="hero-cta">
+    <a href="https://www.linkedin.com/in/pierre-pistenon-87730a6/" class="btn btn-primary" target="_blank">
+      LinkedIn →
+    </a>
+    <a href="#cas" class="btn btn-ghost" data-fr="Voir les cas pratiques" data-en="See case studies">Voir les cas pratiques</a>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- DOMAINES -->
+<section id="domaines">
+  <p class="section-label" data-fr="Ce que j'apporte" data-en="What I deliver">Ce que j'apporte</p>
+  <h2 class="section-title" data-fr="Trois domaines, une cohérence" data-en="Three domains, one coherence">Trois domaines, une cohérence</h2>
+  <p class="section-sub" data-fr="Chaque domaine s'appuie sur le précédent. L'analyse fonctionnelle nourrit la qualité des données, qui nourrit l'automatisation." data-en="Each domain builds on the previous. Functional analysis feeds data quality, which feeds automation.">
+    Chaque domaine s'appuie sur le précédent. L'analyse fonctionnelle nourrit la qualité des données, qui nourrit l'automatisation.
+  </p>
+  <div class="domains-grid">
+    <div class="domain-card">
+      <span class="domain-icon">⬡</span>
+      <p class="domain-title" data-fr="Data Quality & Gouvernance" data-en="Data Quality & Governance">Data Quality & Gouvernance</p>
+      <p class="domain-body" data-fr="Audit et fiabilisation des données, définition des règles métier, détection d'anomalies, support aux migrations et structuration des référentiels. Expérience CRM multi-pays (SAFT/Total), Revenue Assurance (Neuf Telecom), traçabilité SI (Lactalis)." data-en="Data audit and reliability, business rule definition, anomaly detection, migration support and reference data structuring. Experience: CRM across 19 countries (SAFT/Total), Revenue Assurance (Neuf Telecom), SI traceability (Lactalis).">
+        Audit et fiabilisation des données, définition des règles métier, détection d'anomalies, support aux migrations et structuration des référentiels.
+      </p>
+      <div class="domain-tags">
+        <span class="tag">CRM</span><span class="tag">Revenue Assurance</span><span class="tag">Migration</span><span class="tag">Gouvernance</span>
+      </div>
+    </div>
+    <div class="domain-card">
+      <span class="domain-icon">◈</span>
+      <p class="domain-title" data-fr="Analyse fonctionnelle & Processus" data-en="Functional Analysis & Process">Analyse fonctionnelle & Processus</p>
+      <p class="domain-body" data-fr="Recueil des besoins, clarification des règles métier, détection des ambiguïtés, matrices de traçabilité, coordination métiers/DSI. Expérience grands comptes : Accenture, EDF Energies Nouvelles, Gras Savoye-WTW." data-en="Requirements gathering, business rule clarification, ambiguity detection, traceability matrices, business/IT coordination. Key clients: Accenture, EDF Energies Nouvelles, Gras Savoye-WTW.">
+        Recueil des besoins, clarification des règles métier, détection des ambiguïtés, matrices de traçabilité, coordination métiers/DSI.
+      </p>
+      <div class="domain-tags">
+        <span class="tag">AMOA</span><span class="tag">Spécifications</span><span class="tag">Cadrage</span><span class="tag">Traçabilité</span>
+      </div>
+    </div>
+    <div class="domain-card">
+      <span class="domain-icon">⟳</span>
+      <p class="domain-title" data-fr="Automatisation pragmatique" data-en="Pragmatic Automation">Automatisation pragmatique</p>
+      <p class="domain-body" data-fr="Workflows no-code orientés métier, automatisation de contrôles, pipelines hybrides règles métier + IA générative. Make, RPA (UiPath), intégration API LLM. Insight clé : l'IA générative accélère l'analyse — les règles métier garantissent la fiabilité." data-en="Business-oriented no-code workflows, control automation, hybrid pipelines combining business rules + generative AI. Make, RPA (UiPath), LLM API integration. Key insight: generative AI accelerates analysis — business rules ensure reliability.">
+        Workflows no-code orientés métier, pipelines hybrides règles métier + IA générative. L'IA accélère — les règles garantissent.
+      </p>
+      <div class="domain-tags">
+        <span class="tag">Make</span><span class="tag">RPA</span><span class="tag">IA générative</span><span class="tag">No-code</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- CAS PRATIQUES -->
+<section id="cas">
+  <p class="section-label" data-fr="Démonstrations concrètes" data-en="Concrete demonstrations">Démonstrations concrètes</p>
+  <h2 class="section-title" data-fr="Cas pratiques" data-en="Case studies">Cas pratiques</h2>
+  <p class="section-sub" data-fr="Construits sur des données réelles ou réalistes. Chaque cas montre une compétence démontrée, pas une intention." data-en="Built on real or realistic data. Each case shows a demonstrated skill, not an intention.">
+    Construits sur des données réelles ou réalistes. Chaque cas montre une compétence démontrée, pas une intention.
+  </p>
+  <div class="cases">
+
+    <!-- Cas A -->
+    <div class="case-card">
+      <div class="case-header">
+        <p class="case-title" data-fr="Analyse fonctionnelle augmentée par IA" data-en="AI-augmented functional analysis">Analyse fonctionnelle augmentée par IA</p>
+        <span class="case-num">CAS A</span>
+      </div>
+      <p class="case-body" data-fr="À partir d'un brief RPA réel (supervision de la Traçabilité Générale, Lactalis), extraction automatique par Claude des exigences fonctionnelles, détection des ambiguïtés critiques, matrice de traçabilité et analyse de risques. Ce qui prenait 2 jours produit en 3 heures — avec 3 corrections humaines nécessaires." data-en="From a real RPA brief (General Traceability supervision, Lactalis), automatic extraction by Claude of functional requirements, critical ambiguity detection, traceability matrix and risk analysis. What took 2 days delivered in 3 hours — with 3 necessary human corrections.">
+        À partir d'un brief RPA réel (supervision de la Traçabilité Générale, Lactalis), extraction automatique par Claude des exigences fonctionnelles, détection des ambiguïtés critiques, matrice de traçabilité et analyse de risques.
+      </p>
+      <div class="case-stack">
+        <span class="tag">Claude API</span><span class="tag">Prompt engineering</span><span class="tag">Analyse fonctionnelle</span>
+      </div>
+      <div class="case-insight">
+        <strong data-fr="Enseignement" data-en="Key insight">Enseignement</strong> — <span data-fr="L'IA détecte les ambiguïtés textuelles. Elle ne détecte pas les non-dits organisationnels. Le regard du senior reste indispensable." data-en="AI detects textual ambiguities. It does not detect organisational unspoken assumptions. The senior's judgement remains indispensable.">L'IA détecte les ambiguïtés textuelles. Elle ne détecte pas les non-dits organisationnels. Le regard du senior reste indispensable.</span>
+      </div>
+    </div>
+
+    <!-- Cas B -->
+    <div class="case-card">
+      <div class="case-header">
+        <p class="case-title" data-fr="Pipeline Data Quality CRM — Architecture hybride" data-en="CRM Data Quality Pipeline — Hybrid architecture">Pipeline Data Quality CRM — Architecture hybride</p>
+        <span class="case-num">CAS B</span>
+      </div>
+      <p class="case-body" data-fr="Workflow Make connecté à Google Sheets : détection d'anomalies (email invalide, téléphone court, statut manquant, pays non standardisé), scoring qualité par enregistrement, génération d'actions correctives contextualisées par IA générative. 20 enregistrements testés, 9 anomalies détectées (45%)." data-en="Make workflow connected to Google Sheets: anomaly detection (invalid email, short phone, missing status, non-standardised country), quality scoring per record, AI-generated contextualised corrective actions. 20 records tested, 9 anomalies detected (45%).">
+        Workflow Make connecté à Google Sheets : détection d'anomalies, scoring qualité par enregistrement, actions correctives contextualisées par IA. 20 enregistrements testés — 9 anomalies détectées (45%).
+      </p>
+      <div class="case-stack">
+        <span class="tag">Make</span><span class="tag">Google Sheets</span><span class="tag">IA générative</span><span class="tag">Règles métier</span>
+      </div>
+      <div class="case-insight">
+        <strong data-fr="Enseignement" data-en="Key insight">Enseignement</strong> — <span data-fr="L'IA générative accélère l'analyse mais nécessite un cadre explicite de règles métier pour garantir cohérence et fiabilité. Architecture hybride indispensable." data-en="Generative AI accelerates analysis but requires an explicit business rules framework to guarantee consistency and reliability. Hybrid architecture is essential.">L'IA générative accélère l'analyse mais nécessite un cadre explicite de règles métier. Architecture hybride indispensable.</span>
+      </div>
+    </div>
+
+    <!-- Workflow Tally+Make -->
+    <div class="case-card">
+      <div class="case-header">
+        <p class="case-title" data-fr="Workflow automatisé — Traitement des demandes entrantes" data-en="Automated workflow — Inbound request handling">Workflow automatisé — Traitement des demandes entrantes</p>
+        <span class="case-num" style="background:rgba(63,185,80,0.1);border-color:rgba(63,185,80,0.3);color:#3FB950" data-fr="EN PRODUCTION" data-en="LIVE">EN PRODUCTION</span>
+      </div>
+      <p class="case-body" data-fr="Qualification automatique, routage et notification des demandes entrantes via Tally + Make. Ce formulaire de contact est lui-même une démonstration : chaque message reçu est structuré, qualifié et notifié automatiquement." data-en="Automatic qualification, routing and notification of inbound requests via Tally + Make. This contact form is itself a demonstration: every message received is automatically structured, qualified and notified.">
+        Qualification automatique, routage et notification des demandes entrantes via Tally + Make. Ce formulaire de contact est lui-même une démonstration : chaque message est structuré et notifié automatiquement.
+      </p>
+      <div class="case-stack">
+        <span class="tag">Tally</span><span class="tag">Make</span><span class="tag">Automatisation</span><span class="tag">En production</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ARTICLES -->
+<section id="articles">
+  <p class="section-label" data-fr="Réflexions & publications" data-en="Insights & publications">Réflexions & publications</p>
+  <h2 class="section-title" data-fr="Articles" data-en="Articles">Articles</h2>
+  <p class="section-sub" data-fr="Versions longues des publications LinkedIn. Sujets : Data Quality, Bus Factor, IA appliquée à l'analyse métier." data-en="Long-form versions of LinkedIn publications. Topics: Data Quality, Bus Factor, applied AI for business analysis.">
+    Versions longues des publications LinkedIn.
+  </p>
+  <div class="articles">
+
+    <details class="article-card">
+      <summary class="article-summary">
+        <div class="article-summary-left">
+          <p class="article-label" data-fr="Série Bus Factor — Article 1" data-en="Bus Factor Series — Article 1">Série Bus Factor — Article 1</p>
+          <p class="article-title" data-fr="NexaCrypt : quand une seule personne connaît le système" data-en="NexaCrypt: when only one person knows the system">NexaCrypt : quand une seule personne connaît le système</p>
+        </div>
+        <span class="article-arrow">›</span>
+      </summary>
+      <div class="article-body">
+        <p data-fr="NexaCrypt est une entreprise fictive. Les mécanismes décrits sont documentés et largement observés dans des organisations réelles." data-en="NexaCrypt is a fictional company. The mechanisms described are documented and widely observed in real organisations."><em>NexaCrypt est une entreprise fictive. Les mécanismes décrits sont documentés et largement observés dans des organisations réelles.</em></p>
+        <p data-fr="Le 14 mars, à 3h17 du matin, le système de chiffrement de NexaCrypt tombe. 6 heures d'arrêt. 2,6 millions d'euros de perte. La cause ? Une seule personne connaissait le système — et elle était injoignable." data-en="On March 14th, at 3:17 AM, NexaCrypt's encryption system goes down. 6 hours offline. €2.6 million lost. The cause? Only one person knew the system — and they were unreachable.">
+          Le 14 mars, à 3h17 du matin, le système de chiffrement de NexaCrypt tombe. 6 heures d'arrêt. 2,6 millions d'euros de perte. La cause ? Une seule personne connaissait le système — et elle était injoignable.
+        </p>
+        <h3 data-fr="Le Bus Factor" data-en="The Bus Factor">Le Bus Factor</h3>
+        <p data-fr="Le Bus Factor d'un système est le nombre minimum de personnes qui, si elles étaient soudainement indisponibles, mettraient ce système en danger. Chez NexaCrypt ce soir-là : 1." data-en="A system's Bus Factor is the minimum number of people who, if suddenly unavailable, would put that system at risk. At NexaCrypt that night: 1.">
+          Le Bus Factor d'un système est le nombre minimum de personnes qui, si elles étaient soudainement indisponibles, mettraient ce système en danger. Chez NexaCrypt ce soir-là : 1.
+        </p>
+        <p data-fr="Ce n'est pas un problème rare. C'est un problème systémique dans les organisations qui confondent efficacité individuelle et robustesse collective." data-en="This is not a rare problem. It is a systemic issue in organisations that confuse individual efficiency with collective robustness.">
+          Ce n'est pas un problème rare. C'est un problème systémique dans les organisations qui confondent efficacité individuelle et robustesse collective.
+        </p>
+        <div class="highlight" data-fr="La connaissance critique n'est pas répartie — elle est concentrée. Chaque dépendance prise isolément semblait gérable. Leur superposition ne l'est plus." data-en="Critical knowledge is not distributed — it is concentrated. Each dependency seemed manageable in isolation. Their combination no longer is.">
+          La connaissance critique n'est pas répartie — elle est concentrée. Chaque dépendance prise isolément semblait gérable. Leur superposition ne l'est plus.
+        </div>
+        <h3 data-fr="Ce que l'IA peut faire" data-en="What AI can do">Ce que l'IA peut faire</h3>
+        <p data-fr="En croisant les transcriptions d'entretiens internes, un système hybride (règles métier + IA générative) peut cartographier ces dépendances invisibles — détecter les signaux faibles que personne n'avait agrégés, parce que chacun ne voyait que son périmètre." data-en="By cross-referencing internal interview transcripts, a hybrid system (business rules + generative AI) can map these invisible dependencies — detecting weak signals that nobody had aggregated, because each person only saw their own scope.">
+          En croisant les transcriptions d'entretiens internes, un système hybride (règles métier + IA générative) peut cartographier ces dépendances invisibles — détecter les signaux faibles que personne n'avait agrégés.
+        </p>
+      </div>
+    </details>
+
+    <details class="article-card">
+      <summary class="article-summary">
+        <div class="article-summary-left">
+          <p class="article-label" data-fr="Série Bus Factor — Article 3" data-en="Bus Factor Series — Article 3">Série Bus Factor — Article 3</p>
+          <p class="article-title" data-fr="Cartographier la connaissance métier avec l'IA" data-en="Mapping business knowledge with AI">Cartographier la connaissance métier avec l'IA</p>
+        </div>
+        <span class="article-arrow">›</span>
+      </summary>
+      <div class="article-body">
+        <p data-fr="Une carte se lit à plusieurs niveaux. Au premier niveau : qui fait quoi, quand. C'est la continuité opérationnelle. Au deuxième : quels systèmes, processus et personnes sont liés. C'est la cartographie des risques business. Au troisième : qui sait quoi — et qui est le seul à le savoir. C'est la cartographie des savoirs critiques. Au quatrième : quels systèmes SI supportent ces savoirs, et qu'arrive-t-il s'ils tombent. C'est la dépendance aux systèmes." data-en="A map can be read at several levels. First level: who does what, when — operational continuity. Second: which systems, processes and people are linked — business risk mapping. Third: who knows what — and who alone knows it — critical knowledge mapping. Fourth: which IT systems support this knowledge, and what happens if they fail — system dependency.">
+          Une carte se lit à quatre niveaux : continuité opérationnelle → risques business → savoirs critiques → dépendance aux systèmes. Chaque niveau révèle ce que le précédent cachait.
+        </p>
+        <h3 data-fr="Ce que l'IA fait bien" data-en="What AI does well">Ce que l'IA fait bien</h3>
+        <ul>
+          <li data-fr="Croiser 50 entretiens que personne n'a le temps de relire" data-en="Cross-reference 50 interviews nobody has time to re-read">Croiser 50 entretiens que personne n'a le temps de relire</li>
+          <li data-fr="Détecter les patterns récurrents de dépendance" data-en="Detect recurring dependency patterns">Détecter les patterns récurrents de dépendance</li>
+          <li data-fr="Synthétiser des signaux faibles épars en constats actionnables" data-en="Synthesise scattered weak signals into actionable findings">Synthétiser des signaux faibles épars en constats actionnables</li>
+        </ul>
+        <h3 data-fr="Ce que l'IA ne fait pas" data-en="What AI does not do">Ce que l'IA ne fait pas</h3>
+        <ul>
+          <li data-fr="Elle ne sait pas si le risque est acceptable pour l'organisation" data-en="It cannot judge whether the risk is acceptable for the organisation">Elle ne sait pas si le risque est acceptable pour l'organisation</li>
+          <li data-fr="Elle ne comprend pas les dynamiques politiques internes" data-en="It does not understand internal political dynamics">Elle ne comprend pas les dynamiques politiques internes</li>
+          <li data-fr="Elle ne priorise pas selon la culture de l'entreprise" data-en="It does not prioritise according to company culture">Elle ne priorise pas selon la culture de l'entreprise</li>
+        </ul>
+        <div class="highlight" data-fr="L'IA cartographie. Le Business Analyst senior interprète, valide, priorise et arbitre. L'un sans l'autre produit soit du bruit, soit de l'aveuglement." data-en="AI maps. The senior Business Analyst interprets, validates, prioritises and arbitrates. One without the other produces either noise or blindness.">
+          L'IA cartographie. Le Business Analyst senior interprète, valide, priorise et arbitre. L'un sans l'autre produit soit du bruit, soit de l'aveuglement.
+        </div>
+      </div>
+    </details>
+
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- APPROCHE -->
+<section id="approche">
+  <p class="section-label" data-fr="Méthode de travail" data-en="Working method">Méthode de travail</p>
+  <h2 class="section-title" data-fr="Mon approche" data-en="My approach">Mon approche</h2>
+  <div class="approach-steps">
+    <div class="step">
+      <p class="step-num">01</p>
+      <p class="step-title" data-fr="Comprendre" data-en="Understand">Comprendre</p>
+      <p class="step-body" data-fr="Analyse des processus, des données et des irritants. Entretiens, audit de l'existant, cartographie." data-en="Process, data and pain point analysis. Interviews, existing system audit, mapping.">Analyse des processus, des données et des irritants. Audit de l'existant, cartographie.</p>
+    </div>
+    <div class="step">
+      <p class="step-num">02</p>
+      <p class="step-title" data-fr="Structurer" data-en="Structure">Structurer</p>
+      <p class="step-body" data-fr="Clarification des règles métier, des flux et des priorités. Formalisation des exigences." data-en="Clarification of business rules, flows and priorities. Requirements formalisation.">Clarification des règles métier, des flux et des priorités. Formalisation des exigences.</p>
+    </div>
+    <div class="step">
+      <p class="step-num">03</p>
+      <p class="step-title" data-fr="Outiller" data-en="Tool">Outiller</p>
+      <p class="step-body" data-fr="Mise en place de solutions simples — automatisation, IA, no-code. L'outil au service du besoin." data-en="Simple solution implementation — automation, AI, no-code. The tool serves the need.">Mise en place de solutions simples — automatisation, IA, no-code. L'outil au service du besoin.</p>
+    </div>
+    <div class="step">
+      <p class="step-num">04</p>
+      <p class="step-title" data-fr="Transmettre" data-en="Transfer">Transmettre</p>
+      <p class="step-body" data-fr="Documentation, pédagogie, appropriation. Et quand c'est utile : vidéo pour rendre visible ce qui est complexe." data-en="Documentation, pedagogy, ownership. And when useful: video to make the complex visible.">Documentation, pédagogie, appropriation. Et quand c'est utile : vidéo pour rendre visible ce qui est complexe.</p>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- PROFIL -->
+<section id="profil">
+  <p class="section-label" data-fr="Parcours" data-en="Background">Parcours</p>
+  <h2 class="section-title" data-fr="Profil" data-en="Profile">Profil</h2>
+  <p class="section-sub" data-fr="Expérience senior acquise sur des projets SI complexes, aujourd'hui recentrée sur des missions d'expertise opérationnelle." data-en="Senior experience acquired on complex IT projects, now refocused on operational expertise missions.">
+    Expérience senior acquise sur des projets SI complexes, aujourd'hui recentrée sur des missions d'expertise opérationnelle.
+  </p>
+  <div class="profile-grid">
+    <div class="profile-block">
+      <p class="profile-block-title" data-fr="Expériences clés" data-en="Key experience">Expériences clés</p>
+      <ul>
+        <li>Accenture — AMOA, Télécom/Média</li>
+        <li>Neuf Telecom — Revenue Assurance</li>
+        <li>EDF Energies Nouvelles — PMO/DSI</li>
+        <li>SAFT / TotalEnergies — Data Quality CRM</li>
+        <li>Gras Savoye-WTW — Transformation digitale</li>
+        <li>Lactalis — Traçabilité SI, RPA</li>
+      </ul>
+    </div>
+    <div class="profile-block">
+      <p class="profile-block-title" data-fr="Certifications & formations" data-en="Certifications & training">Certifications & formations</p>
+      <ul>
+        <li>PMP — Project Management Institute (2023)</li>
+        <li>Elements of AI — Univ. Helsinki</li>
+        <li>Agentic AI — DeepLearning.AI</li>
+        <li>Make Academy — Automatisation no-code</li>
+        <li>Mastère — Management Projets Internationaux, ESCP</li>
+      </ul>
+    </div>
+  </div>
+  <div style="margin-top:1.5rem">
+    <p class="section-label" style="margin-bottom:0.75rem" data-fr="Secteurs d'expérience" data-en="Industry experience">Secteurs d'expérience</p>
+    <div class="sectors">
+      <span class="sector" data-fr="Télécoms" data-en="Telecoms">Télécoms</span>
+      <span class="sector" data-fr="Énergie" data-en="Energy">Énergie</span>
+      <span class="sector">Assurance</span>
+      <span class="sector">Industrie</span>
+      <span class="sector">Agroalimentaire</span>
+      <span class="sector" data-fr="Hôtellerie" data-en="Hospitality">Hôtellerie</span>
+      <span class="sector" data-fr="Médias" data-en="Media">Médias</span>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- UNIVERS PLN -->
+<section>
+  <p class="section-label" data-fr="Univers PLN" data-en="PLN Universe">Univers PLN</p>
+  <h2 class="section-title" data-fr="Production & Augmentation" data-en="Production & Augmentation">Production & Augmentation</h2>
+  <p class="section-sub" data-fr="Deux activités complémentaires, un même fil conducteur : rendre le complexe compréhensible." data-en="Two complementary activities, one common thread: making the complex understandable.">
+    Deux activités complémentaires, un même fil conducteur : rendre le complexe compréhensible.
+  </p>
+  <div class="pln-grid">
+    <a href="https://plnprod.github.io/" class="pln-card" target="_blank">
+      <p class="pln-card-label">PLN Prod</p>
+      <p class="pln-card-title" data-fr="Production audiovisuelle" data-en="Audiovisual production">Production audiovisuelle</p>
+      <p class="pln-card-body" data-fr="Captations de concerts, spectacles, compétitions sportives. Reportages documentaires." data-en="Concert, show and sports event coverage. Documentary reporting.">Captations de concerts, spectacles, compétitions sportives. Reportages documentaires.</p>
+    </a>
+    <a href="https://pln-augmented.github.io/demo/" class="pln-card" target="_blank">
+      <p class="pln-card-label">PLN Augmented</p>
+      <p class="pln-card-title" data-fr="Vidéo augmentée & IA" data-en="Augmented video & AI">Vidéo augmentée & IA</p>
+      <p class="pln-card-body" data-fr="Laboratoire de formats innovants : data storytelling, visualisation narrative, transmission visuelle des connaissances." data-en="Innovative format lab: data storytelling, narrative visualisation, visual knowledge transfer.">Laboratoire : data storytelling, visualisation narrative, transmission visuelle des connaissances.</p>
+    </a>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- CONTACT -->
+<section id="contact">
+  <p class="section-label" data-fr="Disponibilité" data-en="Availability">Disponibilité</p>
+  <h2 class="section-title" data-fr="Travaillons ensemble" data-en="Let's work together">Travaillons ensemble</h2>
+  <div class="contact-box">
+    <p style="color:var(--muted);font-size:0.9rem" data-fr="Disponible pour missions freelance ou portage salarial. Bretagne · Remote · Déplacements ponctuels possibles." data-en="Available for freelance or portage salarial contracts. Brittany · Remote · Occasional travel possible.">
+      Disponible pour missions freelance ou portage salarial.<br>Bretagne · Remote · Déplacements ponctuels possibles.
+    </p>
+    <div class="contact-links">
+      <a href="https://www.linkedin.com/in/pierre-pistenon-87730a6/" class="btn btn-primary" target="_blank">LinkedIn</a>
+      <a href="mailto:plnp@orange.fr" class="btn btn-ghost">plnp@orange.fr</a>
+    </div>
+    <div style="margin-top:0.5rem">
+      <p style="font-size:0.82rem;color:var(--muted);margin-bottom:0.75rem" data-fr="Formulaire de contact (traitement automatisé Tally + Make) :" data-en="Contact form (automated Tally + Make processing):">Formulaire de contact (traitement automatisé Tally + Make) :</p>
+      <a href="https://plnprod.github.io/#" class="btn btn-ghost" target="_blank" data-fr="Ouvrir le formulaire →" data-en="Open form →">Ouvrir le formulaire →</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2025 Pierre Pistenon · <a href="https://pierre-pistenon.github.io" style="color:var(--accent);text-decoration:none">pierre-pistenon.github.io</a></p>
+</footer>
+
+<script>
+  // ── Lang toggle ─────────────────────────────────────────
+  function setLang(lang) {
+    document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+    document.querySelector(`.lang-btn[onclick="setLang('${lang}')"]`).classList.add('active');
+    document.documentElement.lang = lang;
+
+    document.querySelectorAll('[data-fr]').forEach(el => {
+      const txt = el.getAttribute(`data-${lang}`);
+      if (!txt) return;
+      if (el.tagName === 'H1') {
+        el.innerHTML = txt;
+      } else {
+        el.textContent = txt;
+      }
+    });
+  }
+
+  // ── Smooth scroll for nav ───────────────────────────────
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const target = document.querySelector(a.getAttribute('href'));
+      if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth' }); }
+    });
+  });
+</script>
+</body>
+</html>

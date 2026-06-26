@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Article complet — Bus Factor et risque organisationnel, le cas pédagogique NexaCrypt.">
+  <title>Quand un système critique repose sur 3 personnes — Pierre Pistenon</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0D1117; --bg2: #161B22; --border: #30363D;
+      --text: #E6EDF3; --muted: #8B949E; --accent: #4FC3F7;
+    }
+    body {
+      background: var(--bg); color: var(--text);
+      font-family: 'Inter', sans-serif; font-size: 16px; line-height: 1.75;
+      -webkit-font-smoothing: antialiased;
+    }
+    /* ── Nav ── */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(13,17,23,0.92); backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 1.5rem; height: 52px;
+    }
+    .nav-back {
+      display: inline-flex; align-items: center; gap: 6px;
+      color: var(--accent); text-decoration: none;
+      font-family: 'JetBrains Mono', monospace; font-size: 0.82rem;
+    }
+    .lang-toggle { display: flex; gap: 4px; }
+    .lang-btn {
+      font-family: 'JetBrains Mono', monospace; font-size: 0.75rem;
+      background: transparent; border: 1px solid var(--border);
+      color: var(--muted); padding: 0.2rem 0.55rem; border-radius: 4px;
+      cursor: pointer; transition: all 0.15s;
+    }
+    .lang-btn.active { background: var(--accent); color: var(--bg); font-weight: 500; border-color: var(--accent); }
+    /* ── Content ── */
+    .wrap { max-width: 700px; margin: 0 auto; padding: 52px 1.5rem 100px; }
+    .eyebrow {
+      font-family: 'JetBrains Mono', monospace; font-size: 0.78rem;
+      color: var(--accent); letter-spacing: 0.08em; text-transform: uppercase;
+      margin: 2.5rem 0 0.75rem;
+    }
+    h1 {
+      font-size: clamp(1.6rem, 4vw, 2.3rem); font-weight: 600;
+      line-height: 1.25; margin-bottom: 1rem; letter-spacing: -0.01em;
+    }
+    .article-sub { color: var(--muted); font-size: 0.95rem; margin-bottom: 1.8rem; }
+    .disclaimer {
+      background: var(--bg2); border-left: 2px solid var(--accent);
+      padding: 1rem 1.25rem; font-size: 0.86rem; color: var(--muted);
+      font-style: italic; margin-bottom: 2.5rem; border-radius: 0 6px 6px 0;
+    }
+    h2 { font-size: 1.15rem; font-weight: 600; margin-top: 2.5rem; margin-bottom: 0.9rem; color: var(--text); }
+    p { color: var(--muted); margin-bottom: 1.1rem; font-size: 0.95rem; }
+    strong { color: var(--text); font-weight: 600; }
+    ul { margin: 1rem 0 1.1rem 1.3rem; }
+    li { color: var(--muted); margin-bottom: 0.5rem; font-size: 0.95rem; }
+    li::marker { color: var(--accent); }
+    table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.85rem; }
+    th, td { border: 1px solid var(--border); padding: 0.6rem 0.8rem; text-align: left; }
+    th { background: var(--bg2); color: var(--text); font-weight: 600; }
+    td { color: var(--muted); }
+    .highlight {
+      background: rgba(79,195,247,0.05); border-left: 2px solid var(--accent);
+      padding: 1rem 1.25rem; margin: 1.5rem 0; font-style: italic;
+      color: var(--muted); border-radius: 0 6px 6px 0;
+    }
+    .timeline-item { display: flex; gap: 1rem; margin-bottom: 0.7rem; font-size: 0.9rem; }
+    .timeline-time { font-family: 'JetBrains Mono', monospace; color: var(--accent); flex-shrink: 0; width: 60px; }
+    .timeline-text { color: var(--muted); }
+    footer {
+      margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--border);
+      font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; color: var(--muted);
+      display: flex; justify-content: space-between; flex-wrap: wrap; gap: 1rem;
+    }
+    footer a { color: var(--accent); text-decoration: none; }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html#articles" class="nav-back"
+     data-fr="← Retour au site"
+     data-en="← Back to site">← Retour au site</a>
+  <div class="lang-toggle">
+    <button class="lang-btn active" onclick="setLang('fr')">FR</button>
+    <button class="lang-btn"        onclick="setLang('en')">EN</button>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <p class="eyebrow"
+     data-fr="Série Bus Factor — Article 1 — Version longue"
+     data-en="Bus Factor Series — Article 1 — Long version"
+     >Série Bus Factor — Article 1 — Version longue</p>
+
+  <h1
+     data-fr="Quand un système critique repose sur 3 personnes : le risque invisible"
+     data-en="When a critical system rests on 3 people: the invisible risk"
+     >Quand un système critique repose sur 3 personnes : le risque invisible</h1>
+
+  <p class="article-sub"
+     data-fr="Ou comment NexaCrypt, leader européen de la traçabilité sécurisée, a frôlé l'effondrement à cause d'un Bus Factor non maîtrisé."
+     data-en="Or how NexaCrypt, a European leader in secure traceability, came close to collapse because of an uncontrolled Bus Factor."
+     >Ou comment NexaCrypt, leader européen de la traçabilité sécurisée, a frôlé l'effondrement à cause d'un Bus Factor non maîtrisé.</p>
+
+  <div class="disclaimer">
+    <span
+      data-fr="NexaCrypt est une entreprise composite, librement construite à partir de situations réelles observées en mission. Les mécanismes décrits — Bus Factor, SPOF, perte de connaissance critique — sont documentés et largement observés dans des organisations de toutes tailles."
+      data-en="NexaCrypt is a composite company, freely constructed from real situations observed during assignments. The mechanisms described — Bus Factor, SPOF, critical knowledge loss — are documented and widely observed in organisations of all sizes."
+      >NexaCrypt est une entreprise composite, librement construite à partir de situations réelles observées en mission. Les mécanismes décrits — Bus Factor, SPOF, perte de connaissance critique — sont documentés et largement observés dans des organisations de toutes tailles.</span>
+  </div>
+
+  <h2 data-fr="Qui est NexaCrypt ?"
+      data-en="Who is NexaCrypt?">Qui est NexaCrypt ?</h2>
+  <p data-fr="NexaCrypt est une ETI française spécialisée dans la traçabilité sécurisée et le chiffrement des données sensibles, principalement pour les secteurs bancaire, e-commerce haut de gamme, et logistique. Fondée en 2015, l'entreprise s'est imposée comme un acteur clé dans la protection des chaînes logistiques critiques et des transactions financières, avec une offre phare : NexaTrace, une solution de traçabilité de bout en bout intégrant un module de chiffrement propriétaire, NexaCrypt."
+     data-en="NexaCrypt is a French mid-sized company specialising in secure traceability and sensitive data encryption, primarily for banking, high-end e-commerce and logistics. Founded in 2015, it has established itself as a key player in protecting critical supply chains and financial transactions, with a flagship product: NexaTrace, an end-to-end traceability solution integrating a proprietary encryption module, NexaCrypt."
+     >NexaCrypt est une ETI française spécialisée dans la traçabilité sécurisée et le chiffrement des données sensibles, principalement pour les secteurs bancaire, e-commerce haut de gamme, et logistique. Fondée en 2015, l'entreprise s'est imposée comme un acteur clé dans la protection des chaînes logistiques critiques et des transactions financières, avec une offre phare : NexaTrace, une solution de traçabilité de bout en bout intégrant un module de chiffrement propriétaire, NexaCrypt.</p>
+
+  <h2 data-fr="Le marché et les clients"
+      data-en="Market and clients">Le marché et les clients</h2>
+  <p data-fr="<strong>Banques et institutions financières (60% du CA)</strong> — NexaCrypt sécurise les transactions interbancaires et chiffre les données clients sensibles. Enjeux : conformité PCI-DSS, prévention des fuites (coût moyen estimé à 4,4 M$ dans le secteur bancaire selon IBM), minimisation de l'impact d'une panne (plusieurs millions d'euros en pénalités contractuelles possibles pour 6h d'indisponibilité)."
+     data-en="<strong>Banks and financial institutions (60% of revenue)</strong> — NexaCrypt secures interbank transactions and encrypts sensitive customer data. Stakes: PCI-DSS compliance, breach prevention (average cost estimated at $4.4M in banking per IBM), minimising downtime impact (several million euros in contractual penalties possible for 6h of unavailability)."
+     ><strong>Banques et institutions financières (60% du CA)</strong> — NexaCrypt sécurise les transactions interbancaires et chiffre les données clients sensibles. Enjeux : conformité PCI-DSS, prévention des fuites (coût moyen estimé à 4,4 M$ dans le secteur bancaire selon IBM), minimisation de l'impact d'une panne (plusieurs millions d'euros en pénalités contractuelles possibles pour 6h d'indisponibilité).</p>
+  <p data-fr="<strong>E-commerce haut de gamme et luxe (30% du CA)</strong> — NexaTrace garantit l'authenticité des produits via des identifiants uniques sécurisés (QR codes cryptés, puces NFC). Enjeux : lutte contre la contrefaçon (60 à 120 Md€ de manque à gagner annuel pour l'économie européenne selon l'EUIPO), protection de la valeur de marque."
+     data-en="<strong>High-end e-commerce and luxury (30% of revenue)</strong> — NexaTrace guarantees product authenticity via unique secure identifiers (encrypted QR codes, NFC chips). Stakes: anti-counterfeiting (€60–120bn annual loss for the European economy per EUIPO), brand value protection."
+     ><strong>E-commerce haut de gamme et luxe (30% du CA)</strong> — NexaTrace garantit l'authenticité des produits via des identifiants uniques sécurisés (QR codes cryptés, puces NFC). Enjeux : lutte contre la contrefaçon (60 à 120 Md€ de manque à gagner annuel pour l'économie européenne selon l'EUIPO), protection de la valeur de marque.</p>
+  <p data-fr="<strong>Logistique et supply chain (10% du CA)</strong> — Traçabilité de bout en bout pour les secteurs pharmaceutique et agroalimentaire, suivi de dizaines de milliers d'unités par jour. Enjeux : conformité réglementaire (Règlement CE 178/2002, Directive 2011/62/UE), gestion des rappels en moins de 4h."
+     data-en="<strong>Logistics and supply chain (10% of revenue)</strong> — End-to-end traceability for pharmaceutical and food sectors, tracking tens of thousands of units per day. Stakes: regulatory compliance (EC Regulation 178/2002, Directive 2011/62/EU), recall management within 4 hours."
+     ><strong>Logistique et supply chain (10% du CA)</strong> — Traçabilité de bout en bout pour les secteurs pharmaceutique et agroalimentaire, suivi de dizaines de milliers d'unités par jour. Enjeux : conformité réglementaire (Règlement CE 178/2002, Directive 2011/62/UE), gestion des rappels en moins de 4h.</p>
+
+  <h2 data-fr="Positionnement concurrentiel : David contre Goliath"
+      data-en="Competitive positioning: David vs Goliath">Positionnement concurrentiel : David contre Goliath</h2>
+  <p data-fr="NexaCrypt se distingue par sa spécialisation extrême face à des concurrents généralistes :"
+     data-en="NexaCrypt stands out through extreme specialisation against generalist competitors:"
+     >NexaCrypt se distingue par sa spécialisation extrême face à des concurrents généralistes :</p>
+  <table>
+    <tr>
+      <th data-fr="Concurrent" data-en="Competitor">Concurrent</th>
+      <th data-fr="Points forts" data-en="Strengths">Points forts</th>
+      <th data-fr="Points faibles" data-en="Weaknesses">Points faibles</th>
+      <th data-fr="Part de marché" data-en="Market share">Part de marché</th>
+    </tr>
+    <tr>
+      <td>SAP ATTP</td>
+      <td data-fr="Couverture fonctionnelle large" data-en="Broad functional coverage">Couverture fonctionnelle large</td>
+      <td data-fr="Complexité, coût, latence" data-en="Complexity, cost, latency">Complexité, coût, latence</td>
+      <td>25%</td>
+    </tr>
+    <tr>
+      <td>Oracle ITT</td>
+      <td data-fr="Robustesse, support 24/7" data-en="Robustness, 24/7 support">Robustesse, support 24/7</td>
+      <td data-fr="Coût prohibitif, rigidité" data-en="Prohibitive cost, rigidity">Coût prohibitif, rigidité</td>
+      <td>20%</td>
+    </tr>
+    <tr>
+      <td>TraceLink</td>
+      <td data-fr="Leader pharma mondial" data-en="Global pharma leader">Leader pharma mondial</td>
+      <td data-fr="Peu adapté luxe/agro" data-en="Poor fit for luxury/agri">Peu adapté luxe/agro</td>
+      <td>15%</td>
+    </tr>
+    <tr>
+      <td>OpenSSL</td>
+      <td data-fr="Gratuit, largement adopté" data-en="Free, widely adopted">Gratuit, largement adopté</td>
+      <td data-fr="Pas de SLA, risque Heartbleed" data-en="No SLA, Heartbleed risk">Pas de SLA, risque Heartbleed</td>
+      <td data-fr="40% (indirect)" data-en="40% (indirect)">40% (indirect)</td>
+    </tr>
+    <tr>
+      <td>NexaCrypt</td>
+      <td data-fr="Performance, simplicité, conformité" data-en="Performance, simplicity, compliance">Performance, simplicité, conformité</td>
+      <td data-fr="Dépendance à quelques experts" data-en="Dependency on a handful of experts">Dépendance à quelques experts</td>
+      <td>12%</td>
+    </tr>
+  </table>
+  <p data-fr="NexaCrypt tient face aux géants grâce à sa spécialisation sectorielle, son intégration légère avec les WMS existants, sa conformité clé en main (ISO 27001, RGPD) et sa réactivité. Mais les géants disposent de budgets R&D et marketing jusqu'à 100x supérieurs — et OpenSSL, alternative par défaut utilisée sans le savoir par beaucoup de clients via des intégrations tierces, représente un risque systémique externe (le précédent Heartbleed le démontre)."
+     data-en="NexaCrypt holds its own against the giants through sector specialisation, light integration with existing WMS, turnkey compliance (ISO 27001, GDPR) and responsiveness. But the giants have R&D and marketing budgets up to 100x larger — and OpenSSL, the default alternative unknowingly used by many clients via third-party integrations, represents an external systemic risk (as the Heartbleed precedent demonstrates)."
+     >NexaCrypt tient face aux géants grâce à sa spécialisation sectorielle, son intégration légère avec les WMS existants, sa conformité clé en main (ISO 27001, RGPD) et sa réactivité. Mais les géants disposent de budgets R&D et marketing jusqu'à 100x supérieurs — et OpenSSL, alternative par défaut utilisée sans le savoir par beaucoup de clients via des intégrations tierces, représente un risque systémique externe (le précédent Heartbleed le démontre).</p>
+
+  <h2 data-fr="Chiffres clés (2025)" data-en="Key figures (2025)">Chiffres clés (2025)</h2>
+  <table>
+    <tr>
+      <th data-fr="Indicateur" data-en="Indicator">Indicateur</th>
+      <th data-fr="Valeur" data-en="Value">Valeur</th>
+    </tr>
+    <tr>
+      <td data-fr="Chiffre d'affaires" data-en="Revenue">Chiffre d'affaires</td>
+      <td>50 M€ (+12%/an)</td>
+    </tr>
+    <tr>
+      <td data-fr="Clients" data-en="Clients">Clients</td>
+      <td data-fr="80+ (dont 20 au CAC40), 95% de rétention" data-en="80+ (including 20 CAC40 firms), 95% retention">80+ (dont 20 au CAC40), 95% de rétention</td>
+    </tr>
+    <tr>
+      <td data-fr="Volume de données traçables" data-en="Traceable data volume">Volume de données traçables</td>
+      <td data-fr="10M événements/jour" data-en="10M events/day">10M événements/jour</td>
+    </tr>
+    <tr>
+      <td data-fr="Part de marché Europe" data-en="European market share">Part de marché Europe</td>
+      <td data-fr="~12%, leader de niche" data-en="~12%, niche leader">~12%, leader de niche</td>
+    </tr>
+    <tr>
+      <td data-fr="Effectif" data-en="Headcount">Effectif</td>
+      <td data-fr="120 employés (50 R&D, 30 exploitation, 40 support/commercial)" data-en="120 employees (50 R&D, 30 ops, 40 support/sales)">120 employés (50 R&D, 30 exploitation, 40 support/commercial)</td>
+    </tr>
+  </table>
+
+  <h2 data-fr="Organisation interne : une structure en silos… et en SPOF"
+      data-en="Internal organisation: a siloed structure… and full of SPOFs"
+      >Organisation interne : une structure en silos… et en SPOF</h2>
+  <p data-fr="NexaCrypt est organisée en 6 pôles, avec une culture technique forte mais peu collaborative. Le problème majeur : l'entreprise repose sur 3 personnes clés."
+     data-en="NexaCrypt is organised into 6 departments, with a strong but siloed technical culture. The core problem: the company rests on 3 key people."
+     >NexaCrypt est organisée en 6 pôles, avec une culture technique forte mais peu collaborative. Le problème majeur : l'entreprise repose sur 3 personnes clés.</p>
+  <ul>
+    <li data-fr="<strong>Alice DevSec</strong> (R&D) — seule à maîtriser le module de chiffrement NexaCrypt"
+        data-en="<strong>Alice DevSec</strong> (R&D) — the only person who understands the NexaCrypt encryption module"
+        ><strong>Alice DevSec</strong> (R&D) — seule à maîtriser le module de chiffrement NexaCrypt</li>
+    <li data-fr="<strong>Bob SysAdmin</strong> (Exploitation) — infrastructure critique, avec Dave (en retraite imminente) comme seul backup théorique"
+        data-en="<strong>Bob SysAdmin</strong> (Ops) — critical infrastructure, with Dave (imminently retiring) as the sole theoretical backup"
+        ><strong>Bob SysAdmin</strong> (Exploitation) — infrastructure critique, avec Dave (en retraite imminente) comme seul backup théorique</li>
+    <li data-fr="<strong>Grace KeyUser</strong> (Support) — seule à connaître les astuces métier essentielles"
+        data-en="<strong>Grace KeyUser</strong> (Support) — the only person who knows the essential business workarounds"
+        ><strong>Grace KeyUser</strong> (Support) — seule à connaître les astuces métier essentielles</li>
+  </ul>
+  <p data-fr="Conséquence directe : un départ ou un accident sur l'une de ces trois personnes entraîne une paralysie partielle ou totale du système."
+     data-en="Direct consequence: a departure or accident affecting any one of these three people causes partial or total system paralysis."
+     >Conséquence directe : un départ ou un accident sur l'une de ces trois personnes entraîne une paralysie partielle ou totale du système.</p>
+
+  <h2 data-fr="Le 15 janvier 2026 : le jour où le système a vacillé"
+      data-en="15 January 2026: the day the system faltered"
+      >Le 15 janvier 2026 : le jour où le système a vacillé</h2>
+
+  <div class="timeline-item">
+    <span class="timeline-time">10h00</span>
+    <span class="timeline-text"
+          data-fr="Panne de disque dur sur le serveur principal hébergeant NexaCrypt."
+          data-en="Hard drive failure on the main server hosting NexaCrypt."
+          >Panne de disque dur sur le serveur principal hébergeant NexaCrypt.</span>
+  </div>
+  <div class="timeline-item">
+    <span class="timeline-time">10h05</span>
+    <span class="timeline-text"
+          data-fr="Bob reçoit une alerte Nagios, mais ne trouve pas les sauvegardes — stockées sur un NAS local, dans la même salle serveurs."
+          data-en="Bob receives a Nagios alert but cannot find the backups — stored on a local NAS in the same server room."
+          >Bob reçoit une alerte Nagios, mais ne trouve pas les sauvegardes — stockées sur un NAS local, dans la même salle serveurs.</span>
+  </div>
+  <div class="timeline-item">
+    <span class="timeline-time">10h30</span>
+    <span class="timeline-text"
+          data-fr="Bob tente un redémarrage, l'OS ne boot pas. Il appelle Dave, son backup — en RTT, sans téléphone."
+          data-en="Bob attempts a restart; the OS won't boot. He calls Dave, his backup — who is on leave, unreachable."
+          >Bob tente un redémarrage, l'OS ne boot pas. Il appelle Dave, son backup — en RTT, sans téléphone.</span>
+  </div>
+  <div class="timeline-item">
+    <span class="timeline-time">11h00</span>
+    <span class="timeline-text"
+          data-fr="Bob contacte Alice, seule à pouvoir reconfigurer NexaCrypt — elle est en réunion, sans accès PC."
+          data-en="Bob contacts Alice, the only person able to reconfigure NexaCrypt — she is in a meeting with no laptop access."
+          >Bob contacte Alice, seule à pouvoir reconfigurer NexaCrypt — elle est en réunion, sans accès PC.</span>
+  </div>
+  <div class="timeline-item">
+    <span class="timeline-time">12h00</span>
+    <span class="timeline-text"
+          data-fr="Alice se connecte enfin : les sauvegardes sont corrompues, la dernière valide date de 2 jours."
+          data-en="Alice finally connects: the backups are corrupted, the last valid one is 2 days old."
+          >Alice se connecte enfin : les sauvegardes sont corrompues, la dernière valide date de 2 jours.</span>
+  </div>
+  <div class="timeline-item">
+    <span class="timeline-time">14h00</span>
+    <span class="timeline-text"
+          data-fr="Après 4h d'efforts, restauration partielle — mais les clés de chiffrement ne sont pas synchronisées."
+          data-en="After 4 hours of effort, partial restoration — but the encryption keys are out of sync."
+          >Après 4h d'efforts, restauration partielle — mais les clés de chiffrement ne sont pas synchronisées.</span>
+  </div>
+  <div class="timeline-item">
+    <span class="timeline-time">16h00</span>
+    <span class="timeline-text"
+          data-fr="Résolution finale : NexaCrypt est de nouveau opérationnel, après 6h de downtime."
+          data-en="Final resolution: NexaCrypt is back online after 6 hours of downtime."
+          >Résolution finale : NexaCrypt est de nouveau opérationnel, après 6h de downtime.</span>
+  </div>
+
+  <h2 data-fr="Les conséquences : bien plus que des euros"
+      data-en="The consequences: far more than money"
+      >Les conséquences : bien plus que des euros</h2>
+  <table>
+    <tr>
+      <th data-fr="Impact" data-en="Impact">Impact</th>
+      <th data-fr="Détail" data-en="Detail">Détail</th>
+      <th data-fr="Coût estimé" data-en="Estimated cost">Coût estimé</th>
+    </tr>
+    <tr>
+      <td data-fr="Pénalités contractuelles" data-en="Contractual penalties">Pénalités contractuelles</td>
+      <td data-fr="2 clients majeurs ont activé des clauses SLA (50k€/h)" data-en="2 major clients triggered SLA clauses (€50k/h)">2 clients majeurs ont activé des clauses SLA (50k€/h)</td>
+      <td>600k€</td>
+    </tr>
+    <tr>
+      <td data-fr="Perte de transactions" data-en="Transaction losses">Perte de transactions</td>
+      <td data-fr="3M transactions bloquées (≈0,40€/transaction)" data-en="3M blocked transactions (≈€0.40/transaction)">3M transactions bloquées (≈0,40€/transaction)</td>
+      <td>1,2M€</td>
+    </tr>
+    <tr>
+      <td data-fr="Atteinte à la réputation" data-en="Reputational damage">Atteinte à la réputation</td>
+      <td data-fr="Trending topic, 1 client résilié" data-en="Trending topic, 1 client contract terminated">Trending topic, 1 client résilié</td>
+      <td data-fr="500k€ (perte future)" data-en="€500k (future loss)">500k€ (perte future)</td>
+    </tr>
+    <tr>
+      <td data-fr="Coût interne" data-en="Internal cost">Coût interne</td>
+      <td data-fr="10 ingénieurs mobilisés en urgence" data-en="10 engineers mobilised on an emergency basis">10 ingénieurs mobilisés en urgence</td>
+      <td>200k€</td>
+    </tr>
+    <tr>
+      <td data-fr="Audits de sécurité" data-en="Security audits">Audits de sécurité</td>
+      <td data-fr="2 audits supplémentaires imposés" data-en="2 additional audits imposed">2 audits supplémentaires imposés</td>
+      <td>100k€</td>
+    </tr>
+    <tr>
+      <td><strong data-fr="Total" data-en="Total">Total</strong></td>
+      <td></td>
+      <td><strong>≈ 2,6 M€</strong></td>
+    </tr>
+  </table>
+  <p data-fr="Pire encore : un client historique a gelé son contrat le temps d'un audit complet. Alice a menacé de partir (« Je ne peux pas continuer à être le seul filet de sécurité de ce système »). Dave a accéléré sa retraite, laissant Bob seul sur l'infrastructure."
+     data-en="Worse still: a long-standing client froze its contract pending a full audit. Alice threatened to leave ('I can't keep being the only safety net for this system'). Dave accelerated his retirement, leaving Bob alone on the infrastructure."
+     >Pire encore : un client historique a gelé son contrat le temps d'un audit complet. Alice a menacé de partir (« Je ne peux pas continuer à être le seul filet de sécurité de ce système »). Dave a accéléré sa retraite, laissant Bob seul sur l'infrastructure.</p>
+
+  <h2 data-fr="Pourquoi cet incident était prévisible"
+      data-en="Why this incident was predictable"
+      >Pourquoi cet incident était prévisible</h2>
+  <p data-fr="<strong>Pas de redondance</strong> — 1 seule personne pouvait reconfigurer NexaCrypt, 1 seul serveur sans failover, sauvegardes locales sans site distant."
+     data-en="<strong>No redundancy</strong> — only 1 person could reconfigure NexaCrypt, 1 server with no failover, local backups with no offsite copy."
+     ><strong>Pas de redondance</strong> — 1 seule personne pouvait reconfigurer NexaCrypt, 1 seul serveur sans failover, sauvegardes locales sans site distant.</p>
+  <p data-fr="<strong>Pas de procédures testées</strong> — aucun test DRP depuis 2021, documentation obsolète (scripts datant de 2020)."
+     data-en="<strong>No tested procedures</strong> — no DRP test since 2021, outdated documentation (scripts dating from 2020)."
+     ><strong>Pas de procédures testées</strong> — aucun test DRP depuis 2021, documentation obsolète (scripts datant de 2020).</p>
+  <p data-fr="<strong>Pas de monitoring unifié</strong> — 5 outils différents sans vue d'ensemble, alertes désactivées."
+     data-en="<strong>No unified monitoring</strong> — 5 different tools with no consolidated view, alerts disabled."
+     ><strong>Pas de monitoring unifié</strong> — 5 outils différents sans vue d'ensemble, alertes désactivées.</p>
+  <p data-fr="<strong>Culture du « ça marche, ne touche pas »</strong> — aucune formation croisée, mots de passe root uniquement sur le poste de Bob."
+     data-en="<strong>'If it ain't broke, don't fix it' culture</strong> — no cross-training, root passwords stored only on Bob's machine."
+     ><strong>Culture du « ça marche, ne touche pas »</strong> — aucune formation croisée, mots de passe root uniquement sur le poste de Bob.</p>
+
+  <h2 data-fr="Le Bus Factor : le risque invisible"
+      data-en="The Bus Factor: the invisible risk"
+      >Le Bus Factor : le risque invisible</h2>
+  <p data-fr="Le Bus Factor mesure le nombre minimum de personnes dont la disparition soudaine mettrait un projet ou une entreprise en péril."
+     data-en="The Bus Factor measures the minimum number of people whose sudden absence would jeopardise a project or company."
+     >Le Bus Factor mesure le nombre minimum de personnes dont la disparition soudaine mettrait un projet ou une entreprise en péril.</p>
+  <ul>
+    <li data-fr="Bus Factor = 1 : risque maximal" data-en="Bus Factor = 1: maximum risk">Bus Factor = 1 : risque maximal</li>
+    <li data-fr="Bus Factor = 2 : risque moyen" data-en="Bus Factor = 2: medium risk">Bus Factor = 2 : risque moyen</li>
+    <li data-fr="Bus Factor ≥ 3 : risque faible" data-en="Bus Factor ≥ 3: low risk">Bus Factor ≥ 3 : risque faible</li>
+  </ul>
+  <p data-fr="Chez NexaCrypt ce soir-là : <strong>NexaCrypt → Alice DevSec → Bus Factor 1.</strong> <strong>Infrastructure → Bob SysAdmin → Bus Factor 1.</strong> Sur ses deux composants les plus critiques, l'entreprise avait un Bus Factor de 1."
+     data-en="At NexaCrypt that day: <strong>NexaCrypt module → Alice DevSec → Bus Factor 1.</strong> <strong>Infrastructure → Bob SysAdmin → Bus Factor 1.</strong> On its two most critical components, the company had a Bus Factor of 1."
+     >Chez NexaCrypt ce soir-là : <strong>NexaCrypt → Alice DevSec → Bus Factor 1.</strong> <strong>Infrastructure → Bob SysAdmin → Bus Factor 1.</strong> Sur ses deux composants les plus critiques, l'entreprise avait un Bus Factor de 1.</p>
+  <p data-fr="Le Bus Factor est dangereux pour trois raisons : il est imprévisible (un accident, une maladie, un départ peuvent survenir à tout moment) ; il est coûteux (pénalités, perte de clients, recrutement d'urgence à 1,5x le salaire) ; il est difficile à résoudre (former un backup prend 6 à 12 mois, documenter un système complexe prend des années)."
+     data-en="The Bus Factor is dangerous for three reasons: it is unpredictable (an accident, illness or resignation can happen at any time); it is costly (penalties, client loss, emergency hiring at 1.5x salary); it is hard to fix (training a backup takes 6 to 12 months, documenting a complex system takes years)."
+     >Le Bus Factor est dangereux pour trois raisons : il est imprévisible (un accident, une maladie, un départ peuvent survenir à tout moment) ; il est coûteux (pénalités, perte de clients, recrutement d'urgence à 1,5x le salaire) ; il est difficile à résoudre (former un backup prend 6 à 12 mois, documenter un système complexe prend des années).</p>
+
+  <h2 data-fr="Le cas Heartbleed : quand le Bus Factor frappe OpenSSL"
+      data-en="The Heartbleed case: when the Bus Factor hits OpenSSL"
+      >Le cas Heartbleed : quand le Bus Factor frappe OpenSSL</h2>
+  <p data-fr="Le 7 avril 2014, une vulnérabilité dans OpenSSL (bibliothèque utilisée par 66% des serveurs web) permet de voler des données en mémoire. Impact : 500 000 serveurs vulnérables, coût estimé entre 500M$ et 1Md$, durée de correction allant jusqu'à 2 ans pour certains systèmes."
+     data-en="On 7 April 2014, a vulnerability in OpenSSL (used by 66% of web servers) allowed in-memory data theft. Impact: 500,000 vulnerable servers, estimated cost between $500M and $1bn, with some systems taking up to 2 years to patch."
+     >Le 7 avril 2014, une vulnérabilité dans OpenSSL (bibliothèque utilisée par 66% des serveurs web) permet de voler des données en mémoire. Impact : 500 000 serveurs vulnérables, coût estimé entre 500M$ et 1Md$, durée de correction allant jusqu'à 2 ans pour certains systèmes.</p>
+  <p data-fr="Le lien avec le Bus Factor : OpenSSL était maintenu par une poignée de développeurs bénévoles (1 seul à temps plein en 2014), sans revue de code systématique. Un seul développeur a introduit le bug — personne ne l'a revu, et aucun backup ne savait comment le corriger rapidement."
+     data-en="The Bus Factor connection: OpenSSL was maintained by a handful of volunteer developers (only 1 full-time in 2014), with no systematic code review. A single developer introduced the bug — nobody reviewed it, and no backup knew how to fix it quickly."
+     >Le lien avec le Bus Factor : OpenSSL était maintenu par une poignée de développeurs bénévoles (1 seul à temps plein en 2014), sans revue de code systématique. Un seul développeur a introduit le bug — personne ne l'a revu, et aucun backup ne savait comment le corriger rapidement.</p>
+
+  <div class="highlight">
+    <span data-fr="NexaCrypt a frôlé la catastrophe le 15 janvier 2026. La prochaine panne pourrait être pire : si Alice part, NexaCrypt devient inutilisable (perte de 60% du CA) ; si Bob a un accident, l'infrastructure s'effondre pour plusieurs jours."
+          data-en="NexaCrypt came close to disaster on 15 January 2026. The next outage could be worse: if Alice leaves, NexaCrypt becomes unusable (loss of 60% of revenue); if Bob has an accident, the infrastructure collapses for several days."
+          >NexaCrypt a frôlé la catastrophe le 15 janvier 2026. La prochaine panne pourrait être pire : si Alice part, NexaCrypt devient inutilisable (perte de 60% du CA) ; si Bob a un accident, l'infrastructure s'effondre pour plusieurs jours.</span>
+  </div>
+
+  <h2 data-fr="Conclusion : et maintenant ?"
+      data-en="Conclusion: what now?">Conclusion : et maintenant ?</h2>
+  <p data-fr="Il faut agir vite, sur quatre fronts : cartographier les dépendances (qui sait quoi, quelles connaissances sont critiques) ; former des backups ; documenter les procédures critiques ; automatiser ce qui peut l'être (scripts de restauration, tests automatisés)."
+     data-en="Action is needed on four fronts: map dependencies (who knows what, which knowledge is critical); train backups; document critical procedures; automate what can be automated (restoration scripts, automated testing)."
+     >Il faut agir vite, sur quatre fronts : cartographier les dépendances (qui sait quoi, quelles connaissances sont critiques) ; former des backups ; documenter les procédures critiques ; automatiser ce qui peut l'être (scripts de restauration, tests automatisés).</p>
+
+  <h2 data-fr="L'IA comme accélérateur : pistes pour les prochains articles"
+      data-en="AI as an accelerator: leads for future articles"
+      >L'IA comme accélérateur : pistes pour les prochains articles</h2>
+  <p data-fr="L'IA peut accélérer cette démarche, mais ne la remplacera pas. Elle peut analyser des interviews pour détecter les SPOF, générer des matrices de risques à partir de données existantes, automatiser la documentation. Elle ne peut pas remplacer l'expertise humaine, ni prendre les décisions d'allocation budgétaire."
+     data-en="AI can accelerate this process, but will not replace it. It can analyse interviews to detect SPOFs, generate risk matrices from existing data, automate documentation. It cannot replace human expertise, or make budget allocation decisions."
+     >L'IA peut accélérer cette démarche, mais ne la remplacera pas. Elle peut analyser des interviews pour détecter les SPOF, générer des matrices de risques à partir de données existantes, automatiser la documentation. Elle ne peut pas remplacer l'expertise humaine, ni prendre les décisions d'allocation budgétaire.</p>
+  <p data-fr="Dans les prochains articles : comment cartographier la connaissance métier avec l'IA (et éviter un nouveau Heartbleed), puis un cas pratique de transformation d'interviews en cartographie de dépendances."
+     data-en="In the next articles: how to map business knowledge with AI (and avoid a new Heartbleed), then a practical case study turning interviews into a dependency map."
+     >Dans les prochains articles : comment cartographier la connaissance métier avec l'IA (et éviter un nouveau Heartbleed), puis un cas pratique de transformation d'interviews en cartographie de dépendances.</p>
+
+  <footer>
+    <span data-fr="Pierre Pistenon — Business Analyst Senior"
+          data-en="Pierre Pistenon — Senior Business Analyst"
+          >Pierre Pistenon — Business Analyst Senior</span>
+    <a href="index.html#articles"
+       data-fr="← Retour aux articles"
+       data-en="← Back to articles"
+       >← Retour aux articles</a>
+  </footer>
+
+</div><!-- /wrap -->
+
+<script>
+  // ── Lecture de la langue depuis localStorage ─────────────────────────
+  function applyLang(lang) {
+    document.documentElement.lang = lang;
+    document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+    const btn = document.querySelector(`.lang-btn[onclick="setLang('${lang}')"]`);
+    if (btn) btn.classList.add('active');
+
+    document.querySelectorAll('[data-fr]').forEach(el => {
+      const txt = el.getAttribute(`data-${lang}`);
+      if (!txt) return;
+      if (el.tagName === 'H1' || txt.includes('<')) {
+        el.innerHTML = txt;
+      } else {
+        el.textContent = txt;
+      }
+    });
+  }
+
+  function setLang(lang) {
+    localStorage.setItem('lang', lang);
+    applyLang(lang);
+  }
+
+  // Appliquer la langue enregistrée au chargement
+  document.addEventListener('DOMContentLoaded', () => {
+    const saved = localStorage.getItem('lang') || 'fr';
+    applyLang(saved);
+  });
+</script>
+</body>
+</html>

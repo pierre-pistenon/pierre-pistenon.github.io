@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cas B — Fiabilisation des données clients en migration CRM — Pierre Pistenon</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0D1117; --bg2: #161B22; --bg3: #1C2229; --border: #30363D;
+      --text: #E6EDF3; --muted: #8B949E; --accent: #4FC3F7; --accent2: #7EE787;
+      --warn: #F0B649; --danger: #F85149;
+    }
+    body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; font-size: 16px; line-height: 1.75; }
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(13,17,23,0.92); backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 1.5rem; height: 52px;
+    }
+    .nav-back {
+      display: inline-flex; align-items: center; gap: 6px;
+      color: var(--accent); text-decoration: none;
+      font-family: 'JetBrains Mono', monospace; font-size: 0.82rem;
+    }
+    .lang-toggle { display: flex; gap: 4px; }
+    .lang-btn {
+      font-family: 'JetBrains Mono', monospace; font-size: 0.75rem;
+      background: transparent; border: 1px solid var(--border);
+      color: var(--muted); padding: 0.2rem 0.55rem; border-radius: 4px;
+      cursor: pointer; transition: all 0.15s;
+    }
+    .lang-btn.active { background: var(--accent); color: var(--bg); font-weight: 500; border-color: var(--accent); }
+    .wrap { max-width: 760px; margin: 0 auto; padding: 52px 1.5rem 100px; }
+    .eyebrow {
+      font-family: 'JetBrains Mono', monospace; font-size: 0.78rem;
+      color: var(--accent); letter-spacing: 0.08em; text-transform: uppercase;
+      margin: 2.5rem 0 0.75rem;
+    }
+    h1 { font-size: clamp(1.6rem, 4vw, 2.3rem); font-weight: 600; margin-bottom: 1rem; }
+    .subtitle { color: var(--muted); font-size: 1.02rem; margin-bottom: 2.5rem; max-width: 56ch; }
+    h2 {
+      font-size: 1.15rem; font-weight: 600; margin-top: 3rem; margin-bottom: 1rem;
+      padding-bottom: 0.6rem; border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; gap: 0.6rem;
+    }
+    h2 .num { font-family: 'JetBrains Mono', monospace; color: var(--accent); font-size: 0.85rem; font-weight: 500; }
+    h3 { font-size: 0.98rem; font-weight: 600; margin-top: 1.6rem; margin-bottom: 0.6rem; color: var(--text); }
+    p { color: var(--muted); margin-bottom: 1rem; font-size: 0.95rem; }
+    strong { color: var(--text); font-weight: 600; }
+    ul, ol { margin: 0 0 1.2rem 1.3rem; color: var(--muted); font-size: 0.95rem; }
+    li { margin-bottom: 0.45rem; }
+    li::marker { color: var(--accent); }
+    code {
+      font-family: 'JetBrains Mono', monospace; font-size: 0.82rem;
+      background: var(--bg3); padding: 0.1rem 0.4rem; border-radius: 4px; color: var(--accent2);
+    }
+    .tag-row { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.2rem; }
+    .tag {
+      font-family: 'JetBrains Mono', monospace; font-size: 0.74rem;
+      border: 1px solid var(--border); border-radius: 20px; padding: 0.25rem 0.7rem; color: var(--muted);
+    }
+    .callout {
+      background: var(--bg2); border: 1px solid var(--border); border-left: 3px solid var(--accent);
+      border-radius: 8px; padding: 1.1rem 1.3rem; margin: 1.5rem 0; font-size: 0.9rem; color: var(--muted);
+    }
+    .callout strong { color: var(--accent); }
+    .callout.warn { border-left-color: var(--warn); }
+    .callout.warn strong { color: var(--warn); }
+    table { width: 100%; border-collapse: collapse; margin: 1rem 0 1.8rem; font-size: 0.85rem; }
+    th, td { text-align: left; padding: 0.55rem 0.7rem; border-bottom: 1px solid var(--border); }
+    th { font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; color: var(--accent); text-transform: uppercase; letter-spacing: 0.03em; }
+    td { color: var(--muted); }
+    td strong { color: var(--text); }
+    pre {
+      background: var(--bg3); border: 1px solid var(--border); border-radius: 8px;
+      padding: 1rem; overflow-x: auto; margin: 1rem 0;
+      font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; color: var(--accent2); line-height: 1.6;
+      white-space: pre;
+    }
+    .divider-label {
+      display: flex; align-items: center; gap: 1rem; margin: 3.5rem 0 1.5rem;
+      font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; color: var(--warn);
+      letter-spacing: 0.08em; text-transform: uppercase;
+    }
+    .divider-label::before, .divider-label::after { content: ""; flex: 1; height: 1px; background: var(--border); }
+    .quote {
+      font-style: italic; color: var(--text); border-left: 2px solid var(--accent2);
+      padding-left: 1rem; margin: 1.2rem 0; font-size: 0.92rem;
+    }
+    .source-note { font-size: 0.78rem; color: #5b636c; margin-top: -0.4rem; margin-bottom: 1.4rem; }
+    /* Demo */
+    .demo-toggle {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--bg2); border: 1px solid var(--border); border-radius: 8px;
+      padding: 0.6rem 1rem; cursor: pointer; font-size: 0.85rem; color: var(--accent);
+      font-family: 'JetBrains Mono', monospace; user-select: none; margin-bottom: 1rem;
+      transition: border-color 0.2s;
+    }
+    .demo-toggle:hover { border-color: var(--accent); }
+    .demo-records { display: none; flex-direction: column; gap: 1rem; }
+    .demo-records.visible { display: flex; }
+    .record-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+    .record-header {
+      display: grid; grid-template-columns: 2fr 2fr 1.5fr 1fr 1.2fr;
+      gap: 0.5rem; padding: 0.65rem 1rem;
+      font-family: 'JetBrains Mono', monospace; font-size: 0.76rem;
+      border-bottom: 1px solid var(--border); background: var(--bg3);
+    }
+    .record-header span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .field-label { color: #3d4752; font-size: 0.65rem; display: block; margin-bottom: 1px; }
+    .field-val { color: var(--text); }
+    .field-val.err { color: var(--danger); }
+    .badges { display: flex; flex-wrap: wrap; gap: 0.35rem; padding: 0.5rem 1rem; border-bottom: 1px solid var(--border); }
+    .badge {
+      font-family: 'JetBrains Mono', monospace; font-size: 0.68rem;
+      padding: 0.15rem 0.5rem; border-radius: 4px; font-weight: 500;
+    }
+    .badge.err { background: rgba(248,81,73,0.12); color: var(--danger); border: 1px solid rgba(248,81,73,0.3); }
+    .badge.ok  { background: rgba(126,231,135,0.08); color: var(--accent2); border: 1px solid rgba(126,231,135,0.2); }
+    .ai-output { padding: 0.75rem 1rem; font-style: italic; font-size: 0.85rem; color: var(--text); line-height: 1.65; }
+    .ai-output::before { content: "IA \2192  "; font-style: normal; font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; color: var(--accent); }
+    :lang(en) .ai-output::before { content: "AI \2192  "; }
+    .score-bar { display: flex; align-items: center; gap: 0.5rem; padding: 0 1rem 0.75rem; }
+    .score-label { font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; color: var(--muted); }
+    .score-track { flex: 1; height: 4px; background: var(--bg3); border-radius: 2px; overflow: hidden; }
+    .score-fill { height: 100%; border-radius: 2px; }
+    .score-val { font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; font-weight: 600; }
+    .back {
+      display: inline-flex; align-items: center; gap: 6px;
+      color: var(--accent); text-decoration: none;
+      font-family: 'JetBrains Mono', monospace; font-size: 0.82rem;
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html#cas" class="nav-back"
+     data-fr="&#8592; Retour au site"
+     data-en="&#8592; Back to site">&#8592; Retour au site</a>
+  <div class="lang-toggle">
+    <button class="lang-btn active" data-lang="fr" onclick="setLang('fr')">FR</button>
+    <button class="lang-btn" data-lang="en" onclick="setLang('en')">EN</button>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <p class="eyebrow"
+     data-fr="&#201;tude de cas &#8212; Cas B"
+     data-en="Case Study &#8212; Case B">&#201;tude de cas &#8212; Cas B</p>
+
+  <h1 data-fr="Fiabilisation des donn&#233;es clients lors d'une migration CRM"
+      data-en="Customer Data Quality in a CRM Migration"
+      >Fiabilisation des donn&#233;es clients lors d'une migration CRM</h1>
+
+  <p class="subtitle"
+     data-fr="R&#233;conciliation de sources h&#233;t&#233;rog&#232;nes et architecture hybride r&#232;gles m&#233;tier + IA g&#233;n&#233;rative"
+     data-en="Reconciling heterogeneous sources with a hybrid business rules + generative AI architecture"
+     >R&#233;conciliation de sources h&#233;t&#233;rog&#232;nes et architecture hybride r&#232;gles m&#233;tier + IA g&#233;n&#233;rative</p>
+
+  <div class="tag-row">
+    <span class="tag" data-fr="Data Quality"       data-en="Data Quality">Data Quality</span>
+    <span class="tag" data-fr="Migration CRM"      data-en="CRM Migration">Migration CRM</span>
+    <span class="tag" data-fr="R&#232;gles m&#233;tier"  data-en="Business rules">R&#232;gles m&#233;tier</span>
+    <span class="tag" data-fr="Gouvernance des donn&#233;es" data-en="Data governance">Gouvernance des donn&#233;es</span>
+    <span class="tag" data-fr="Make.com"            data-en="Make.com">Make.com</span>
+    <span class="tag" data-fr="IA g&#233;n&#233;rative"   data-en="Generative AI">IA g&#233;n&#233;rative</span>
+  </div>
+
+  <div class="callout">
+    <span data-fr="<strong>Note de lecture.</strong> Ce cas d&#233;crit un sc&#233;nario repr&#233;sentatif de migration CRM en entreprise. Il identifie des exemples d'usage de l'IA g&#233;n&#233;rative sans pr&#233;tendre reconstituer un projet client r&#233;el. Un d&#233;monstrateur concret (Make.com, donn&#233;es fictives) illustre l'un de ces usages."
+          data-en="<strong>Reading note.</strong> This case describes a representative CRM migration scenario in an enterprise context. It identifies examples of generative AI usage without claiming to reconstruct a real client project. A concrete demonstrator (Make.com, fictitious data) illustrates one of these use cases."
+          ><strong>Note de lecture.</strong> Ce cas d&#233;crit un sc&#233;nario repr&#233;sentatif de migration CRM en entreprise. Il identifie des exemples d'usage de l'IA g&#233;n&#233;rative sans pr&#233;tendre reconstituer un projet client r&#233;el. Un d&#233;monstrateur concret (Make.com, donn&#233;es fictives) illustre l'un de ces usages.</span>
+  </div>
+
+  <h2>
+    <span class="num">01</span>
+    <span data-fr="Sc&#233;nario repr&#233;sentatif : migration CRM et r&#233;conciliation multi-sources"
+          data-en="Representative scenario: CRM migration and multi-source reconciliation"
+          >Sc&#233;nario repr&#233;sentatif : migration CRM et r&#233;conciliation multi-sources</span>
+  </h2>
+
+  <p data-fr="Dans un contexte de migration vers un nouveau syst&#232;me CRM cible, le changement d'outil s'accompagne d'un enjeu m&#233;tier central : <strong>faire du CRM le syst&#232;me de r&#233;f&#233;rence pour les pr&#233;visions commerciales</strong>. Les commerciaux y saisiront leurs opportunit&#233;s, les responsables y suivront les forecasts par domaine et par division. La fiabilit&#233; des donn&#233;es de d&#233;part est donc critique &#8212; un compte mal qualifi&#233; ou manquant fausse imm&#233;diatement les projections."
+     data-en="In a CRM migration context, the tool change comes with a core business objective: <strong>making the CRM the reference system for commercial forecasting</strong>. Sales reps will enter their opportunities there; managers will track forecasts by domain and division. The reliability of the initial data is therefore critical &#8212; a mis-qualified or missing account immediately distorts projections."
+     >Dans un contexte de migration vers un nouveau syst&#232;me CRM cible, le changement d'outil s'accompagne d'un enjeu m&#233;tier central : <strong>faire du CRM le syst&#232;me de r&#233;f&#233;rence pour les pr&#233;visions commerciales</strong>. Les commerciaux y saisiront leurs opportunit&#233;s, les responsables y suivront les forecasts par domaine et par division. La fiabilit&#233; des donn&#233;es de d&#233;part est donc critique &#8212; un compte mal qualifi&#233; ou manquant fausse imm&#233;diatement les projections.</p>
+
+  <p data-fr="L'entreprise est organis&#233;e en deux divisions commerciales aux logiques op&#233;rationnelles diff&#233;rentes. La <strong>Division 1</strong> est une force de vente directe multi-pays, dont les pr&#233;visions doivent &#234;tre pilot&#233;es dans le nouveau CRM d&#232;s la bascule. La <strong>Division 2</strong> est g&#233;r&#233;e via des outils s&#233;par&#233;s (CRM legacy et outil de forecast d&#233;di&#233;s) et migre dans un second temps."
+     data-en="The company is organised into two commercial divisions with different operational logics. <strong>Division 1</strong> is a multi-country direct sales force whose forecasts must be managed in the new CRM from day one. <strong>Division 2</strong> is managed via separate tools (a dedicated legacy CRM and forecast tool) and migrates in a second phase."
+     >L'entreprise est organis&#233;e en deux divisions commerciales aux logiques op&#233;rationnelles diff&#233;rentes. La <strong>Division 1</strong> est une force de vente directe multi-pays, dont les pr&#233;visions doivent &#234;tre pilot&#233;es dans le nouveau CRM d&#232;s la bascule. La <strong>Division 2</strong> est g&#233;r&#233;e via des outils s&#233;par&#233;s (CRM legacy et outil de forecast d&#233;di&#233;s) et migre dans un second temps.</p>
+
+  <p data-fr="Chaque division op&#232;re sur plusieurs <strong>domaines</strong> &#8212; c'est-&#224;-dire des sites de production ou des zones commerciales, qui constituent l'unit&#233; d'organisation de base dans les ERP : chaque client y est r&#233;f&#233;renc&#233;, factur&#233; et suivi ind&#233;pendamment. Un m&#234;me client final peut ainsi exister sous plusieurs identifiants, un par domaine, ce qui est l'une des causes principales de fragmentation des donn&#233;es."
+     data-en="Each division operates across several <strong>domains</strong> &#8212; meaning production sites or commercial zones that form the basic organisational unit in the ERP systems: each client is referenced, billed and tracked independently within a domain. The same end client may therefore exist under several identifiers, one per domain, which is one of the main causes of data fragmentation."
+     >Chaque division op&#232;re sur plusieurs <strong>domaines</strong> &#8212; c'est-&#224;-dire des sites de production ou des zones commerciales, qui constituent l'unit&#233; d'organisation de base dans les ERP : chaque client y est r&#233;f&#233;renc&#233;, factur&#233; et suivi ind&#233;pendamment. Un m&#234;me client final peut ainsi exister sous plusieurs identifiants, un par domaine, ce qui est l'une des causes principales de fragmentation des donn&#233;es.</p>
+
+  <p data-fr="Les donn&#233;es proviennent de quatre sources h&#233;t&#233;rog&#232;nes &#8212; CRM legacy, ERP de production (un par domaine), Data Warehouse de consolidation, fichiers locaux &#8212; et g&#233;n&#232;rent des incoh&#233;rences structurelles :"
+     data-en="Data comes from four heterogeneous sources &#8212; legacy CRM, production ERP (one per domain), consolidation Data Warehouse, local files &#8212; generating structural inconsistencies:"
+     >Les donn&#233;es proviennent de quatre sources h&#233;t&#233;rog&#232;nes &#8212; CRM legacy, ERP de production (un par domaine), Data Warehouse de consolidation, fichiers locaux &#8212; et g&#233;n&#232;rent des incoh&#233;rences structurelles :</p>
+
+  <ul>
+    <li data-fr="Un m&#234;me client existe sous plusieurs identifiants selon le domaine ou l'ERP ;"
+        data-en="The same client exists under multiple identifiers depending on the domain or ERP ;"
+        >Un m&#234;me client existe sous plusieurs identifiants selon le domaine ou l'ERP ;</li>
+    <li data-fr="Des historiques de facturation tronqu&#233;s ou incoh&#233;rents entre sources ;"
+        data-en="Billing histories truncated or inconsistent across sources ;"
+        >Des historiques de facturation tronqu&#233;s ou incoh&#233;rents entre sources ;</li>
+    <li data-fr="Des statuts contradictoires (prospect / client actif / inactif) ;"
+        data-en="Contradictory statuses (prospect / active client / inactive) ;"
+        >Des statuts contradictoires (prospect / client actif / inactif) ;</li>
+    <li data-fr="Une granularit&#233; de compte incompatible avec un pilotage de forecast."
+        data-en="Account granularity incompatible with forecast management."
+        >Une granularit&#233; de compte incompatible avec un pilotage de forecast.</li>
+  </ul>
+
+  <p data-fr="L'enjeu d&#233;passe le simple nettoyage : il s'agit de concevoir une m&#233;thodologie de r&#233;cup&#233;ration qui garantisse exhaustivit&#233;, coh&#233;rence et exploitabilit&#233; durable."
+     data-en="The challenge goes beyond simple cleansing: it is about designing a recovery methodology that guarantees completeness, consistency and lasting usability."
+     >L'enjeu d&#233;passe le simple nettoyage : il s'agit de concevoir une m&#233;thodologie de r&#233;cup&#233;ration qui garantisse exhaustivit&#233;, coh&#233;rence et exploitabilit&#233; durable.</p>
+
+  <h3 data-fr="R&#232;gles m&#233;tier structurantes"
+      data-en="Structuring business rules"
+      >R&#232;gles m&#233;tier structurantes</h3>
+  <ul>
+    <li data-fr="<strong>Priorisation Division 1 (P1) / Division 2 (P2)</strong> : la Division 1, premi&#232;re utilisatrice du module de pr&#233;vision, est trait&#233;e en priorit&#233; ;"
+        data-en="<strong>Division 1 (P1) / Division 2 (P2) prioritisation</strong>: Division 1, first user of the forecast module, is processed first ;"
+        ><strong>Priorisation Division 1 (P1) / Division 2 (P2)</strong> : la Division 1, premi&#232;re utilisatrice du module de pr&#233;vision, est trait&#233;e en priorit&#233; ;</li>
+    <li data-fr="<strong>Profondeur de facturation limit&#233;e &#224; 5 ans</strong> : seuls les clients ayant une facturation dans cette fen&#234;tre glissante sont &#233;ligibles &#224; la cr&#233;ation d'une fiche individuelle ;"
+        data-en="<strong>Billing depth limited to 5 years</strong>: only clients with invoicing within this rolling window are eligible for individual account creation ;"
+        ><strong>Profondeur de facturation limit&#233;e &#224; 5 ans</strong> : seuls les clients ayant une facturation dans cette fen&#234;tre glissante sont &#233;ligibles &#224; la cr&#233;ation d'une fiche individuelle ;</li>
+    <li data-fr="<strong>Regroupement des petits comptes via seuil de revenu par domaine</strong> : les clients en dessous du seuil rejoignent un <strong>compte de regroupement</strong>, ce qui pr&#233;serve l'ergonomie du CRM pour les commerciaux ; la r&#233;f&#233;rence ERP d'origine (identifiant technique dans l'ERP source, conserv&#233; pour la tra&#231;abilit&#233; financi&#232;re) reste archiv&#233;e pour permettre un rapprochement ult&#233;rieur ;"
+        data-en="<strong>Small account pooling via per-domain revenue threshold</strong>: clients below the threshold join a <strong>pooled account</strong>, preserving CRM usability for sales reps; the source ERP reference (technical identifier in the source ERP, retained for financial traceability) is archived for future reconciliation ;"
+        ><strong>Regroupement des petits comptes via seuil de revenu par domaine</strong> : les clients en dessous du seuil rejoignent un <strong>compte de regroupement</strong>, ce qui pr&#233;serve l'ergonomie du CRM pour les commerciaux ; la r&#233;f&#233;rence ERP d'origine (identifiant technique dans l'ERP source, conserv&#233; pour la tra&#231;abilit&#233; financi&#232;re) reste archiv&#233;e pour permettre un rapprochement ult&#233;rieur ;</li>
+    <li data-fr="<strong>Validation it&#233;rative par les commerciaux</strong> sur les comptes ambigus &#8212; une &#233;tape de gouvernance humaine d&#233;lib&#233;r&#233;ment int&#233;gr&#233;e au pipeline."
+        data-en="<strong>Iterative validation by sales reps</strong> on ambiguous accounts &#8212; a human governance step deliberately built into the pipeline."
+        ><strong>Validation it&#233;rative par les commerciaux</strong> sur les comptes ambigus &#8212; une &#233;tape de gouvernance humaine d&#233;lib&#233;r&#233;ment int&#233;gr&#233;e au pipeline.</li>
+  </ul>
+
+  <h2>
+    <span class="num">02</span>
+    <span data-fr="Apports de l'IA g&#233;n&#233;rative"
+          data-en="Contributions of generative AI"
+          >Apports de l'IA g&#233;n&#233;rative</span>
+  </h2>
+
+  <p data-fr="L'IA n'intervient pas en d&#233;tection primaire &#8212; trop instable et non auditable &#8212; mais en aval des r&#232;gles, l&#224; o&#249; elle cr&#233;e le plus de valeur :"
+     data-en="AI does not operate at the primary detection stage &#8212; too unstable and non-auditable &#8212; but downstream of the rules, where it creates the most value:"
+     >L'IA n'intervient pas en d&#233;tection primaire &#8212; trop instable et non auditable &#8212; mais en aval des r&#232;gles, l&#224; o&#249; elle cr&#233;e le plus de valeur :</p>
+
+  <ol>
+    <li data-fr="<strong>Aide &#224; la validation commerciale</strong> (illustr&#233; ci-dessous) : pour chaque anomalie d&#233;tect&#233;e par les r&#232;gles, un mod&#232;le g&#233;n&#232;re une explication en langage m&#233;tier &#8212; ce qui permet aux commerciaux de valider ou corriger les comptes sans devoir interpr&#233;ter des codes techniques."
+        data-en="<strong>Sales validation assistance</strong> (illustrated below): for each anomaly detected by the rules, a model generates a plain-language business explanation &#8212; allowing sales reps to validate or correct accounts without having to interpret technical error codes."
+        ><strong>Aide &#224; la validation commerciale</strong> (illustr&#233; ci-dessous) : pour chaque anomalie d&#233;tect&#233;e par les r&#232;gles, un mod&#232;le g&#233;n&#232;re une explication en langage m&#233;tier &#8212; ce qui permet aux commerciaux de valider ou corriger les comptes sans devoir interpr&#233;ter des codes techniques.</li>
+    <li data-fr="<strong>D&#233;tection assist&#233;e de doublons complexes</strong> : apr&#232;s rapprochement exact (m&#234;me identifiant, m&#234;me adresse normalis&#233;e), un mod&#232;le de similarit&#233; propose des candidats de fusion que les r&#232;gles d&#233;terministes seules auraient manqu&#233;s &#8212; variations de d&#233;nomination sociale, orthographe, d&#233;coupage g&#233;ographique."
+        data-en="<strong>Assisted detection of complex duplicates</strong>: after exact matching (same identifier, same normalised address), a similarity model proposes merge candidates that deterministic rules alone would have missed &#8212; variations in company name, spelling, geographical boundaries."
+        ><strong>D&#233;tection assist&#233;e de doublons complexes</strong> : apr&#232;s rapprochement exact (m&#234;me identifiant, m&#234;me adresse normalis&#233;e), un mod&#232;le de similarit&#233; propose des candidats de fusion que les r&#232;gles d&#233;terministes seules auraient manqu&#233;s &#8212; variations de d&#233;nomination sociale, orthographe, d&#233;coupage g&#233;ographique.</li>
+    <li data-fr="<strong>Supervision continue en production</strong> : les m&#234;mes r&#232;gles de qualit&#233;, orchestr&#233;es p&#233;riodiquement sur les nouvelles entr&#233;es du CRM, permettent un scoring automatique et des alertes contextualis&#233;es &#8212; transformant le dispositif de migration en un outil durable de gouvernance des donn&#233;es."
+        data-en="<strong>Continuous production monitoring</strong>: the same quality rules, run periodically on new CRM entries, enable automatic scoring and contextualised alerts &#8212; turning the migration setup into a lasting data governance tool."
+        ><strong>Supervision continue en production</strong> : les m&#234;mes r&#232;gles de qualit&#233;, orchestr&#233;es p&#233;riodiquement sur les nouvelles entr&#233;es du CRM, permettent un scoring automatique et des alertes contextualis&#233;es &#8212; transformant le dispositif de migration en un outil durable de gouvernance des donn&#233;es.</li>
+  </ol>
+
+  <div class="callout">
+    <span data-fr="<strong>Gouvernance dans la dur&#233;e.</strong> Les r&#232;gles d&#233;finies pendant la migration ne s'arr&#234;tent pas au Go Live. Embarqu&#233;es dans un outil de supervision l&#233;ger (Make.com, n8n ou natif CRM), elles g&#233;n&#232;rent en continu des scores de qualit&#233; sur chaque fiche cr&#233;&#233;e ou modifi&#233;e, et d&#233;clenchent des alertes cibl&#233;es quand un champ critique est invalide ou incoh&#233;rent &#8212; sans effort de configuration suppl&#233;mentaire."
+          data-en="<strong>Long-term governance.</strong> The rules defined during the migration do not stop at Go Live. Embedded in a lightweight monitoring tool (Make.com, n8n or native CRM), they continuously generate quality scores on every created or modified record, and trigger targeted alerts when a critical field is invalid or inconsistent &#8212; with no additional configuration effort."
+          ><strong>Gouvernance dans la dur&#233;e.</strong> Les r&#232;gles d&#233;finies pendant la migration ne s'arr&#234;tent pas au Go Live. Embarqu&#233;es dans un outil de supervision l&#233;ger (Make.com, n8n ou natif CRM), elles g&#233;n&#232;rent en continu des scores de qualit&#233; sur chaque fiche cr&#233;&#233;e ou modifi&#233;e, et d&#233;clenchent des alertes cibl&#233;es quand un champ critique est invalide ou incoh&#233;rent &#8212; sans effort de configuration suppl&#233;mentaire.</span>
+  </div>
+
+  <div class="divider-label">
+    <span data-fr="D&#233;monstration &#8212; aide &#224; la validation par IA"
+          data-en="Demonstration &#8212; AI-assisted validation"
+          >D&#233;monstration &#8212; aide &#224; la validation par IA</span>
+  </div>
+
+  <h2>
+    <span class="num">03</span>
+    <span data-fr="Pipeline Make.com &#8212; donn&#233;es fictives"
+          data-en="Make.com pipeline &#8212; fictitious data"
+          >Pipeline Make.com &#8212; donn&#233;es fictives</span>
+  </h2>
+
+  <p data-fr="Pour concr&#233;tiser l'usage n&#176;1 &#8212; l'aide &#224; la validation commerciale &#8212; voici un pipeline personnel construit sur Make.com, sur un jeu de donn&#233;es fictif. Il ne reconstitue pas le sc&#233;nario d&#233;crit ci-dessus, mais en applique les m&#234;mes principes de gouvernance &#224; une stack moderne et accessible."
+     data-en="To illustrate use case #1 &#8212; sales validation assistance &#8212; here is a personal pipeline built on Make.com using a fictitious dataset. It does not reconstruct the scenario described above, but applies the same governance principles to a modern, accessible stack."
+     >Pour concr&#233;tiser l'usage n&#176;1 &#8212; l'aide &#224; la validation commerciale &#8212; voici un pipeline personnel construit sur Make.com, sur un jeu de donn&#233;es fictif. Il ne reconstitue pas le sc&#233;nario d&#233;crit ci-dessus, mais en applique les m&#234;mes principes de gouvernance &#224; une stack moderne et accessible.</p>
+
+  <h3 data-fr="Architecture du pipeline" data-en="Pipeline architecture">Architecture du pipeline</h3>
+  <pre data-fr="Source : Google Sheets (donn&#233;es fictives)
+   &#8594; Make.com &#8212; orchestration
+   &#8594; R&#232;gles m&#233;tier d&#233;terministes
+        email : manquant / format invalide / double arobase
+        t&#233;l&#233;phone : manquant / non num&#233;rique / trop court
+        pays : manquant / code non reconnu
+        statut : valeur hors liste autoris&#233;e
+   &#8594; Scoring qualit&#233; (0 &#8594; 100)
+   &#8594; IA g&#233;n&#233;rative
+        entr&#233;e : champs bruts + codes d'erreur d&#233;tect&#233;s
+        sortie : diagnostic en langage m&#233;tier (1 paragraphe, &#8804; 2 phrases)
+   &#8594; Rapport de supervision consolid&#233;"
+       data-en="Source: Google Sheets (fictitious data)
+   &#8594; Make.com &#8212; orchestration
+   &#8594; Deterministic business rules
+        email: missing / invalid format / double at-sign
+        phone: missing / non-numeric / too short
+        country: missing / unrecognised code
+        status: value not in allowed list
+   &#8594; Quality score (0 &#8594; 100)
+   &#8594; Generative AI
+        input: raw fields + detected error codes
+        output: business-language diagnosis (1 paragraph, &#8804; 2 sentences)
+   &#8594; Consolidated supervision report"
+       >Source : Google Sheets (donn&#233;es fictives)
+   &#8594; Make.com &#8212; orchestration
+   &#8594; R&#232;gles m&#233;tier d&#233;terministes
+        email : manquant / format invalide / double arobase
+        t&#233;l&#233;phone : manquant / non num&#233;rique / trop court
+        pays : manquant / code non reconnu
+        statut : valeur hors liste autoris&#233;e
+   &#8594; Scoring qualit&#233; (0 &#8594; 100)
+   &#8594; IA g&#233;n&#233;rative
+        entr&#233;e : champs bruts + codes d'erreur d&#233;tect&#233;s
+        sortie : diagnostic en langage m&#233;tier (1 paragraphe, &#8804; 2 phrases)
+   &#8594; Rapport de supervision consolid&#233;</pre>
+
+  <h3 data-fr="Pourquoi les r&#232;gles passent avant l'IA"
+      data-en="Why rules come before AI"
+      >Pourquoi les r&#232;gles passent avant l'IA</h3>
+  <p data-fr="Une approche &#171;&#160;tout IA&#160;&#187; test&#233;e en amont se montre instable : anomalies ignor&#233;es, variabilit&#233; de r&#233;ponse d'un appel &#224; l'autre, impossibilit&#233; d'auditer les d&#233;cisions. La d&#233;tection est donc confi&#233;e &#224; des r&#232;gles d&#233;terministes et reproductibles ; l'IA n'intervient qu'<strong>apr&#232;s</strong>, pour transformer un code technique en explication lisible par un commercial &#8212; jamais pour d&#233;cider seule ce qui constitue une anomalie."
+     data-en="An &#171;AI-only&#187; approach tested upstream proves unstable: anomalies ignored, variable responses from one call to the next, no way to audit decisions. Detection is therefore entrusted to deterministic, reproducible rules; AI only intervenes <strong>after</strong>, to turn a technical code into an explanation readable by a sales rep &#8212; never to decide alone what constitutes an anomaly."
+     >Une approche &#171;&#160;tout IA&#160;&#187; test&#233;e en amont se montre instable : anomalies ignor&#233;es, variabilit&#233; de r&#233;ponse d'un appel &#224; l'autre, impossibilit&#233; d'auditer les d&#233;cisions. La d&#233;tection est donc confi&#233;e &#224; des r&#232;gles d&#233;terministes et reproductibles ; l'IA n'intervient qu'<strong>apr&#232;s</strong>, pour transformer un code technique en explication lisible par un commercial &#8212; jamais pour d&#233;cider seule ce qui constitue une anomalie.</p>
+
+  <h3 data-fr="Sorties g&#233;n&#233;r&#233;es &#8212; exemples sur donn&#233;es fictives"
+      data-en="Generated outputs &#8212; examples on fictitious data"
+      >Sorties g&#233;n&#233;r&#233;es &#8212; exemples sur donn&#233;es fictives</h3>
+  <p data-fr="Quatre enregistrements fictifs trait&#233;s par le pipeline, avec les erreurs d&#233;tect&#233;es par les r&#232;gles et le diagnostic g&#233;n&#233;r&#233; par le mod&#232;le :"
+     data-en="Four fictitious records processed by the pipeline, showing errors detected by the rules and the model-generated diagnosis:"
+     >Quatre enregistrements fictifs trait&#233;s par le pipeline, avec les erreurs d&#233;tect&#233;es par les r&#232;gles et le diagnostic g&#233;n&#233;r&#233; par le mod&#232;le :</p>
+
+  <div class="demo-toggle" id="toggleBtn" onclick="toggleDemo()">&#9654;&#160;Afficher les 4 enregistrements trait&#233;s</div>
+
+  <div class="demo-records" id="demoRecords">
+
+    <!-- Record 1 -->
+    <div class="record-card">
+      <div class="record-header">
+        <span>
+          <span class="field-label" data-fr="NOM" data-en="NAME">NOM</span>
+          <span class="field-val">Dupont Industries</span>
+        </span>
+        <span>
+          <span class="field-label" data-fr="EMAIL" data-en="EMAIL">EMAIL</span>
+          <span class="field-val err">j.dupont@@dupont.fr</span>
+        </span>
+        <span>
+          <span class="field-label" data-fr="T&#201;L&#201;PHONE" data-en="PHONE">T&#201;L&#201;PHONE</span>
+          <span class="field-val">+33 6 12 34 56 78</span>
+        </span>
+        <span>
+          <span class="field-label" data-fr="PAYS" data-en="COUNTRY">PAYS</span>
+          <span class="field-val">FR</span>
+        </span>
+        <span>
+          <span class="field-label" data-fr="STATUT" data-en="STATUS">STATUT</span>
+          <span class="field-val" data-fr="Client" data-en="Client">Client</span>
+        </span>
+      </div>
+      <div class="badges">
+        <span class="badge err" data-fr="EMAIL_INVALID &#8212; double @" data-en="EMAIL_INVALID &#8212; double @">EMAIL_INVALID &#8212; double @</span>
+        <span class="badge ok">PHONE_OK</span>
+        <span class="badge ok">COUNTRY_OK</span>
+        <span class="badge ok">STATUS_OK</span>
+      </div>
+      <div class="ai-output"
+           data-fr="L'adresse email contient un double arobase, signe probable d'une erreur de copier-coller ou d'une saisie manuelle non contr&#244;l&#233;e. Risque : toute communication automatis&#233;e vers ce contact &#233;chouera silencieusement, faussant les statistiques d'engagement des campagnes."
+           data-en="The email address contains a double at-sign, likely the result of a copy-paste error or unvalidated manual entry. Risk: all automated communications to this contact will fail silently, distorting campaign engagement statistics."
+           >L'adresse email contient un double arobase, signe probable d'une erreur de copier-coller ou d'une saisie manuelle non contr&#244;l&#233;e. Risque : toute communication automatis&#233;e vers ce contact &#233;chouera silencieusement, faussant les statistiques d'engagement des campagnes.</div>
+      <div class="score-bar">
+        <span class="score-label" data-fr="Score qualit&#233;" data-en="Quality score">Score qualit&#233;</span>
+        <div class="score-track"><div class="score-fill" style="width:75%;background:var(--warn);"></div></div>
+        <span class="score-val" style="color:var(--warn);">75 / 100</span>
+      </div>
+    </div>
+
+    <!-- Record 2 -->
+    <div class="record-card">
+      <div class="record-header">
+        <span>
+          <span class="field-label" data-fr="NOM" data-en="NAME">NOM</span>
+          <span class="field-val">Garnier SAS</span>
+        </span>
+        <span>
+          <span class="field-label" data-fr="EMAIL" data-en="EMAIL">EMAIL</span>
+          <span class="field-val err">contact</span>
+        </span>
+        <span>
+          <span class="field-label" data-fr="T&#201;L&#201;PHONE" data-en="PHONE">T&#201;L&#201;PHONE</span>
+          <span class="field-val err">0614</span>
+        </span>
+        <span>
+          <span class="field-label" data-fr="PAYS" data-en="COUNTRY">PAYS</span>
+          <span class="field-val err">FRNCE</span>
+        </span>
+        <span>
+          <span class="field-label" data-fr="STATUT" data-en="STATUS">STATUT</span>
+          <span class="field-val" data-fr="Prospect" data-en="Prospect">Prospect</span>
+        </span>
+      </div>
+      <div class="badges">
+        <span class="badge err" data-fr="EMAIL_INVALID &#8212; pas de domaine" data-en="EMAIL_INVALID &#8212; no domain">EMAIL_INVALID &#8212; pas de domaine</span>
+        <span class="badge err" data-fr="PHONE_SHORT &#8212; 4 chiffres" data-en="PHONE_SHORT &#8212; 4 digits">PHONE_SHORT &#8212; 4 chiffres</span>
+        <span class="badge err" data-fr="COUNTRY_INVALID &#8212; faute de frappe" data-en="COUNTRY_INVALID &#8212; typo">COUNTRY_INVALID &#8212; faute de frappe</span>
+        <span class="badge ok">STATUS_OK</span>
+      </div>
+      <div class="ai-output"
+           data-fr="L'adresse email est incompl&#232;te, le num&#233;ro de t&#233;l&#233;phone tronqu&#233; et le code pays contient une faute de frappe &#8212; trois anomalies qui sugg&#232;rent une importation depuis une source mal format&#233;e ou une saisie partielle jamais finalis&#233;e. Ce compte ne peut &#234;tre ni contact&#233; ni segment&#233; g&#233;ographiquement en l'&#233;tat : correction prioritaire avant toute action commerciale."
+           data-en="The email address is incomplete, the phone number truncated and the country code contains a typo &#8212; three anomalies suggesting an import from a poorly formatted source or an incomplete entry that was never finalised. This account cannot be contacted or geographically segmented as-is: priority correction required before any commercial action."
+           >L'adresse email est incompl&#232;te, le num&#233;ro de t&#233;l&#233;phone tronqu&#233; et le code pays contient une faute de frappe &#8212; trois anomalies qui sugg&#232;rent une importation depuis une source mal format&#233;e ou une saisie partielle jamais finalis&#233;e. Ce compte ne peut &#234;tre ni contact&#233; ni segment&#233; g&#233;ographiquement en l'&#233;tat : correction prioritaire avant toute action commerciale.</div>
+      <div class="score-bar">
+        <span class="score-label" data-fr="Score qualit&#233;" data-en="Quality score">Score qualit&#233;</span>
+        <div class="score-track"><div class="score-fill" style="width:20%;background:var(--danger);"></div></div>
+        <span class="score-val" style="color:var(--danger);">20 / 100</span>
+      </div>
+    </div>
+
+    <!-- Record 3 -->
+    <div class="record-card">
+      <div class="record-header">
+        <span>
+          <span class="field-label" data-fr="NOM" data-en="NAME">NOM</span>
+          <span class="field-val">Martin &amp; Fils</span>
+        </span>
+        <span>
+          <span class="field-label" data-fr="EMAIL" data-en="EMAIL">EMAIL</span>
+          <span class="field-val">info@martin-fils.com</span>
+        </span>
+        <span>
+          <span class="field-label" data-fr="T&#201;L&#201;PHONE" data-en="PHONE">T&#201;L&#201;PHONE</span>
+          <span class="field-val err" data-fr="(vide)" data-en="(empty)">(vide)</span>
+        </span>
+        <span>
+          <span class="field-label" data-fr="PAYS" data-en="COUNTRY">PAYS</span>
+          <span class="field-val">ES</span>
+        </span>
+        <span>
+          <span class="field-label" data-fr="STATUT" data-en="STATUS">STATUT</span>
+          <span class="field-val err">Inactif</span>
+        </span>
+      </div>
+      <div class="badges">
+        <span class="badge ok">EMAIL_OK</span>
+        <span class="badge err" data-fr="PHONE_MISSING" data-en="PHONE_MISSING">PHONE_MISSING</span>
+        <span class="badge ok">COUNTRY_OK</span>
+        <span class="badge err" data-fr="STATUS_INVALID &#8212; &#171;&#160;Inactif&#160;&#187; hors liste" data-en="STATUS_INVALID &#8212; &#171;Inactif&#187; not in list">STATUS_INVALID &#8212; &#171;&#160;Inactif&#160;&#187; hors liste</span>
+      </div>
+      <div class="ai-output"
+           data-fr="Le num&#233;ro de t&#233;l&#233;phone est absent et le statut &#171;&#160;Inactif&#160;&#187; ne correspond &#224; aucune valeur reconnue par le CRM cible &#8212; vraisemblablement un statut legacy non transcode&#769;. Risque de perte de joignabilit&#233; et d'exclusion incorrecte des workflows de relance si ces champs ne sont pas corrig&#233;s avant la bascule."
+           data-en="The phone number is missing and the status &#171;Inactif&#187; does not match any value recognised by the target CRM &#8212; most likely an untranslated legacy status. Risk of losing contact reachability and incorrect exclusion from follow-up workflows if these fields are not corrected before go-live."
+           >Le num&#233;ro de t&#233;l&#233;phone est absent et le statut &#171;&#160;Inactif&#160;&#187; ne correspond &#224; aucune valeur reconnue par le CRM cible &#8212; vraisemblablement un statut legacy non transcode&#769;. Risque de perte de joignabilit&#233; et d'exclusion incorrecte des workflows de relance si ces champs ne sont pas corrig&#233;s avant la bascule.</div>
+      <div class="score-bar">
+        <span class="score-label" data-fr="Score qualit&#233;" data-en="Quality score">Score qualit&#233;</span>
+        <div class="score-track"><div class="score-fill" style="width:55%;background:var(--warn);"></div></div>
+        <span class="score-val" style="color:var(--warn);">55 / 100</span>
+      </div>
+    </div>
+
+    <!-- Record 4 -->
+    <div class="record-card">
+      <div class="record-header">
+        <span>
+          <span class="field-label" data-fr="NOM" data-en="NAME">NOM</span>
+          <span class="field-val">Leblanc Export</span>
+        </span>
+        <span>
+          <span class="field-label" data-fr="EMAIL" data-en="EMAIL">EMAIL</span>
+          <span class="field-val">p.leblanc@leblanc-export.com</span>
+        </span>
+        <span>
+          <span class="field-label" data-fr="T&#201;L&#201;PHONE" data-en="PHONE">T&#201;L&#201;PHONE</span>
+          <span class="field-val">+34 91 234 56 78</span>
+        </span>
+        <span>
+          <span class="field-label" data-fr="PAYS" data-en="COUNTRY">PAYS</span>
+          <span class="field-val">DE</span>
+        </span>
+        <span>
+          <span class="field-label" data-fr="STATUT" data-en="STATUS">STATUT</span>
+          <span class="field-val" data-fr="Client" data-en="Client">Client</span>
+        </span>
+      </div>
+      <div class="badges">
+        <span class="badge ok">EMAIL_OK</span>
+        <span class="badge ok">PHONE_OK</span>
+        <span class="badge ok">COUNTRY_OK</span>
+        <span class="badge ok">STATUS_OK</span>
+      </div>
+      <div class="ai-output"
+           data-fr="Aucune anomalie d&#233;tect&#233;e &#8212; tous les champs sont valides et conformes aux r&#232;gles en vigueur. Compte &#233;ligible &#224; l'import direct sans correction pr&#233;alable."
+           data-en="No anomaly detected &#8212; all fields are valid and compliant with the current rules. Account eligible for direct import with no prior correction."
+           >Aucune anomalie d&#233;tect&#233;e &#8212; tous les champs sont valides et conformes aux r&#232;gles en vigueur. Compte &#233;ligible &#224; l'import direct sans correction pr&#233;alable.</div>
+      <div class="score-bar">
+        <span class="score-label" data-fr="Score qualit&#233;" data-en="Quality score">Score qualit&#233;</span>
+        <div class="score-track"><div class="score-fill" style="width:100%;background:var(--accent2);"></div></div>
+        <span class="score-val" style="color:var(--accent2);">100 / 100</span>
+      </div>
+    </div>
+
+  </div><!-- /demo-records -->
+
+  <h3 data-fr="Enseignement" data-en="Key takeaway">Enseignement</h3>
+  <p data-fr="<strong>L'IA g&#233;n&#233;rative acc&#233;l&#232;re l'interpr&#233;tation, mais ne remplace pas un cadre de r&#232;gles m&#233;tier explicite</strong> pour garantir la coh&#233;rence et l'auditabilit&#233; d'un pipeline de qualit&#233; de donn&#233;es. C'est pr&#233;cis&#233;ment parce que les erreurs sont d'abord nomm&#233;es et qualifi&#233;es par les r&#232;gles que le mod&#232;le peut produire un diagnostic fiable &#8212; et non l'inverse."
+     data-en="<strong>Generative AI accelerates interpretation, but does not replace an explicit business rules framework</strong> for ensuring the consistency and auditability of a data quality pipeline. It is precisely because errors are first named and qualified by the rules that the model can produce a reliable diagnosis &#8212; not the other way around."
+     ><strong>L'IA g&#233;n&#233;rative acc&#233;l&#232;re l'interpr&#233;tation, mais ne remplace pas un cadre de r&#232;gles m&#233;tier explicite</strong> pour garantir la coh&#233;rence et l'auditabilit&#233; d'un pipeline de qualit&#233; de donn&#233;es. C'est pr&#233;cis&#233;ment parce que les erreurs sont d'abord nomm&#233;es et qualifi&#233;es par les r&#232;gles que le mod&#232;le peut produire un diagnostic fiable &#8212; et non l'inverse.</p>
+
+  <div class="callout warn">
+    <span data-fr="<strong>Limites assum&#233;es.</strong> Ce d&#233;monstrateur illustre un usage pr&#233;cis (aide &#224; la validation) sur un volume restreint et des r&#232;gles volontairement simples. Les deux autres usages IA identifi&#233;s &#8212; d&#233;tection de doublons, supervision continue &#8212; sont d&#233;velopp&#233;s s&#233;par&#233;ment."
+          data-en="<strong>Acknowledged limitations.</strong> This demonstrator illustrates one specific use case (validation assistance) on a limited volume with deliberately simple rules. The two other identified AI use cases &#8212; duplicate detection, continuous monitoring &#8212; are developed separately."
+          ><strong>Limites assum&#233;es.</strong> Ce d&#233;monstrateur illustre un usage pr&#233;cis (aide &#224; la validation) sur un volume restreint et des r&#232;gles volontairement simples. Les deux autres usages IA identifi&#233;s &#8212; d&#233;tection de doublons, supervision continue &#8212; sont d&#233;velopp&#233;s s&#233;par&#233;ment.</span>
+  </div>
+
+  <h2>
+    <span class="num">04</span>
+    <span data-fr="Perspectives" data-en="Next steps">Perspectives</span>
+  </h2>
+  <ul>
+    <li data-fr="Extension &#224; la d&#233;tection de doublons avanc&#233;s (similarit&#233; de noms, adresses partielles) et &#224; l'analyse de coh&#233;rence temporelle des donn&#233;es de facturation."
+        data-en="Extension to advanced duplicate detection (name similarity, partial addresses) and temporal consistency analysis of billing data."
+        >Extension &#224; la d&#233;tection de doublons avanc&#233;s (similarit&#233; de noms, adresses partielles) et &#224; l'analyse de coh&#233;rence temporelle des donn&#233;es de facturation.</li>
+    <li data-fr="Version self-hosted avec <strong>n8n</strong>, pour les contextes n&#233;cessitant une souverainet&#233; des donn&#233;es ou une int&#233;gration dans une infrastructure existante."
+        data-en="Self-hosted version with <strong>n8n</strong>, for contexts requiring data sovereignty or integration into an existing infrastructure."
+        >Version self-hosted avec <strong>n8n</strong>, pour les contextes n&#233;cessitant une souverainet&#233; des donn&#233;es ou une int&#233;gration dans une infrastructure existante.</li>
+    <li data-fr="Dispositif de gouvernance continue : les r&#232;gles de migration deviennent un moteur de supervision en production &#8212; scoring qualit&#233; automatique sur chaque nouvelle fiche, alertes contextualis&#233;es en temps r&#233;el."
+        data-en="Continuous governance setup: migration rules become a live monitoring engine &#8212; automatic quality scoring on every new record, real-time contextualised alerts."
+        >Dispositif de gouvernance continue : les r&#232;gles de migration deviennent un moteur de supervision en production &#8212; scoring qualit&#233; automatique sur chaque nouvelle fiche, alertes contextualis&#233;es en temps r&#233;el.</li>
+  </ul>
+
+  <a href="index.html#cas" class="back" style="margin-top:1rem;"
+     data-fr="&#8592; Retour au site"
+     data-en="&#8592; Back to site">&#8592; Retour au site</a>
+
+</div><!-- /wrap -->
+
+<script>
+  var LABELS = {
+    show: { fr: 'Afficher les 4 enregistrements traités', en: 'Show the 4 processed records' },
+    hide: { fr: 'Masquer les 4 enregistrements',            en: 'Hide the 4 records' }
+  };
+
+  function applyLang(lang) {
+    document.documentElement.lang = lang;
+
+    // Boutons actifs
+    document.querySelectorAll('.lang-btn').forEach(function(b) {
+      b.classList.toggle('active', b.dataset.lang === lang);
+    });
+
+    // Tous les elements bilingues
+    document.querySelectorAll('[data-fr]').forEach(function(el) {
+      var val = el.getAttribute('data-' + lang);
+      if (!val) return;
+      var frVal = el.getAttribute('data-fr') || '';
+      var enVal = el.getAttribute('data-en') || '';
+      if (frVal.indexOf('<') !== -1 || enVal.indexOf('<') !== -1) {
+        el.innerHTML = val;
+      } else {
+        el.textContent = val;
+      }
+    });
+
+    // Label du bouton demo
+    var btn = document.getElementById('toggleBtn');
+    if (btn) {
+      var isOpen = document.getElementById('demoRecords').classList.contains('visible');
+      var key = isOpen ? 'hide' : 'show';
+      btn.textContent = (isOpen ? '▼' : '▶') + ' ' + LABELS[key][lang];
+    }
+  }
+
+  function setLang(lang) {
+    localStorage.setItem('lang', lang);
+    applyLang(lang);
+  }
+
+  function toggleDemo() {
+    var records = document.getElementById('demoRecords');
+    var isOpen  = records.classList.contains('visible');
+    records.classList.toggle('visible', !isOpen);
+    var lang = document.documentElement.lang || 'fr';
+    var key  = isOpen ? 'show' : 'hide';
+    var btn  = document.getElementById('toggleBtn');
+    btn.textContent = (!isOpen ? '▼' : '▶') + ' ' + LABELS[key][lang];
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    var saved = localStorage.getItem('lang') || 'fr';
+    applyLang(saved);
+  });
+</script>
+</body>
+</html>

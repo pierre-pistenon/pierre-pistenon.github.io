@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Cas — Qualification & Routage (Tally + Make)</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+  <header>
+    <nav class="nav">
+      <a href="index.html">FR</a>
+      <a href="index-en.html">EN</a>
+    </nav>
+  </header>
+
+  <main class="page">
+
+    <h1>Qualification & Routage des demandes — Tally + Make</h1>
+
+    <section>
+      <h2>Contexte</h2>
+      <p>
+        Les demandes entrantes arrivaient par plusieurs canaux (emails, formulaires libres) 
+        sans structure homogène. Résultat : qualification manuelle lourde, erreurs d’orientation, 
+        manque de traçabilité et scalabilité limitée.
+      </p>
+    </section>
+
+    <section>
+      <h2>Approche</h2>
+      <p>
+        J’ai conçu un workflow léger mais robuste combinant un formulaire Tally structuré 
+        (contrôles de saisie, listes déroulantes, validations) et un scénario Make de routage 
+        conditionnel, avec un mécanisme de fallback pour les cas ambigus ou incomplets.
+      </p>
+
+      <ul>
+        <li><strong>Data Quality à la source</strong> : structuration des champs et typologies dès la saisie.</li>
+        <li><strong>Règles métier explicites</strong> : formalisation de 4 catégories métier documentées.</li>
+        <li><strong>Routage conditionnel</strong> : filtres précis, notifications ciblées, fallback humain.</li>
+        <li><strong>Traçabilité</strong> : logging complet des routages et exceptions.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Architecture</h2>
+      <p>
+        Architecture sobre : Tally → Webhook Make → routeur principal → branches par typologie 
+        + routeur fallback → actions (notifications, enregistrement CRM/Sheet).
+      </p>
+    </section>
+
+    <section>
+      <h2>Enseignements</h2>
+      <ul>
+        <li><strong>Data Quality by Design</strong> : réduction drastique des exceptions.</li>
+        <li><strong>Gouvernance des règles métier</strong> : workflow compréhensible et modifiable.</li>
+        <li><strong>Scalabilité</strong> : support naturel de la montée en charge.</li>
+        <li><strong>Préparation à l’hyperautomation</strong> : base idéale pour IA et process mining.</li>
+      </ul>
+    </section>
+
+  </main>
+</body>
+</html>

@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Article complet — Cartographier la connaissance métier avec l'IA.">
-  <title>Cartographier la connaissance métier avec l'IA — Pierre Pistenon</title>
+  <meta name="description" content="Article complet — Cartographier la connaissance métier avec l’IA. Série Bus Factor, article 3.">
+  <title>Cartographier la connaissance métier avec l’IA — Pierre Pistenon</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -12,43 +12,70 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
       --bg: #0D1117; --bg2: #161B22; --border: #30363D;
-      --text: #E6EDF3; --muted: #8B949E; --accent: #4FC3F7;
+      --text: #E6EDF3; --muted: #8B949E; --accent: #4FC3F7; --warn: #D29922;
     }
     body {
       background: var(--bg); color: var(--text);
       font-family: 'Inter', sans-serif; font-size: 16px; line-height: 1.75;
       -webkit-font-smoothing: antialiased;
     }
-    .wrap { max-width: 700px; margin: 0 auto; padding: 60px 1.5rem 100px; }
-    .back {
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(13,17,23,0.92); backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 1.5rem; height: 52px;
+    }
+    .nav-back {
       display: inline-flex; align-items: center; gap: 6px;
       color: var(--accent); text-decoration: none;
       font-family: 'JetBrains Mono', monospace; font-size: 0.82rem;
-      margin-bottom: 2.5rem;
     }
+    .lang-toggle { display: flex; gap: 4px; }
+    .lang-btn {
+      font-family: 'JetBrains Mono', monospace; font-size: 0.75rem;
+      background: transparent; border: 1px solid var(--border);
+      color: var(--muted); padding: 0.2rem 0.55rem; border-radius: 4px;
+      cursor: pointer; transition: all 0.15s;
+    }
+    .lang-btn.active { background: var(--accent); color: var(--bg); font-weight: 500; border-color: var(--accent); }
+    .wrap { max-width: 700px; margin: 0 auto; padding: 52px 1.5rem 100px; }
     .eyebrow {
       font-family: 'JetBrains Mono', monospace; font-size: 0.78rem;
-      color: var(--accent); letter-spacing: 0.08em; text-transform: uppercase;
-      margin-bottom: 0.75rem;
+      color: var(--warn); letter-spacing: 0.08em; text-transform: uppercase;
+      margin: 2.5rem 0 0.75rem;
     }
-    h1 {
-      font-size: clamp(1.6rem, 4vw, 2.3rem); font-weight: 600;
-      line-height: 1.25; margin-bottom: 0.75rem; letter-spacing: -0.01em;
+    h1 { font-size: clamp(1.6rem, 4vw, 2.3rem); font-weight: 600; line-height: 1.25; margin-bottom: 1rem; letter-spacing: -0.01em; }
+    .article-sub { color: var(--muted); font-size: 0.95rem; margin-bottom: 2rem; }
+    .disclaimer {
+      background: var(--bg2); border-left: 2px solid var(--accent);
+      padding: 1rem 1.25rem; font-size: 0.86rem; color: var(--muted);
+      font-style: italic; margin-bottom: 2.5rem; border-radius: 0 6px 6px 0;
     }
-    .subtitle { color: var(--muted); font-size: 1rem; margin-bottom: 2.5rem; font-style: italic; }
-    h2 {
-      font-size: 1.15rem; font-weight: 600; margin-top: 2.5rem;
-      margin-bottom: 0.9rem; color: var(--text);
-    }
+    h2 { font-size: 1.15rem; font-weight: 600; margin-top: 2.5rem; margin-bottom: 0.9rem; color: var(--text); }
     p { color: var(--muted); margin-bottom: 1.1rem; font-size: 0.95rem; }
     strong { color: var(--text); font-weight: 600; }
     ul { margin: 1rem 0 1.1rem 1.3rem; }
     li { color: var(--muted); margin-bottom: 0.5rem; font-size: 0.95rem; }
+    li::marker { color: var(--accent); }
+    table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.85rem; }
+    th, td { border: 1px solid var(--border); padding: 0.6rem 0.8rem; text-align: left; }
+    th { background: var(--bg2); color: var(--text); font-weight: 600; }
+    td { color: var(--muted); }
+    td strong { color: var(--text); }
     .highlight {
       background: rgba(79,195,247,0.05); border-left: 2px solid var(--accent);
-      padding: 1rem 1.25rem; margin: 1.5rem 0; font-style: italic;
-      color: var(--muted); border-radius: 0 6px 6px 0;
+      padding: 1rem 1.25rem; margin: 1.5rem 0;
+      color: var(--muted); border-radius: 0 6px 6px 0; font-style: italic;
     }
+    .schema {
+      background: var(--bg2); border: 1px solid var(--border); border-radius: 8px;
+      padding: 1.25rem 1.5rem; margin: 1.5rem 0;
+      font-family: 'JetBrains Mono', monospace; font-size: 0.82rem; color: var(--muted);
+      line-height: 2;
+    }
+    .schema .level { color: var(--accent); font-weight: 500; }
+    .schema .arrow { color: #30363D; }
     footer {
       margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--border);
       font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; color: var(--muted);
@@ -58,87 +85,277 @@
   </style>
 </head>
 <body>
+
+<nav>
+  <a href="index.html#articles" class="nav-back"
+     data-fr="← Retour au site"
+     data-en="← Back to site">← Retour au site</a>
+  <div class="lang-toggle">
+    <button class="lang-btn active" data-lang="fr" onclick="setLang('fr')">FR</button>
+    <button class="lang-btn"        data-lang="en" onclick="setLang('en')">EN</button>
+  </div>
+</nav>
+
 <div class="wrap">
-  <a href="index.html#articles" class="back">← Retour au site</a>
 
-  <p class="eyebrow">Série Bus Factor — Article 3 — Version longue</p>
-  <h1>Cartographier la connaissance métier avec l'IA</h1>
-  <p class="subtitle">Rendre visible le risque invisible</p>
+  <p class="eyebrow"
+     data-fr="Série Bus Factor — Article 3 — Version longue"
+     data-en="Bus Factor Series — Article 3 — Long version"
+     >Série Bus Factor — Article 3 — Version longue</p>
 
-  <h2>Le savoir critique qui ne tient qu'à quelques personnes</h2>
-  <p>Dans notre précédent article, nous avons montré comment une entreprise comme NexaCrypt peut devenir dépendante de quelques individus clés sans même en avoir conscience.</p>
-  <p>Mais cette dernière formulation mérite d'être précisée. Car dans un cas comme celui de NexaCrypt, l'information existe bel et bien, éparpillée dans l'organisation : la direction technique sait que le moteur de chiffrement repose sur une seule personne ; le manager sécurité sait que les scénarios de reprise d'activité dépendent d'un seul expert ; les ressources humaines savent qu'un départ à la retraite est imminent ; la direction générale a une intuition diffuse que « certaines personnes sont irremplaçables ».</p>
-  <p><strong>La connaissance critique est connue localement. Elle est rarement visible globalement.</strong></p>
-  <p>Le véritable sujet n'est donc pas l'ignorance. Personne, individuellement, n'ignore son propre périmètre de risque. Le véritable sujet est qu'aucune fonction de l'organisation ne possède la cartographie complète — celle qui relierait entre eux ces signaux éparpillés.</p>
-  <p>Et c'est précisément là que se niche le risque : dans l'espace entre ce que chacun sait localement et ce que personne ne voit globalement. Le problème n'est pas l'absence de connaissance — elle existe bien. Le problème, c'est sa concentration, son manque de visibilité… et surtout, son obsolescence rapide si elle n'est pas constamment mise à jour.</p>
-  <p>Dans le cas de NexaCrypt, l'incident de janvier 2026 — six heures de downtime parce que la seule personne sachant redémarrer le moteur de chiffrement était indisponible — illustre exactement ce scénario : chaque acteur avait sa pièce du puzzle. Personne n'avait l'image complète.</p>
+  <h1 data-fr="Cartographier la connaissance métier avec l’IA"
+      data-en="Mapping business knowledge with AI"
+      >Cartographier la connaissance métier avec l’IA</h1>
 
-  <h2>Le paradoxe de la connaissance critique</h2>
-  <p>Dans un cas comme celui de NexaCrypt, la connaissance existe. Mais elle est :</p>
-  <ul>
-    <li><strong>Dispersée</strong> : une partie dans des documents, une autre dans des tickets, des emails, ou des espaces collaboratifs comme Confluence.</li>
-    <li><strong>Obsolète</strong> : certaines procédures n'ont pas été revues depuis plusieurs années.</li>
-    <li><strong>Implicite</strong> : « C'est dans ma tête », « On se débrouille », « Personne ne saurait faire ça sans moi ».</li>
-    <li><strong>Cloisonnée</strong> : chaque fonction détient un fragment du risque, sans visibilité sur les fragments détenus par les autres.</li>
-  </ul>
-  <p>Personne ne décide volontairement de créer ce risque. Il apparaît parce que l'organisation continue à fonctionner. Chaque incident est résolu. Chaque mise en production est réalisée. Chaque audit est passé. Jusqu'au jour où une crise révèle que certaines compétences n'existent plus nulle part ailleurs que dans la tête d'une poignée d'experts — et que personne, jusque-là, n'avait relié les signaux entre eux.</p>
-  <p>Les crises modernes naissent rarement d'une seule défaillance technique. Elles apparaissent lorsque plusieurs dépendances invisibles, connues isolément mais jamais mises bout à bout, se combinent.</p>
-  <p>La question n'est donc plus : « Quels sont nos actifs critiques ? » La question devient : « Quels savoirs sont indispensables à notre capacité à opérer — et qui, dans l'organisation, a une vue sur l'ensemble ? »</p>
+  <p class="article-sub"
+     data-fr="Ou comment transformer des signaux de risque éparpillés en une lecture commune — et cette lecture en décision."
+     data-en="Or how to turn scattered risk signals into a shared understanding — and that understanding into a decision."
+     >Ou comment transformer des signaux de risque éparpillés en une lecture commune — et cette lecture en décision.</p>
 
-  <h2>Le problème des approches traditionnelles</h2>
-  <p>Cartographier la connaissance n'est pas une idée nouvelle. Les cabinets de conseil, les directions de programme et les équipes de gestion des risques réalisent ce type d'exercice depuis des années. La méthode classique repose généralement sur des interviews, des ateliers, des matrices de compétences, des analyses documentaires et des revues d'organisation.</p>
-  <p>Le problème n'est pas la qualité de ces approches. Le problème, c'est leur coût, leur durée… et leur obsolescence rapide. Pour une organisation comme NexaCrypt (50 M€ de chiffre d'affaires, six pôles métiers), plusieurs semaines seraient nécessaires pour obtenir une première cartographie exploitable avec une approche purement manuelle. Et dès qu'un nouveau composant est ajouté, ou à l'occasion d'une réorganisation, la cartographie change.</p>
-  <p>Résultat : la cartographie devient rapidement obsolète, les équipes n'ont pas le temps de la maintenir, et les décisions stratégiques sont prises sans vision globale.</p>
-
-  <h2>Ce que l'IA change réellement</h2>
-  <p>L'erreur consiste à croire que l'IA remplace l'expert. Ce n'est pas ce qui crée de la valeur.</p>
-  <p>La véritable rupture est ailleurs : l'IA permet de relier entre eux des signaux qu'aucune fonction, prise isolément, ne pourrait connecter — à une vitesse et sur un volume qu'aucune équipe ne pourrait traiter manuellement.</p>
-  <p>Dans un cas comme celui de NexaCrypt, il s'agirait d'analyser l'ensemble des sources disponibles : une série d'entretiens menés auprès des principaux détenteurs de connaissances — équipes techniques, métier, sécurité, qualité, exploitation et direction — mais aussi les comptes-rendus d'ateliers, les rapports d'incident, les procédures existantes et les documents d'exploitation.</p>
-  <p>L'objectif n'est pas de produire automatiquement une conclusion. L'objectif est de faire émerger, à travers des dizaines de témoignages individuels, les quelques points de fragilité communs sur lesquels tout le monde, sans le savoir, converge.</p>
-  <p>Pris isolément, chaque témoignage paraît anodin : une remarque sur une procédure jamais testée, une allusion à un départ à la retraite, une habitude de travail mentionnée en passant. Mis bout à bout, ces signaux dessinent une carte des dépendances de l'organisation.</p>
-
-  <h2>De la donnée dispersée à la carte de continuité</h2>
-  <p>Une fois les signaux extraits, la question devient : comment les présenter ?</p>
-  <p>Une représentation purement technique — qui dépend de qui, quel composant repose sur quel expert — a de la valeur pour une équipe IT. Mais elle ne parle pas à un comité de direction.</p>
-  <p>Pour qu'une telle cartographie devienne un outil de pilotage, elle doit être lue à plusieurs niveaux — du plus stratégique au plus opérationnel : <strong>une même carte, lue à quatre niveaux : la continuité opérationnelle, les risques business qu'elle recouvre, les savoirs critiques qui les portent, et les systèmes concernés.</strong></p>
-  <p>Lue de haut en bas, cette représentation change la nature de la conversation. Au sommet, la continuité opérationnelle de l'entreprise. En dessous, les risques business qui la composent : la sécurisation du chiffrement, la capacité à reprendre l'activité après un incident, la fiabilité des tests critiques. Puis, les savoirs qui portent ces risques — et là, le même nom apparaît à plusieurs reprises. Enfin, les systèmes concernés, qui ne sont que la partie visible de l'iceberg.</p>
-  <p>Lorsqu'une telle représentation est présentée à un comité de direction, le sujet change instantanément de nature. On ne parle plus de documentation technique. On parle de continuité opérationnelle — et du fait qu'un seul départ pourrait fragiliser simultanément plusieurs piliers de l'entreprise.</p>
-  <p>Ce n'est plus une carte de dépendances informatiques. C'est une carte de risques de continuité, exprimée dans le langage d'un comité de direction.</p>
-
-  <h2>Ce que ce scénario révèle</h2>
-  <p>Une telle analyse, dans un cas comme celui de NexaCrypt, ferait apparaître trois constats.</p>
-  <p><strong>Premier constat : la connaissance n'est pas répartie, elle est concentrée.</strong> Un même nom revient sur plusieurs lignes de la cartographie : le moteur de chiffrement, la procédure de restauration, la validation des montées de version critiques reposent sur les mêmes une ou deux personnes. Chacune de ces dépendances, prise isolément, semblait gérable. Leur superposition ne l'est plus.</p>
-  <p><strong>Deuxième constat : les procédures critiques n'ont jamais été éprouvées.</strong> Des sauvegardes jamais testées en conditions réelles, une fiche réflexe rédigée mais jamais exécutée, des scripts de récupération qui n'existent que sur le poste d'une seule personne. La procédure existe sur le papier. Personne ne sait si elle fonctionnerait le jour où elle serait nécessaire.</p>
-  <p><strong>Troisième constat : chaque signal était connu, mais nulle part rassemblé.</strong> La direction savait qu'un expert était critique, sans en mesurer l'ampleur exacte. Les équipes qualité avaient remonté des écarts documentaires, sans les relier aux dépendances humaines. Les équipes sécurité avaient documenté des vulnérabilités, sans les connecter aux départs à venir.</p>
-  <p>Ce n'est pas un problème de compétence. C'est un problème de visibilité — et de connexion entre des informations qui, prises séparément, ne racontent rien d'alarmant.</p>
-
-  <h2>L'IA n'est pas le consultant</h2>
-  <p>Cette distinction est essentielle.</p>
-  <p>L'IA peut : extraire des informations critiques dispersées dans des dizaines de documents, repérer les récurrences invisibles à l'œil humain, relier ces signaux entre eux, et synthétiser cette matière en quelques heures plutôt qu'en plusieurs semaines.</p>
-  <p>Mais elle ne peut pas : arbitrer entre deux actions prioritaires, prioriser les risques en fonction du contexte métier, convaincre un comité de direction d'allouer un budget, ni porter la responsabilité d'une recommandation.</p>
-  <p>La valeur ne réside pas dans le modèle d'IA. Elle réside dans la capacité à transformer des données brutes éparpillées en une lecture commune — et cette lecture commune en décision.</p>
-  <p>C'est pourquoi les consultants, Business Analysts et risk managers les plus performants ne sont pas ceux qui délèguent leur réflexion à l'IA. Ce sont ceux qui l'utilisent pour éliminer le travail de collecte et de mise en relation, et consacrer davantage de temps à l'analyse stratégique.</p>
-
-  <h2>Conclusion : rendre visible l'invisible</h2>
-  <p>Pendant longtemps, cartographier la connaissance d'une organisation était un exercice coûteux, ponctuel, et rarement maintenu dans le temps.</p>
-  <p>L'IA change cette équation. Elle permet de relier rapidement des signaux dispersés — connus localement, invisibles globalement — en une représentation exploitable des dépendances réelles de l'entreprise.</p>
-  <p>Mais la technologie n'est pas le sujet principal. Le sujet principal est ce qu'elle rend visible.</p>
-  <p>Car les organisations ne tombent généralement pas parce qu'elles ignorent leurs serveurs. Elles tombent parce que personne, en interne, ne détenait la vue d'ensemble de leur savoir critique.</p>
-  <p>La question n'est donc plus : « Avons-nous de la connaissance critique ? » Toutes les organisations en ont. La véritable question est : « Quelqu'un, dans votre organisation, possède-t-il aujourd'hui la vue d'ensemble — et que se passerait-il si l'un de ces savoirs disparaissait demain ? »</p>
-
-  <div class="highlight">
-    Une dernière observation, qui ouvre une question que nous traiterons dans un prochain article : une cartographie, aussi rigoureuse soit-elle, n'est qu'une photographie. Les systèmes évoluent. Les équipes changent. Les responsabilités se déplacent. De nouvelles dépendances apparaissent tandis que d'autres disparaissent. Cartographier la connaissance est un premier défi. Maintenir cette cartographie pertinente dans le temps — et en faire une discipline de gouvernance à part entière — en est un autre, et c'est peut-être le plus difficile.
+  <div class="disclaimer">
+    <span data-fr="Cet article s’appuie sur le cas NexaCrypt (article 1 de la série) et sur des situations représentatives observées en mission. Les mécanismes décrits sont documentés et largement observés dans des organisations de toutes tailles."
+          data-en="This article builds on the NexaCrypt case (series article 1) and representative situations observed during assignments. The mechanisms described are documented and widely observed in organisations of all sizes."
+          >Cet article s’appuie sur le cas NexaCrypt (article 1 de la série) et sur des situations représentatives observées en mission. Les mécanismes décrits sont documentés et largement observés dans des organisations de toutes tailles.</span>
   </div>
 
-  <h2>Dans le prochain article</h2>
-  <p>Dans cet article, nous avons montré pourquoi la cartographie des connaissances devient un enjeu stratégique, et ce qu'une telle analyse révèlerait dans un cas comme celui de NexaCrypt.</p>
-  <p>Dans le prochain article, nous entrerons dans les coulisses de la démarche : comment transformer des entretiens et des documents épars en signaux exploitables, comment ces signaux se transforment en cartographie, et comment cette cartographie devient un outil de pilotage pour les équipes Audit, Risques et Direction Générale.</p>
-  <p>Nous verrons comment transformer plusieurs centaines de pages d'entretiens en une représentation concrète des dépendances réelles d'une organisation — et ce que cela change pour le métier de Business Analyst.</p>
+  <h2 data-fr="Connue localement, invisible globalement"
+      data-en="Known locally, invisible globally"
+      >Connue localement, invisible globalement</h2>
+
+  <p data-fr="Dans un cas comme NexaCrypt, l’information existe. La direction technique sait que le module de chiffrement repose sur une seule personne. Les RH savent qu’un départ à la retraite est imminent. La sécurité a remonté des vulnérabilités liées à l’absence de procédures testées. Le management opérationnel sait que Bob est le seul à détenir les accès root."
+     data-en="In a case like NexaCrypt, the information exists. Technical management knows the encryption module relies on one person. HR knows a retirement is imminent. Security has flagged vulnerabilities linked to the absence of tested procedures. Operational management knows Bob is the only one holding root access."
+     >Dans un cas comme NexaCrypt, l’information existe. La direction technique sait que le module de chiffrement repose sur une seule personne. Les RH savent qu’un départ à la retraite est imminent. La sécurité a remonté des vulnérabilités liées à l’absence de procédures testées. Le management opérationnel sait que Bob est le seul à détenir les accès root.</p>
+
+  <p data-fr="Mais aucune fonction ne possède la cartographie complète qui relierait ces signaux entre eux. Chaque équipe détient un fragment. Personne ne voit l’ensemble. Et c’est précisément cet ensemble qui aurait permis d’anticiper la panne du 15 janvier — et les 2,6 M€ de pertes qui s’en sont suivis."
+     data-en="But no function holds the complete map connecting these signals. Each team holds a fragment. Nobody sees the whole picture. And it is precisely this whole picture that would have made it possible to anticipate the 15 January outage — and the €2.6M in losses that followed."
+     >Mais aucune fonction ne possède la cartographie complète qui relierait ces signaux entre eux. Chaque équipe détient un fragment. Personne ne voit l’ensemble. Et c’est précisément cet ensemble qui aurait permis d’anticiper la panne du 15 janvier — et les 2,6 M€ de pertes qui s’en sont suivis.</p>
+
+  <div class="highlight">
+    <span data-fr="Le problème n’est pas l’ignorance. Le problème est qu’aucune fonction de l’organisation ne possède la cartographie complète — celle qui relierait entre eux ces signaux éparpillés."
+          data-en="The problem is not ignorance. The problem is that no function in the organisation holds the complete map — the one that would connect these scattered signals."
+          >Le problème n’est pas l’ignorance. Le problème est qu’aucune fonction de l’organisation ne possède la cartographie complète — celle qui relierait entre eux ces signaux éparpillés.</span>
+  </div>
+
+  <h2 data-fr="Les limites des approches traditionnelles"
+      data-en="The limits of traditional approaches"
+      >Les limites des approches traditionnelles</h2>
+
+  <p data-fr="Interviews, ateliers, matrices de compétences : ces méthodes existent depuis des années. Elles fonctionnent. Leur problème n’est pas leur qualité, mais leur coût, leur durée, et leur obsolescence rapide."
+     data-en="Interviews, workshops, skills matrices: these methods have existed for years. They work. Their problem is not their quality, but their cost, duration, and rapid obsolescence."
+     >Interviews, ateliers, matrices de compétences : ces méthodes existent depuis des années. Elles fonctionnent. Leur problème n’est pas leur qualité, mais leur coût, leur durée, et leur obsolescence rapide.</p>
+
+  <table>
+    <tr>
+      <th data-fr="Approche" data-en="Approach">Approche</th>
+      <th data-fr="Avantage" data-en="Advantage">Avantage</th>
+      <th data-fr="Limite" data-en="Limit">Limite</th>
+    </tr>
+    <tr>
+      <td data-fr="Interviews individuelles" data-en="Individual interviews">Interviews individuelles</td>
+      <td data-fr="Richesse contextuelle, nuances" data-en="Contextual richness, nuance">Richesse contextuelle, nuances</td>
+      <td data-fr="Lentes, coûteuses, non scalables" data-en="Slow, costly, not scalable">Lentes, coûteuses, non scalables</td>
+    </tr>
+    <tr>
+      <td data-fr="Ateliers collectifs" data-en="Group workshops">Ateliers collectifs</td>
+      <td data-fr="Croissement des points de vue" data-en="Cross-pollination of viewpoints">Croisement des points de vue</td>
+      <td data-fr="Biais de groupe, logistique lourde" data-en="Group bias, heavy logistics">Biais de groupe, logistique lourde</td>
+    </tr>
+    <tr>
+      <td data-fr="Matrices de compétences" data-en="Skills matrices">Matrices de compétences</td>
+      <td data-fr="Vue d’ensemble structurée" data-en="Structured overview">Vue d’ensemble structurée</td>
+      <td data-fr="Déclaré, pas observé — vite périmé" data-en="Declared, not observed — quickly outdated">Déclaré, pas observé — vite périmé</td>
+    </tr>
+    <tr>
+      <td data-fr="Documentation technique" data-en="Technical documentation">Documentation technique</td>
+      <td data-fr="Précise sur ce qui est documenté" data-en="Precise on what is documented">Précise sur ce qui est documenté</td>
+      <td data-fr="Lacunaire sur la connaissance implicite" data-en="Incomplete on tacit knowledge">Lacunaire sur la connaissance implicite</td>
+    </tr>
+  </table>
+
+  <p data-fr="Pour une organisation de la taille de NexaCrypt, une première cartographie complète prendrait plusieurs semaines — déjà périmée au moment de sa livraison, si un collaborateur clé a quitté l’entreprise entre-temps."
+     data-en="For an organisation the size of NexaCrypt, a first complete mapping would take several weeks — already outdated by the time it is delivered, if a key person has left in the meantime."
+     >Pour une organisation de la taille de NexaCrypt, une première cartographie complète prendrait plusieurs semaines — déjà périmée au moment de sa livraison, si un collaborateur clé a quitté l’entreprise entre-temps.</p>
+
+  <h2 data-fr="Ce que l’IA change réellement"
+      data-en="What AI really changes"
+      >Ce que l’IA change réellement</h2>
+
+  <p data-fr="L’erreur la plus fréquente est de croire que l’IA remplace l’expert. Elle ne le fait pas — et ne le fera pas dans ce domaine. La véritable rupture est ailleurs : l’IA permet de traiter un volume de données textuelles (comptes-rendus d’entretiens, tickets de support, documentations éparses, notes opérationnelles) qu’aucune équipe ne pourrait analyser manuellement dans un délai utile."
+     data-en="The most common mistake is believing AI replaces the expert. It does not — and will not in this domain. The real breakthrough lies elsewhere: AI makes it possible to process a volume of textual data (interview notes, support tickets, scattered documentation, operational memos) that no team could analyse manually within a useful timeframe."
+     >L’erreur la plus fréquente est de croire que l’IA remplace l’expert. Elle ne le fait pas — et ne le fera pas dans ce domaine. La véritable rupture est ailleurs : l’IA permet de traiter un volume de données textuelles (comptes-rendus d’entretiens, tickets de support, documentations éparses, notes opérationnelles) qu’aucune équipe ne pourrait analyser manuellement dans un délai utile.</p>
+
+  <p data-fr="Concrètement, une architecture hybride règles + LLM permet de :"
+     data-en="Concretely, a hybrid rules + LLM architecture makes it possible to:"
+     >Concrètement, une architecture hybride règles + LLM permet de :</p>
+
+  <ul>
+    <li data-fr="Détecter automatiquement les signaux de risque dans des corpus textuels (mentions de « seul à savoir », « pas de backup », « procédure non testée », « si je pars ») ;"
+        data-en="Automatically detect risk signals in textual corpora (mentions of 'only one who knows', 'no backup', 'untested procedure', 'if I leave') ;"
+        >Détecter automatiquement les signaux de risque dans des corpus textuels (mentions de « seul à savoir », « pas de backup », « procédure non testée », « si je pars ») ;</li>
+    <li data-fr="Croiser ces signaux entre sources (RH, technique, métier) pour faire émerger des dépendances invisibles à l’œil nu ;"
+        data-en="Cross-reference these signals across sources (HR, technical, business) to surface dependencies invisible to the naked eye ;"
+        >Croiser ces signaux entre sources (RH, technique, métier) pour faire émerger des dépendances invisibles à l’œil nu ;</li>
+    <li data-fr="Produire une première cartographie en quelques heures plutôt qu’en plusieurs semaines ;"
+        data-en="Produce a first mapping in hours rather than weeks ;"
+        >Produire une première cartographie en quelques heures plutôt qu’en plusieurs semaines ;</li>
+    <li data-fr="Maintenir cette cartographie à jour en relançant l’analyse périodiquement sur de nouvelles sources."
+        data-en="Keep this mapping up to date by re-running the analysis periodically on new sources."
+        >Maintenir cette cartographie à jour en relançant l’analyse périodiquement sur de nouvelles sources.</li>
+  </ul>
+
+  <h2 data-fr="L’architecture technique : règles d’abord, LLM ensuite"
+      data-en="The technical architecture: rules first, LLM second"
+      >L’architecture technique : règles d’abord, LLM ensuite</h2>
+
+  <p data-fr="Le même principe que pour la Data Quality s’applique ici : les règles déterministes traitent ce qu’elles savent traiter de façon fiable et auditable. Le LLM intervient sur ce que les règles ne peuvent pas capturer — le sens, l’ambiguïté, le contexte implicite d’un long témoignage."
+     data-en="The same principle as for Data Quality applies here: deterministic rules handle what they can reliably and auditably process. The LLM handles what rules cannot capture — meaning, ambiguity, the implicit context of a long testimony."
+     >Le même principe que pour la Data Quality s’applique ici : les règles déterministes traitent ce qu’elles savent traiter de façon fiable et auditable. Le LLM intervient sur ce que les règles ne peuvent pas capturer — le sens, l’ambiguïté, le contexte implicite d’un long témoignage.</p>
+
+  <table>
+    <tr>
+      <th data-fr="Couche" data-en="Layer">Couche</th>
+      <th data-fr="Ce qu’elle fait" data-en="What it does">Ce qu’elle fait</th>
+      <th data-fr="Pourquoi" data-en="Why">Pourquoi</th>
+    </tr>
+    <tr>
+      <td data-fr="Règles métier" data-en="Business rules">Règles métier</td>
+      <td data-fr="Détecte les expressions explicites de risque (« seul à savoir », « pas de procédure »…)" data-en="Detects explicit risk expressions ('only one who knows', 'no procedure'…)">Détecte les expressions explicites de risque</td>
+      <td data-fr="Reproductible, auditable, rapide" data-en="Reproducible, auditable, fast">Reproductible, auditable, rapide</td>
+    </tr>
+    <tr>
+      <td>LLM</td>
+      <td data-fr="Interprète les formulations indirectes, les sous-entendus, les dépendances implicites" data-en="Interprets indirect formulations, hints, implicit dependencies">Interprète les formulations indirectes et implicites</td>
+      <td data-fr="Capture ce que les règles manquent" data-en="Captures what rules miss">Capture ce que les règles manquent</td>
+    </tr>
+    <tr>
+      <td data-fr="Validation humaine" data-en="Human validation">Validation humaine</td>
+      <td data-fr="Arbitre les cas ambigus, priorise selon le contexte métier" data-en="Arbitrates ambiguous cases, prioritises by business context">Arbitre les cas ambigus, priorise</td>
+      <td data-fr="L’IA ne décide pas" data-en="AI does not decide">L’IA ne décide pas</td>
+    </tr>
+  </table>
+
+  <h2 data-fr="Une carte à quatre niveaux"
+      data-en="A four-level map"
+      >Une carte à quatre niveaux</h2>
+
+  <p data-fr="La cartographie produite n’est pas une liste de compétences. C’est une représentation en quatre niveaux imbriqués, qui relie chaque risque à sa conséquence business et au système qu’il concerne :"
+     data-en="The resulting map is not a skills list. It is a four-level nested representation that connects each risk to its business consequence and the system it concerns:"
+     >La cartographie produite n’est pas une liste de compétences. C’est une représentation en quatre niveaux imbriqués, qui relie chaque risque à sa conséquence business et au système qu’il concerne :</p>
+
+  <div class="schema">
+    <div><span class="level" data-fr="Continuité opérationnelle" data-en="Operational continuity">Continuité opérationnelle</span></div>
+    <div><span class="arrow">└──</span> <span class="level" data-fr="Risques business associés" data-en="Associated business risks">Risques business associés</span> <span data-fr="(pénalités, perte de clients, atteinte réputationnelle)" data-en="(penalties, client loss, reputational damage)">(pénalités, perte de clients, atteinte réputationnelle)</span></div>
+    <div><span class="arrow">└─────</span> <span class="level" data-fr="Savoirs critiques porteurs du risque" data-en="Critical knowledge carrying the risk">Savoirs critiques porteurs du risque</span> <span data-fr="(qui sait quoi, seul ou pas)" data-en="(who knows what, alone or not)">(qui sait quoi, seul ou pas)</span></div>
+    <div><span class="arrow">└────────</span> <span class="level" data-fr="Systèmes et procédures concernés" data-en="Systems and procedures involved">Systèmes et procédures concernés</span> <span data-fr="(avec leur niveau de documentation)" data-en="(with their documentation level)">(avec leur niveau de documentation)</span></div>
+  </div>
+
+  <p data-fr="Lue ainsi, la représentation change la nature de la conversation avec la direction : on ne parle plus de documentation technique — un sujet perçu comme un coût — mais de continuité de l’entreprise et de risque financier chiffré. C’est ce changement de cadrage qui rend la décision possible."
+     data-en="Read this way, the representation changes the nature of the conversation with management: it is no longer about technical documentation — perceived as a cost — but about business continuity and quantified financial risk. This reframing is what makes the decision possible."
+     >Lue ainsi, la représentation change la nature de la conversation avec la direction : on ne parle plus de documentation technique — un sujet perçu comme un coût — mais de continuité de l’entreprise et de risque financier chiffré. C’est ce changement de cadrage qui rend la décision possible.</p>
+
+  <h2 data-fr="Trois constats typiques"
+      data-en="Three typical findings"
+      >Trois constats typiques</h2>
+
+  <p data-fr="Dans les organisations où ce type d’analyse a été mené, trois patterns reviennent systématiquement :"
+     data-en="In organisations where this type of analysis has been conducted, three patterns recur systematically:"
+     >Dans les organisations où ce type d’analyse a été mené, trois patterns reviennent systématiquement :</p>
+
+  <ul>
+    <li data-fr="<strong>La connaissance n’est pas répartie, elle est concentrée.</strong> Chaque dépendance prise isolément semblait gérable. Leur superposition ne l’est plus. NexaCrypt en est l’illustration directe : trois personnes, deux composants critiques, Bus Factor = 1 sur chacun."
+        data-en="<strong>Knowledge is not distributed, it is concentrated.</strong> Each dependency seemed manageable in isolation. Their combination no longer is. NexaCrypt illustrates this directly: three people, two critical components, Bus Factor = 1 on each."
+        ><strong>La connaissance n’est pas répartie, elle est concentrée.</strong> Chaque dépendance prise isolément semblait gérable. Leur superposition ne l’est plus.</li>
+    <li data-fr="<strong>Les procédures critiques n’ont jamais été éprouvées en conditions réelles.</strong> Un DRP non testé depuis trois ans n’est pas un DRP — c’est une illusion de sécurité. Les sauvegardes corrompues de NexaCrypt en sont la démonstration par l’absurde."
+        data-en="<strong>Critical procedures have never been tested under real conditions.</strong> A DRP untested for three years is not a DRP — it is an illusion of security. NexaCrypt's corrupted backups demonstrate this by absurdity."
+        ><strong>Les procédures critiques n’ont jamais été éprouvées en conditions réelles.</strong> Un DRP non testé depuis trois ans n’est pas un DRP — c’est une illusion de sécurité.</li>
+    <li data-fr="<strong>Chaque signal était connu, mais nulle part rassemblé.</strong> C’est le paradoxe fondamental : l’information nécessaire à la décision existait dans l’organisation. Elle était simplement éparpillée dans des silos sans langage commun."
+        data-en="<strong>Each signal was known, but never gathered.</strong> This is the fundamental paradox: the information needed for the decision existed within the organisation. It was simply scattered across silos with no common language."
+        ><strong>Chaque signal était connu, mais nulle part rassemblé.</strong> C’est le paradoxe fondamental : l’information nécessaire à la décision existait. Elle était simplement éparpillée.</li>
+  </ul>
+
+  <h2 data-fr="L’IA n’est pas le consultant"
+      data-en="AI is not the consultant"
+      >L’IA n’est pas le consultant</h2>
+
+  <p data-fr="L’IA peut extraire, repérer les récurrences, relier les signaux et synthétiser — en quelques heures plutôt qu’en plusieurs semaines. Elle ne peut pas arbitrer entre deux actions prioritaires, convaincre un comité de direction, ni porter la responsabilité d’une recommandation."
+     data-en="AI can extract, spot recurrences, connect signals and synthesise — in hours rather than weeks. It cannot arbitrate between two priority actions, convince a board, or carry the responsibility of a recommendation."
+     >L’IA peut extraire, repérer les récurrences, relier les signaux et synthétiser — en quelques heures plutôt qu’en plusieurs semaines. Elle ne peut pas arbitrer entre deux actions prioritaires, convaincre un comité de direction, ni porter la responsabilité d’une recommandation.</p>
+
+  <p data-fr="Cette articulation reste humaine. Ce que l’IA accélère, c’est la phase de collecte et de mise en relation — pour laisser davantage de temps à ce qui compte : l’analyse, la priorisation, la décision, la mise en œuvre."
+     data-en="This articulation remains human. What AI accelerates is the collection and cross-referencing phase — to leave more time for what matters: analysis, prioritisation, decision, implementation."
+     >Cette articulation reste humaine. Ce que l’IA accélère, c’est la phase de collecte et de mise en relation — pour laisser davantage de temps à ce qui compte : l’analyse, la priorisation, la décision, la mise en œuvre.</p>
+
+  <div class="highlight">
+    <span data-fr="La valeur ne réside pas dans le modèle d’IA. Elle réside dans la capacité à transformer des données brutes éparpillées en une lecture commune — et cette lecture commune en décision."
+          data-en="The value does not lie in the AI model. It lies in the ability to turn scattered raw data into a shared understanding — and that shared understanding into a decision."
+          >La valeur ne réside pas dans le modèle d’IA. Elle réside dans la capacité à transformer des données brutes éparpillées en une lecture commune — et cette lecture commune en décision.</span>
+  </div>
+
+  <h2 data-fr="Et dans la pratique : le cas NexaCrypt" data-en="In practice: the NexaCrypt case">Et dans la pratique : le cas NexaCrypt</h2>
+
+  <p data-fr="Appliquée au corpus NexaCrypt — comptes-rendus d’entretiens internes, tickets de support, documentations techniques — une analyse hybride règles + LLM produit en quelques heures ce qu’une équipe aurait mis plusieurs semaines à consolider :"
+     data-en="Applied to the NexaCrypt corpus — internal interview notes, support tickets, technical documentation — a hybrid rules + LLM analysis produces in a few hours what a team would have taken several weeks to consolidate:"
+     >Appliquée au corpus NexaCrypt — comptes-rendus d’entretiens internes, tickets de support, documentations techniques — une analyse hybride règles + LLM produit en quelques heures ce qu’une équipe aurait mis plusieurs semaines à consolider :</p>
+
+  <ul>
+    <li data-fr="Identification de 3 SPOF humains, chacun porté par une seule personne sur un composant critique ;"
+        data-en="Identification of 3 human SPOFs, each carried by a single person on a critical component ;"
+        >Identification de 3 SPOF humains, chacun porté par une seule personne sur un composant critique ;</li>
+    <li data-fr="Détection d’un DRP non testé depuis 2021 et de sauvegardes locales sans copie distante ;"
+        data-en="Detection of a DRP untested since 2021 and local backups with no offsite copy ;"
+        >Détection d’un DRP non testé depuis 2021 et de sauvegardes locales sans copie distante ;</li>
+    <li data-fr="Surface du risque financier associé : 2,6 M€ de pertes potentielles par incident à 6h de downtime ;"
+        data-en="Financial risk surface: €2.6M potential losses per incident at 6h downtime ;"
+        >Surface du risque financier associé : 2,6 M€ de pertes potentielles par incident ;</li>
+    <li data-fr="Priorisation des actions correctives : redondance du module de chiffrement en urgence, test DRP sous 30 jours, backup distant immédiat."
+        data-en="Prioritisation of corrective actions: encryption module redundancy as urgent, DRP test within 30 days, immediate offsite backup."
+        >Priorisation des actions correctives : redondance du module de chiffrement en urgence, test DRP sous 30 jours, backup distant immédiat.</li>
+  </ul>
+
+  <p data-fr="Tout cela était disponible dans l’organisation. Il manquait la méthode pour l’assembler."
+     data-en="All of this was available within the organisation. What was missing was the method to assemble it."
+     >Tout cela était disponible dans l’organisation. Il manquait la méthode pour l’assembler.</p>
 
   <footer>
-    <span>Pierre Pistenon — Business Analyst Senior</span>
-    <a href="index.html#articles">← Retour aux articles</a>
+    <span data-fr="Pierre Pistenon — Business Analyst Senior"
+          data-en="Pierre Pistenon — Senior Business Analyst"
+          >Pierre Pistenon — Business Analyst Senior</span>
+    <a href="index.html#articles"
+       data-fr="← Retour aux articles"
+       data-en="← Back to articles"
+       >← Retour aux articles</a>
   </footer>
+
 </div>
+
+<script>
+  function applyLang(lang) {
+    document.documentElement.lang = lang;
+    document.querySelectorAll('.lang-btn').forEach(function(b) {
+      b.classList.toggle('active', b.dataset.lang === lang);
+    });
+    document.querySelectorAll('[data-fr]').forEach(function(el) {
+      var val = el.getAttribute('data-' + lang);
+      if (!val) return;
+      var frVal = el.getAttribute('data-fr') || '';
+      var enVal = el.getAttribute('data-en') || '';
+      if (frVal.indexOf('<') !== -1 || enVal.indexOf('<') !== -1) {
+        el.innerHTML = val;
+      } else {
+        el.textContent = val;
+      }
+    });
+  }
+
+  function setLang(lang) {
+    localStorage.setItem('lang', lang);
+    applyLang(lang);
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    var saved = localStorage.getItem('lang') || 'fr';
+    applyLang(saved);
+  });
+</script>
 </body>
 </html>

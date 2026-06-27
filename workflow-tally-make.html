@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Article complet — Data Quality by Design et gouvernance des règles métier. Cas Tally + Make en production.">
+  <title>Data Quality by Design — Tally + Make — Pierre Pistenon</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0D1117; --bg2: #161B22; --bg3: #1C2229; --border: #30363D;
+      --text: #E6EDF3; --muted: #8B949E; --accent: #4FC3F7;
+      --success: #3FB950; --warn: #D29922;
+    }
+    body {
+      background: var(--bg); color: var(--text);
+      font-family: 'Inter', sans-serif; font-size: 16px; line-height: 1.75;
+      -webkit-font-smoothing: antialiased;
+    }
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(13,17,23,0.92); backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 1.5rem; height: 52px;
+    }
+    .nav-back {
+      display: inline-flex; align-items: center; gap: 6px;
+      color: var(--accent); text-decoration: none;
+      font-family: 'JetBrains Mono', monospace; font-size: 0.82rem;
+    }
+    .lang-toggle { display: flex; gap: 4px; }
+    .lang-btn {
+      font-family: 'JetBrains Mono', monospace; font-size: 0.75rem;
+      background: transparent; border: 1px solid var(--border);
+      color: var(--muted); padding: 0.2rem 0.55rem; border-radius: 4px;
+      cursor: pointer; transition: all 0.15s;
+    }
+    .lang-btn.active { background: var(--accent); color: var(--bg); font-weight: 500; border-color: var(--accent); }
+    .wrap { max-width: 700px; margin: 0 auto; padding: 52px 1.5rem 100px; }
+    .eyebrow {
+      font-family: 'JetBrains Mono', monospace; font-size: 0.78rem;
+      color: var(--warn); letter-spacing: 0.08em; text-transform: uppercase;
+      margin: 2.5rem 0 0.75rem;
+    }
+    .badge-prod {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-family: 'JetBrains Mono', monospace; font-size: 0.72rem;
+      background: rgba(63,185,80,0.1); border: 1px solid rgba(63,185,80,0.3);
+      color: var(--success); padding: 3px 10px; border-radius: 4px;
+      margin-bottom: 1rem;
+    }
+    .badge-prod::before { content: "●"; font-size: 0.6rem; }
+    h1 { font-size: clamp(1.6rem, 4vw, 2.3rem); font-weight: 600; line-height: 1.25; margin-bottom: 1rem; letter-spacing: -0.01em; }
+    .article-sub { color: var(--muted); font-size: 0.95rem; margin-bottom: 2rem; max-width: 56ch; line-height: 1.7; }
+    h2 { font-size: 1.1rem; font-weight: 600; margin-top: 2.5rem; margin-bottom: 0.9rem; color: var(--text); }
+    p { color: var(--muted); margin-bottom: 1.1rem; font-size: 0.95rem; }
+    strong { color: var(--text); font-weight: 600; }
+    ul, ol { margin: 1rem 0 1.1rem 1.3rem; }
+    li { color: var(--muted); margin-bottom: 0.5rem; font-size: 0.95rem; }
+    li::marker { color: var(--accent); }
+    .highlight {
+      background: rgba(79,195,247,0.05); border-left: 2px solid var(--accent);
+      padding: 1rem 1.25rem; margin: 1.5rem 0;
+      color: var(--muted); border-radius: 0 6px 6px 0;
+    }
+    .highlight strong { color: var(--accent); font-style: normal; }
+    pre {
+      background: var(--bg3); border: 1px solid var(--border); border-radius: 8px;
+      padding: 1rem; overflow-x: auto; margin: 1rem 0;
+      font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; color: var(--accent);
+      line-height: 1.7; white-space: pre;
+    }
+    table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.85rem; }
+    th, td { border: 1px solid var(--border); padding: 0.6rem 0.8rem; text-align: left; }
+    th { background: var(--bg2); color: var(--text); font-weight: 600; }
+    td { color: var(--muted); }
+    td strong { color: var(--text); }
+    .checklist { list-style: none; margin-left: 0; }
+    .checklist li { padding-left: 1.5rem; position: relative; }
+    .checklist li::before { content: "□"; position: absolute; left: 0; color: var(--accent); }
+    footer {
+      margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--border);
+      font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; color: var(--muted);
+      display: flex; justify-content: space-between; flex-wrap: wrap; gap: 1rem;
+    }
+    footer a { color: var(--accent); text-decoration: none; }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html#cas" class="nav-back"
+     data-fr="← Retour au site"
+     data-en="← Back to site">← Retour au site</a>
+  <div class="lang-toggle">
+    <button class="lang-btn active" data-lang="fr" onclick="setLang('fr')">FR</button>
+    <button class="lang-btn"        data-lang="en" onclick="setLang('en')">EN</button>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <p class="eyebrow"
+     data-fr="Cas pratique — En production"
+     data-en="Case study — Live in production"
+     >Cas pratique — En production</p>
+
+  <div class="badge-prod"
+       data-fr="EN PRODUCTION"
+       data-en="LIVE">EN PRODUCTION</div>
+
+  <h1 data-fr="Data Quality by Design et gouvernance des règles métier"
+      data-en="Data Quality by Design and business rules governance"
+      >Data Quality by Design et gouvernance des règles métier</h1>
+
+  <p class="article-sub"
+     data-fr="Retour concret sur un workflow Tally + Make en production : comment un cas de qualification apparemment simple devient une fondation stratégique maintenable — et un terrain d’entraînement pour des automatisations bien plus complexes."
+     data-en="A concrete look at a live Tally + Make workflow: how an apparently simple qualification case becomes a maintainable strategic foundation — and a training ground for far more complex automations."
+     >Retour concret sur un workflow Tally + Make en production : comment un cas de qualification apparemment simple devient une fondation stratégique maintenable — et un terrain d’entraînement pour des automatisations bien plus complexes.</p>
+
+  <div class="highlight">
+    <span data-fr="La plupart des initiatives d’automatisation « simples » finissent par créer plus de dette technique et opérationnelle qu’elles n’apportent de valeur. La raison ? On automatise des règles floues, mal documentées, sur des données de qualité médiocre."
+          data-en="Most ‘simple’ automation initiatives end up creating more technical and operational debt than value. The reason? They automate vague, poorly documented rules on poor-quality data."
+          >La plupart des initiatives d’automatisation « simples » finissent par créer plus de dette technique et opérationnelle qu’elles n’apportent de valeur. La raison ? On automatise des règles floues, mal documentées, sur des données de qualité médiocre.</span>
+  </div>
+
+  <h2 data-fr="1. Le besoin métier initial"
+      data-en="1. The initial business need"
+      >1. Le besoin métier initial</h2>
+
+  <p data-fr="Les demandes entrantes arrivaient par canaux multiples — emails, formulaires libres, messages — sans structure homogène. Conséquences classiques dans ce type de situation :"
+     data-en="Inbound requests arrived through multiple channels — emails, free-form submissions, messages — with no consistent structure. Classic consequences in this type of situation:"
+     >Les demandes entrantes arrivaient par canaux multiples — emails, formulaires libres, messages — sans structure homogène. Conséquences classiques dans ce type de situation :</p>
+
+  <ul>
+    <li data-fr="Qualification manuelle lourde et chronophage ;"
+        data-en="Heavy, time-consuming manual qualification ;"
+        >Qualification manuelle lourde et chronophage ;</li>
+    <li data-fr="Erreurs de routage fréquentes vers le mauvais interlocuteur ;"
+        data-en="Frequent routing errors to the wrong contact ;"
+        >Erreurs de routage fréquentes vers le mauvais interlocuteur ;</li>
+    <li data-fr="Absence de traçabilité sur les demandes traitées ou ignorées ;"
+        data-en="No traceability on processed or ignored requests ;"
+        >Absence de traçabilité sur les demandes traitées ou ignorées ;</li>
+    <li data-fr="Scalabilité limitée : chaque hausse de volume se traduit directement en surcharge manuelle."
+        data-en="Limited scalability: every volume increase translates directly into manual overload."
+        >Scalabilité limitée : chaque hausse de volume se traduit directement en surcharge manuelle.</li>
+  </ul>
+
+  <h2 data-fr="2. La solution : Tally + Make"
+      data-en="2. The solution: Tally + Make"
+      >2. La solution : Tally + Make</h2>
+
+  <p data-fr="Le choix de l’outillage est secondaire. Ce qui compte, c’est l’ordre dans lequel on construit : d’abord la qualité de la donnée à la source, ensuite les règles de décision, enfin l’automatisation du routage."
+     data-en="The choice of tooling is secondary. What matters is the order in which you build: first data quality at source, then decision rules, then routing automation."
+     >Le choix de l’outillage est secondaire. Ce qui compte, c’est l’ordre dans lequel on construit : d’abord la qualité de la donnée à la source, ensuite les règles de décision, enfin l’automatisation du routage.</p>
+
+  <p data-fr="<strong>Tally</strong> assure la capture structurée : listes déroulantes, contrôles de saisie, validations à la source. On n’automatise pas un canal libre — on impose une structure dès l’entrée. C’est la première brique de la Data Quality by Design."
+     data-en="<strong>Tally</strong> handles structured capture: dropdown lists, input controls, source-level validations. You don’t automate a free-form channel — you impose structure at entry. This is the first building block of Data Quality by Design."
+     ><strong>Tally</strong> assure la capture structurée : listes déroulantes, contrôles de saisie, validations à la source. On n’automatise pas un canal libre — on impose une structure dès l’entrée. C’est la première brique de la Data Quality by Design.</p>
+
+  <p data-fr="<strong>Make</strong> orchestre le routage : réception du webhook Tally, application des règles de classification, routage conditionnel vers les bons destinataires, logging systématique, gestion du fallback."
+     data-en="<strong>Make</strong> orchestrates the routing: receiving the Tally webhook, applying classification rules, conditional routing to the right recipients, systematic logging, fallback management."
+     ><strong>Make</strong> orchestre le routage : réception du webhook Tally, application des règles de classification, routage conditionnel vers les bons destinataires, logging systématique, gestion du fallback.</p>
+
+  <h2 data-fr="3. L’architecture"
+      data-en="3. The architecture"
+      >3. L’architecture</h2>
+
+  <pre data-fr="Tally (formulaire structuré)
+   → Webhook Make
+   → Routeur principal
+        ├─ Catégorie A : Demande de prestation  → notification + enregistrement CRM
+        ├─ Catégorie B : Question / information  → réponse automatisée + log
+        ├─ Catégorie C : Partenariat / réseau   → notification dédiée + archivage
+        ├─ Catégorie D : Autre / inclassable   → fallback (voir ci-dessous)
+        └─ Fallback                            → pool de qualification humaine + log d’exception"
+       data-en="Tally (structured form)
+   → Make webhook
+   → Main router
+        ├─ Category A: Service request        → notification + CRM entry
+        ├─ Category B: Question / information  → automated reply + log
+        ├─ Category C: Partnership / network   → dedicated notification + archive
+        ├─ Category D: Other / unclassifiable  → fallback (see below)
+        └─ Fallback                            → human qualification pool + exception log"
+       >Tally (formulaire structuré)
+   → Webhook Make
+   → Routeur principal
+        ├─ Catégorie A : Demande de prestation  → notification + enregistrement CRM
+        ├─ Catégorie B : Question / information  → réponse automatisée + log
+        ├─ Catégorie C : Partenariat / réseau   → notification dédiée + archivage
+        ├─ Catégorie D : Autre / inclassable   → fallback (voir ci-dessous)
+        └─ Fallback                            → pool de qualification humaine + log d’exception</pre>
+
+  <p data-fr="Le fallback est une pièce maîtresse du système. Toute demande qui ne satisfait pas aux règles de classification — incomplète, ambiguë, ou d’une catégorie non prévue — est renvoyée vers un pool humain, loggée, et visible. On ne perd aucune demande, et on accumule les données nécessaires pour éventuellement améliorer les règles ou créer une cinquième catégorie."
+     data-en="The fallback is a cornerstone of the system. Any request that does not satisfy the classification rules — incomplete, ambiguous, or from an unanticipated category — is routed to a human pool, logged, and visible. No request is lost, and you accumulate the data needed to eventually refine the rules or create a fifth category."
+     >Le fallback est une pièce maîtresse du système. Toute demande qui ne satisfait pas aux règles de classification — incomplète, ambiguë, ou d’une catégorie non prévue — est renvoyée vers un pool humain, loggée, et visible. On ne perd aucune demande, et on accumule les données nécessaires pour éventuellement améliorer les règles ou créer une cinquième catégorie.</p>
+
+  <h2 data-fr="4. Les vrais enseignements"
+      data-en="4. The real lessons"
+      >4. Les vrais enseignements</h2>
+
+  <p data-fr="Ce workflow est en production. Voici ce qu’on observe en conditions réelles — et ce que ce cas simple enseigne sur des enjeux bien plus larges."
+     data-en="This workflow is live in production. Here is what we observe in real conditions — and what this simple case teaches about far broader challenges."
+     >Ce workflow est en production. Voici ce qu’on observe en conditions réelles — et ce que ce cas simple enseigne sur des enjeux bien plus larges.</p>
+
+  <table>
+    <tr>
+      <th data-fr="Principe" data-en="Principle">Principe</th>
+      <th data-fr="Ce que ça change en pratique" data-en="What it changes in practice">Ce que ça change en pratique</th>
+    </tr>
+    <tr>
+      <td data-fr="Data Quality by Design" data-en="Data Quality by Design">Data Quality by Design</td>
+      <td data-fr="Structurer l’entrée (formulaire) réduit drastiquement le bruit en aval. Chaque contrôle Tally est une règle de qualité appliquée à la source — avant que la donnée entre dans le système." data-en="Structuring the entry (form) drastically reduces downstream noise. Each Tally control is a quality rule applied at source — before data enters the system.">Structurer l’entrée réduit drastiquement le bruit en aval. Chaque contrôle Tally est une règle de qualité appliquée à la source.</td>
+    </tr>
+    <tr>
+      <td data-fr="Gouvernance des règles métier" data-en="Business rules governance">Gouvernance des règles métier</td>
+      <td data-fr="Les 4 catégories sont documentées et lisibles par le métier. Modifier une règle ne nécessite pas de toucher au code — c’est la clé de la maintenabilité à long terme." data-en="The 4 categories are documented and readable by business users. Modifying a rule does not require touching code — this is the key to long-term maintainability.">Les 4 catégories sont documentées et lisibles par le métier. Modifier une règle ne nécessite pas de toucher au code.</td>
+    </tr>
+    <tr>
+      <td data-fr="Fallback explicite" data-en="Explicit fallback">Fallback explicite</td>
+      <td data-fr="Zéro perte de demande. Le fallback loggé permet d’identifier en quelques semaines les patterns émergents et d’enrichir les règles de classification." data-en="Zero request loss. The logged fallback makes it possible to identify emerging patterns within weeks and enrich the classification rules.">Zéro perte de demande. Le fallback loggé fait émerger les patterns et enrichit les règles.</td>
+    </tr>
+    <tr>
+      <td data-fr="Scalabilité" data-en="Scalability">Scalabilité</td>
+      <td data-fr="Le volume peut doubler sans toucher à l’architecture. Ajouter une catégorie ou modifier un destinataire prend quelques minutes." data-en="Volume can double without touching the architecture. Adding a category or changing a recipient takes a few minutes.">Le volume peut doubler sans toucher à l’architecture. Ajouter une catégorie prend quelques minutes.</td>
+    </tr>
+    <tr>
+      <td data-fr="Maintenance opérationnelle" data-en="Operational maintenance">Maintenance opérationnelle</td>
+      <td data-fr="Le logging et la visibilité des exceptions permettent de passer du mode « pompier » à un mode d’amélioration continue piloté par les données." data-en="Logging and exception visibility allow moving from firefighting mode to data-driven continuous improvement.">Le logging permet de passer du mode pompier à l’amélioration continue pilotée par les données.</td>
+    </tr>
+  </table>
+
+  <h2 data-fr="5. Le lien avec le reste de la démarche"
+      data-en="5. The connection to the broader approach"
+      >5. Le lien avec le reste de la démarche</h2>
+
+  <p data-fr="Ce workflow applique le même principe que les cas de migration CRM ou de cartographie des risques : <strong>les règles d’abord, l’automatisation ensuite</strong>. Ce n’est pas un choix technologique — c’est une posture de gouvernance."
+     data-en="This workflow applies the same principle as the CRM migration and risk mapping cases: <strong>rules first, automation second</strong>. This is not a technology choice — it is a governance stance."
+     >Ce workflow applique le même principe que les cas de migration CRM ou de cartographie des risques : <strong>les règles d’abord, l’automatisation ensuite</strong>. Ce n’est pas un choix technologique — c’est une posture de gouvernance.</p>
+
+  <p data-fr="Ce type de fondation est également la condition pour intégrer ensuite de l’IA de façon utile : un modèle de classification avancée des demandes ambiguës ne peut fonctionner que si les cas clairs sont déjà gérés par des règles. On ne passe pas à l’IA sur du chaos : on le fait sur des processus déjà structurés et gouvernés."
+     data-en="This type of foundation is also the prerequisite for integrating AI usefully afterwards: an advanced classification model for ambiguous requests can only work if clear cases are already handled by rules. You do not move to AI on chaos: you do it on already structured, governed processes."
+     >Ce type de fondation est également la condition pour intégrer ensuite de l’IA de façon utile : un modèle de classification avancée des demandes ambiguës ne peut fonctionner que si les cas clairs sont déjà gérés par des règles. On ne passe pas à l’IA sur du chaos : on le fait sur des processus déjà structurés et gouvernés.</p>
+
+  <h2 data-fr="6. Avant de lancer votre prochain projet d’automatisation"
+      data-en="6. Before launching your next automation project"
+      >6. Avant de lancer votre prochain projet d’automatisation</h2>
+
+  <p data-fr="Trois questions à se poser systématiquement, quel que soit l’outil (Make, n8n, Power Automate, RPA…) :"
+     data-en="Three questions to ask systematically, whatever the tool (Make, n8n, Power Automate, RPA…):"
+     >Trois questions à se poser systématiquement, quel que soit l’outil (Make, n8n, Power Automate, RPA…) :</p>
+
+  <ul class="checklist">
+    <li data-fr="Les règles métier sont-elles documentées et validées par le business — ou seulement supposées ?"
+        data-en="Are the business rules documented and validated by the business — or merely assumed ?"
+        >Les règles métier sont-elles documentées et validées par le business — ou seulement supposées ?</li>
+    <li data-fr="La Data Quality est-elle traitée à la source ou seulement en aval, au moment où les dégâts sont déjà faits ?"
+        data-en="Is Data Quality handled at source, or only downstream once the damage is already done?"
+        >La Data Quality est-elle traitée à la source ou seulement en aval, au moment où les dégâts sont déjà faits ?</li>
+    <li data-fr="Avons-nous prévu un mécanisme de fallback et de monitoring des exceptions — ou l’automatisation est-elle un tunnel sans visibilité ?"
+        data-en="Have we planned a fallback mechanism and exception monitoring — or is the automation a black box?"
+        >Avons-nous prévu un mécanisme de fallback et de monitoring des exceptions — ou l’automatisation est-elle un tunnel sans visibilité ?</li>
+  </ul>
+
+  <div class="highlight">
+    <strong data-fr="Conclusion" data-en="Conclusion">Conclusion</strong> —
+    <span data-fr="Les automatisations qui réussissent sur le long terme ne sont pas celles qui utilisent les outils les plus sophistiqués en premier. Ce sont celles qui commencent par expliciter, structurer et gouverner les règles métier tout en intégrant la Data Quality dès la conception."
+          data-en="The automations that succeed in the long run are not those that use the most sophisticated tools first. They are the ones that start by making business rules explicit, structured and governed, while integrating Data Quality from the design stage."
+          >Les automatisations qui réussissent sur le long terme ne sont pas celles qui utilisent les outils les plus sophistiqués en premier. Ce sont celles qui commencent par expliciter, structurer et gouverner les règles métier tout en intégrant la Data Quality dès la conception.</span>
+  </div>
+
+  <footer>
+    <span data-fr="Pierre Pistenon — Business Analyst Senior"
+          data-en="Pierre Pistenon — Senior Business Analyst"
+          >Pierre Pistenon — Business Analyst Senior</span>
+    <a href="index.html#cas"
+       data-fr="← Retour aux cas pratiques"
+       data-en="← Back to case studies"
+       >← Retour aux cas pratiques</a>
+  </footer>
+
+</div>
+
+<script>
+  function applyLang(lang) {
+    document.documentElement.lang = lang;
+    document.querySelectorAll('.lang-btn').forEach(function(b) {
+      b.classList.toggle('active', b.dataset.lang === lang);
+    });
+    document.querySelectorAll('[data-fr]').forEach(function(el) {
+      var val = el.getAttribute('data-' + lang);
+      if (!val) return;
+      var frVal = el.getAttribute('data-fr') || '';
+      var enVal = el.getAttribute('data-en') || '';
+      if (frVal.indexOf('<') !== -1 || enVal.indexOf('<') !== -1) {
+        el.innerHTML = val;
+      } else {
+        el.textContent = val;
+      }
+    });
+  }
+
+  function setLang(lang) {
+    localStorage.setItem('lang', lang);
+    applyLang(lang);
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    var saved = localStorage.getItem('lang') || 'fr';
+    applyLang(saved);
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Article complet — Comment mesurer le Bus Factor de votre organisation. Méthode en 5 étapes, matrice des compétences, score de risque.">
+  <title>Mesurer le Bus Factor de votre organisation — Pierre Pistenon</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0D1117; --bg2: #161B22; --border: #30363D;
+      --text: #E6EDF3; --muted: #8B949E; --accent: #4FC3F7;
+    }
+    body {
+      background: var(--bg); color: var(--text);
+      font-family: 'Inter', sans-serif; font-size: 16px; line-height: 1.75;
+      -webkit-font-smoothing: antialiased;
+    }
+    /* ── Nav ── */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(13,17,23,0.92); backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 1.5rem; height: 52px;
+    }
+    .nav-back {
+      display: inline-flex; align-items: center; gap: 6px;
+      color: var(--accent); text-decoration: none;
+      font-family: 'JetBrains Mono', monospace; font-size: 0.82rem;
+    }
+    .lang-toggle { display: flex; gap: 4px; }
+    .lang-btn {
+      font-family: 'JetBrains Mono', monospace; font-size: 0.75rem;
+      background: transparent; border: 1px solid var(--border);
+      color: var(--muted); padding: 0.2rem 0.55rem; border-radius: 4px;
+      cursor: pointer; transition: all 0.15s;
+    }
+    .lang-btn.active { background: var(--accent); color: var(--bg); font-weight: 500; border-color: var(--accent); }
+    /* ── Content ── */
+    .wrap { max-width: 700px; margin: 0 auto; padding: 52px 1.5rem 100px; }
+    .eyebrow {
+      font-family: 'JetBrains Mono', monospace; font-size: 0.78rem;
+      color: var(--accent); letter-spacing: 0.08em; text-transform: uppercase;
+      margin: 2.5rem 0 0.75rem;
+    }
+    h1 {
+      font-size: clamp(1.6rem, 4vw, 2.3rem); font-weight: 600;
+      line-height: 1.25; margin-bottom: 1rem; letter-spacing: -0.01em;
+    }
+    .article-sub { color: var(--muted); font-size: 0.95rem; margin-bottom: 1.8rem; }
+    .disclaimer {
+      background: var(--bg2); border-left: 2px solid var(--accent);
+      padding: 1rem 1.25rem; font-size: 0.86rem; color: var(--muted);
+      font-style: italic; margin-bottom: 2.5rem; border-radius: 0 6px 6px 0;
+    }
+    h2 { font-size: 1.15rem; font-weight: 600; margin-top: 2.5rem; margin-bottom: 0.9rem; color: var(--text); }
+    h3 { font-size: 0.98rem; font-weight: 600; margin-top: 1.8rem; margin-bottom: 0.6rem; color: var(--accent); font-family: 'JetBrains Mono', monospace; }
+    p { color: var(--muted); margin-bottom: 1.1rem; font-size: 0.95rem; }
+    strong { color: var(--text); font-weight: 600; }
+    ul { margin: 1rem 0 1.1rem 1.3rem; }
+    li { color: var(--muted); margin-bottom: 0.5rem; font-size: 0.95rem; }
+    li::marker { color: var(--accent); }
+    table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.85rem; }
+    th, td { border: 1px solid var(--border); padding: 0.6rem 0.8rem; text-align: left; }
+    th { background: var(--bg2); color: var(--text); font-weight: 600; }
+    td { color: var(--muted); }
+    td.ok { color: var(--accent); }
+    td.warn { color: #f0a500; }
+    td.ko { color: #f85149; }
+    .highlight {
+      background: rgba(79,195,247,0.05); border-left: 2px solid var(--accent);
+      padding: 1rem 1.25rem; margin: 1.5rem 0; font-style: italic;
+      color: var(--muted); border-radius: 0 6px 6px 0;
+    }
+    .step-label {
+      display: inline-block;
+      font-family: 'JetBrains Mono', monospace; font-size: 0.75rem;
+      color: var(--bg); background: var(--accent);
+      padding: 0.15rem 0.55rem; border-radius: 3px;
+      margin-bottom: 0.5rem; letter-spacing: 0.05em;
+    }
+    .next-article {
+      margin-top: 3rem; padding: 1.5rem; background: var(--bg2);
+      border: 1px solid var(--border); border-radius: 8px;
+    }
+    .next-article p { margin-bottom: 0.5rem; }
+    .next-article a {
+      color: var(--accent); text-decoration: none; font-size: 0.9rem;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    footer {
+      margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--border);
+      font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; color: var(--muted);
+      display: flex; justify-content: space-between; flex-wrap: wrap; gap: 1rem;
+    }
+    footer a { color: var(--accent); text-decoration: none; }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html#articles" class="nav-back"
+     data-fr="← Retour au site"
+     data-en="← Back to site">← Retour au site</a>
+  <div class="lang-toggle">
+    <button class="lang-btn active" onclick="setLang('fr')">FR</button>
+    <button class="lang-btn"        onclick="setLang('en')">EN</button>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <p class="eyebrow"
+     data-fr="Série Bus Factor — Article 2 — Version longue"
+     data-en="Bus Factor Series — Article 2 — Long version"
+     >Série Bus Factor — Article 2 — Version longue</p>
+
+  <h1
+     data-fr="Comment mesurer le Bus Factor de votre organisation"
+     data-en="How to measure the Bus Factor in your organisation"
+     >Comment mesurer le Bus Factor de votre organisation</h1>
+
+  <p class="article-sub"
+     data-fr="Méthode en 5 étapes — composants critiques, matrice des compétences, score de risque"
+     data-en="A 5-step method — critical components, skills matrix, risk score"
+     >Méthode en 5 étapes — composants critiques, matrice des compétences, score de risque</p>
+
+  <div class="disclaimer">
+    <span data-fr="Ce qui suit s'appuie sur le cas pédagogique NexaCrypt introduit dans l'Article 1, et sur des situations représentatives observées en mission. Les mécanismes décrits sont documentés et fréquemment rencontrés dans des organisations de toutes tailles."
+          data-en="The following builds on the NexaCrypt teaching case introduced in Article 1, and on representative situations observed during assignments. The mechanisms described are documented and commonly encountered in organisations of all sizes."
+          >Ce qui suit s'appuie sur le cas pédagogique NexaCrypt introduit dans l'Article 1, et sur des situations représentatives observées en mission. Les mécanismes décrits sont documentés et fréquemment rencontrés dans des organisations de toutes tailles.</span>
+  </div>
+
+  <!-- ── INTRO ── -->
+  <p data-fr="Vous savez que votre organisation dépend de quelques experts clés. Mais comment le démontrer, le quantifier, l'expliquer à un comité de direction ? Le Bus Factor n'est pas une intuition : c'est un indicateur qui se mesure, et qui peut être traduit en risque financier concret."
+     data-en="You know your organisation depends on a few key experts. But how do you demonstrate it, quantify it, explain it to a board? The Bus Factor is not an intuition: it is a measurable indicator that can be translated into concrete financial risk."
+     >Vous savez que votre organisation dépend de quelques experts clés. Mais comment le démontrer, le quantifier, l'expliquer à un comité de direction ? Le Bus Factor n'est pas une intuition : c'est un indicateur qui se mesure, et qui peut être traduit en risque financier concret.</p>
+
+  <p data-fr="Dans l'Article 1, nous avons vu NexaCrypt perdre plusieurs millions en six heures d'indisponibilité — parce qu'Alice, la seule personne à maîtriser le module de chiffrement NexaCrypt, était injoignable. Ce n'était pas un accident technique : c'était une dette de connaissance accumulée, devenue visible en temps de crise. Cet article vous donne la méthode pour identifier ce risque avant qu'il ne se matérialise."
+     data-en="In Article 1, we saw NexaCrypt lose several million euros in six hours of downtime — because Alice, the only person who mastered the NexaCrypt encryption module, was unreachable. That was not a technical accident: it was accumulated knowledge debt, made visible under crisis conditions. This article gives you the method to identify that risk before it materialises."
+     >Dans l'Article 1, nous avons vu NexaCrypt perdre plusieurs millions en six heures d'indisponibilité — parce qu'Alice, la seule personne à maîtriser le module de chiffrement NexaCrypt, était injoignable. Ce n'était pas un accident technique : c'était une dette de connaissance accumulée, devenue visible en temps de crise. Cet article vous donne la méthode pour identifier ce risque avant qu'il ne se matérialise.</p>
+
+  <!-- ── ÉTAPE 1 ── -->
+  <h2 data-fr="Étape 1 — Ce que mesure (et ne mesure pas) le Bus Factor"
+      data-en="Step 1 — What the Bus Factor measures (and what it doesn't)"
+      >Étape 1 — Ce que mesure (et ne mesure pas) le Bus Factor</h2>
+
+  <p data-fr="La définition formelle est simple : le Bus Factor est le nombre minimal de personnes dont la disparition soudaine — démission, accident, maladie — rendrait un système, un processus ou un projet non maintenable."
+     data-en="The formal definition is simple: the Bus Factor is the minimum number of people whose sudden disappearance — resignation, accident, illness — would render a system, process or project unmaintainable."
+     >La définition formelle est simple : le Bus Factor est le nombre minimal de personnes dont la disparition soudaine — démission, accident, maladie — rendrait un système, un processus ou un projet non maintenable.</p>
+
+  <ul>
+    <li data-fr="<strong>Bus Factor = 1</strong> — risque maximal : une seule personne détient la connaissance critique." data-en="<strong>Bus Factor = 1</strong> — maximum risk: a single person holds the critical knowledge."><strong>Bus Factor = 1</strong> — risque maximal : une seule personne détient la connaissance critique.</li>
+    <li data-fr="<strong>Bus Factor = 2</strong> — risque élevé : la perte simultanée de deux personnes paralyserait le système." data-en="<strong>Bus Factor = 2</strong> — high risk: the simultaneous loss of two people would paralyse the system."><strong>Bus Factor = 2</strong> — risque élevé : la perte simultanée de deux personnes paralyserait le système.</li>
+    <li data-fr="<strong>Bus Factor ≥ 3</strong> — risque acceptable : la connaissance est suffisamment partagée." data-en="<strong>Bus Factor ≥ 3</strong> — acceptable risk: knowledge is sufficiently shared."><strong>Bus Factor ≥ 3</strong> — risque acceptable : la connaissance est suffisamment partagée.</li>
+  </ul>
+
+  <p data-fr="Ce que le Bus Factor ne mesure pas mérite d'être précisé, parce que les confusions sont fréquentes en pratique."
+     data-en="What the Bus Factor does not measure deserves clarification, because confusion is common in practice."
+     >Ce que le Bus Factor ne mesure pas mérite d'être précisé, parce que les confusions sont fréquentes en pratique.</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th data-fr="Concept souvent confondu" data-en="Concept often confused">Concept souvent confondu</th>
+        <th data-fr="Pourquoi ce n'est pas le Bus Factor" data-en="Why it is not the Bus Factor">Pourquoi ce n'est pas le Bus Factor</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td data-fr="Turnover" data-en="Turnover">Turnover</td>
+        <td data-fr="Mesure le taux de départ — pas l'impact sur la continuité opérationnelle si cette personne part." data-en="Measures the departure rate — not the operational continuity impact if that person leaves.">Mesure le taux de départ — pas l'impact sur la continuité opérationnelle si cette personne part.</td>
+      </tr>
+      <tr>
+        <td data-fr="Compétence rare" data-en="Rare skill">Compétence rare</td>
+        <td data-fr="Une compétence peut être rare sans être critique. Un expert COBOL inutilisé en production n'est pas un SPOF." data-en="A skill can be rare without being critical. An unused COBOL expert in production is not a SPOF.">Une compétence peut être rare sans être critique. Un expert COBOL inutilisé en production n'est pas un SPOF.</td>
+      </tr>
+      <tr>
+        <td data-fr="Charge de travail" data-en="Workload">Charge de travail</td>
+        <td data-fr="Une personne peut être surchargée sans être un point de défaillance unique." data-en="A person can be overloaded without being a single point of failure.">Une personne peut être surchargée sans être un point de défaillance unique.</td>
+      </tr>
+      <tr>
+        <td data-fr="Ancienneté" data-en="Seniority">Ancienneté</td>
+        <td data-fr="L'ancienneté ne détermine pas la criticité. Chez NexaCrypt, Alice était moins ancienne que Bob — et pourtant, c'est elle le SPOF principal." data-en="Seniority does not determine criticality. At NexaCrypt, Alice was less senior than Bob — and yet she was the main SPOF.">L'ancienneté ne détermine pas la criticité. Chez NexaCrypt, Alice était moins ancienne que Bob — et pourtant, c'est elle le SPOF principal.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- ── ÉTAPE 2 ── -->
+  <h2 data-fr="Étape 2 — Identifier les composants critiques"
+      data-en="Step 2 — Identifying critical components"
+      >Étape 2 — Identifier les composants critiques</h2>
+
+  <p data-fr="Avant de cartographier les personnes, il faut cartographier les systèmes et processus dont dépend réellement l'activité. Un composant est critique s'il satisfait au moins l'un de ces critères :"
+     data-en="Before mapping people, you need to map the systems and processes on which the business actually depends. A component is critical if it meets at least one of these criteria:"
+     >Avant de cartographier les personnes, il faut cartographier les systèmes et processus dont dépend réellement l'activité. Un composant est critique s'il satisfait au moins l'un de ces critères :</p>
+
+  <ul>
+    <li data-fr="<strong>Impact financier</strong> — son indisponibilité entraîne une perte directe de revenus ou des pénalités contractuelles." data-en="<strong>Financial impact</strong> — its unavailability causes direct revenue loss or contractual penalties."><strong>Impact financier</strong> — son indisponibilité entraîne une perte directe de revenus ou des pénalités contractuelles.</li>
+    <li data-fr="<strong>Impact opérationnel</strong> — son arrêt bloque une partie significative des processus métiers." data-en="<strong>Operational impact</strong> — its failure blocks a significant share of business processes."><strong>Impact opérationnel</strong> — son arrêt bloque une partie significative des processus métiers.</li>
+    <li data-fr="<strong>Impact réglementaire</strong> — son dysfonctionnement expose l'organisation à des sanctions légales (RGPD, normes sectorielles)." data-en="<strong>Regulatory impact</strong> — its failure exposes the organisation to legal sanctions (GDPR, sector standards)."><strong>Impact réglementaire</strong> — son dysfonctionnement expose l'organisation à des sanctions légales (RGPD, normes sectorielles).</li>
+    <li data-fr="<strong>Impact réputationnel</strong> — une panne affecte durablement la confiance des clients ou des partenaires." data-en="<strong>Reputational impact</strong> — an outage durably affects client or partner trust."><strong>Impact réputationnel</strong> — une panne affecte durablement la confiance des clients ou des partenaires.</li>
+  </ul>
+
+  <h3 data-fr="Comment les lister en pratique"
+      data-en="How to list them in practice"
+      >Comment les lister en pratique</h3>
+
+  <p data-fr="Un atelier de deux heures suffit généralement, réunissant les responsables métiers, la DSI et au moins un représentant de chaque équipe technique. La question de cadrage est simple : « Si ce composant était indisponible 24h demain matin, quel serait l'impact ? » Tout ce qui provoque une réponse franche mérite d'être dans la liste."
+     data-en="A two-hour workshop is generally sufficient, bringing together business owners, the IT department and at least one representative from each technical team. The framing question is simple: 'If this component were unavailable for 24h tomorrow morning, what would the impact be?' Anything that provokes a clear answer belongs on the list."
+     >Un atelier de deux heures suffit généralement, réunissant les responsables métiers, la DSI et au moins un représentant de chaque équipe technique. La question de cadrage est simple : « Si ce composant était indisponible 24h demain matin, quel serait l'impact ? » Tout ce qui provoque une réponse franche mérite d'être dans la liste.</p>
+
+  <p data-fr="L'audit des incidents passés est complémentaire. Les composants qui ont déjà causé des pannes — même mineures — sont souvent des SPOF qui n'ont pas encore déclenché de crise majeure. Un script de sauvegarde non documenté qui a planté une fois est un candidat évident."
+     data-en="An audit of past incidents is complementary. Components that have already caused failures — even minor ones — are often SPOFs that have not yet triggered a major crisis. An undocumented backup script that failed once is an obvious candidate."
+     >L'audit des incidents passés est complémentaire. Les composants qui ont déjà causé des pannes — même mineures — sont souvent des SPOF qui n'ont pas encore déclenché de crise majeure. Un script de sauvegarde non documenté qui a planté une fois est un candidat évident.</p>
+
+  <p data-fr="Règle de base : si un composant n'a qu'un seul propriétaire identifié, il est critique par défaut — quel que soit son niveau de sophistication technique."
+     data-en="Basic rule: if a component has only one identified owner, it is critical by default — regardless of its technical sophistication."
+     ><strong data-fr="Règle de base" data-en="Basic rule">Règle de base</strong> : si un composant n'a qu'un seul propriétaire identifié, il est critique par défaut — quel que soit son niveau de sophistication technique.</p>
+
+  <p data-fr="Résultat attendu à cette étape : une liste de 5 à 15 composants critiques, avec pour chacun : le propriétaire actuel, l'impact estimé en cas d'indisponibilité, et la durée maximale acceptable avant impact sévère."
+     data-en="Expected output at this stage: a list of 5 to 15 critical components, with for each one: the current owner, the estimated impact in case of unavailability, and the maximum acceptable duration before severe impact."
+     >Résultat attendu à cette étape : une liste de 5 à 15 composants critiques, avec pour chacun : le propriétaire actuel, l'impact estimé en cas d'indisponibilité, et la durée maximale acceptable avant impact sévère.</p>
+
+  <p data-fr="Chez NexaCrypt, cet inventaire aurait donné :"
+     data-en="At NexaCrypt, this inventory would have produced:"
+     >Chez NexaCrypt, cet inventaire aurait donné :</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th data-fr="Composant" data-en="Component">Composant</th>
+        <th data-fr="Propriétaire" data-en="Owner">Propriétaire</th>
+        <th data-fr="Impact si indisponible" data-en="Impact if unavailable">Impact si indisponible</th>
+        <th data-fr="Durée max acceptable" data-en="Max acceptable duration">Durée max acceptable</th>
+        <th data-fr="Critique ?" data-en="Critical?">Critique ?</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td data-fr="NexaCrypt (chiffrement)" data-en="NexaCrypt (encryption)">NexaCrypt (chiffrement)</td>
+        <td>Alice</td>
+        <td data-fr="Arrêt total des transactions" data-en="Full transaction halt">Arrêt total des transactions</td>
+        <td>0h</td>
+        <td class="ok">✓</td>
+      </tr>
+      <tr>
+        <td data-fr="Serveurs principaux" data-en="Main servers">Serveurs principaux</td>
+        <td>Bob</td>
+        <td data-fr="Downtime étendu" data-en="Extended downtime">Downtime étendu</td>
+        <td>1h</td>
+        <td class="ok">✓</td>
+      </tr>
+      <tr>
+        <td data-fr="Scripts de récupération" data-en="Recovery scripts">Scripts de récupération</td>
+        <td>Dave</td>
+        <td data-fr="Perte de données possible" data-en="Possible data loss">Perte de données possible</td>
+        <td>2h</td>
+        <td class="ok">✓</td>
+      </tr>
+      <tr>
+        <td data-fr="Documentation technique" data-en="Technical documentation">Documentation technique</td>
+        <td>Charlie</td>
+        <td data-fr="Ralentissement des corrections" data-en="Slower incident resolution">Ralentissement des corrections</td>
+        <td>24h</td>
+        <td class="ko">✗</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- ── ÉTAPE 3 ── -->
+  <h2 data-fr="Étape 3 — Cartographier les dépendances humaines"
+      data-en="Step 3 — Mapping human dependencies"
+      >Étape 3 — Cartographier les dépendances humaines</h2>
+
+  <p data-fr="Pour chaque composant critique identifié à l'étape 2, la question n'est pas « qui l'a créé ? » mais « qui peut le maintenir en production, et qui peut le restaurer en cas de panne ? ». La distinction est importante : l'auteur d'un système ne sait pas toujours comment le réparer sous pression."
+     data-en="For each critical component identified in step 2, the question is not 'who built it?' but 'who can maintain it in production, and who can restore it in case of failure?' The distinction matters: the author of a system does not always know how to repair it under pressure."
+     >Pour chaque composant critique identifié à l'étape 2, la question n'est pas « qui l'a créé ? » mais « qui peut le maintenir en production, et qui peut le restaurer en cas de panne ? ». La distinction est importante : l'auteur d'un système ne sait pas toujours comment le réparer sous pression.</p>
+
+  <h3 data-fr="La matrice des compétences" data-en="The skills matrix">La matrice des compétences</h3>
+
+  <p data-fr="Croisez chaque composant critique avec les personnes de l'équipe. Pour chaque case, indiquez le niveau de maîtrise : expert (peut intervenir seul en urgence), partiel (peut aider sous supervision), aucun."
+     data-en="Cross each critical component with team members. For each cell, indicate the level of mastery: expert (can intervene alone in an emergency), partial (can help under supervision), none."
+     >Croisez chaque composant critique avec les personnes de l'équipe. Pour chaque case, indiquez le niveau de maîtrise : expert (peut intervenir seul en urgence), partiel (peut aider sous supervision), aucun.</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th data-fr="Composant" data-en="Component">Composant</th>
+        <th>Alice</th>
+        <th>Bob</th>
+        <th>Dave</th>
+        <th>Charlie</th>
+        <th>Bus Factor</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>NexaCrypt</td>
+        <td class="ok" data-fr="Expert" data-en="Expert">Expert</td>
+        <td class="ko">—</td>
+        <td class="ko">—</td>
+        <td class="ko">—</td>
+        <td class="ko">1</td>
+      </tr>
+      <tr>
+        <td data-fr="Serveurs" data-en="Servers">Serveurs</td>
+        <td class="ko">—</td>
+        <td class="ok" data-fr="Expert" data-en="Expert">Expert</td>
+        <td class="warn" data-fr="Partiel" data-en="Partial">Partiel</td>
+        <td class="ko">—</td>
+        <td class="ko">1</td>
+      </tr>
+      <tr>
+        <td data-fr="Scripts de récup." data-en="Recovery scripts">Scripts de récup.</td>
+        <td class="ko">—</td>
+        <td class="ko">—</td>
+        <td class="ok" data-fr="Expert" data-en="Expert">Expert</td>
+        <td class="ko">—</td>
+        <td class="ko">1</td>
+      </tr>
+      <tr>
+        <td data-fr="Documentation" data-en="Documentation">Documentation</td>
+        <td class="ok">✓</td>
+        <td class="ok">✓</td>
+        <td class="ok">✓</td>
+        <td class="ok">✓</td>
+        <td class="ok">4</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p data-fr="Note sur Dave (Serveurs) : une maîtrise partielle ne protège pas d'un Bus Factor de 1. Si Bob disparaît, Dave peut peut-être aider — mais pas intervenir seul sur un incident critique en pleine nuit. Le Bus Factor reste 1."
+     data-en="Note on Dave (Servers): partial mastery does not protect against a Bus Factor of 1. If Bob disappears, Dave might be able to help — but not intervene alone on a critical incident in the middle of the night. The Bus Factor remains 1."
+     >Note sur Dave (Serveurs) : une maîtrise partielle ne protège pas d'un Bus Factor de 1. Si Bob disparaît, Dave peut peut-être aider — mais pas intervenir seul sur un incident critique en pleine nuit. Le Bus Factor reste 1.</p>
+
+  <h3 data-fr="Comment collecter ces données" data-en="How to collect this data">Comment collecter ces données</h3>
+
+  <p data-fr="Les entretiens structurés sont l'outil le plus fiable. La question à poser à chaque personne : « Si [Nom] quittait l'organisation demain, qui pourrait reprendre son travail sur [composant] sans formation supplémentaire ? » Comptez trente minutes par entretien. Les réponses spontanées révèlent souvent des SPOF que personne n'avait formalisés."
+     data-en="Structured interviews are the most reliable tool. The question to ask each person: 'If [Name] left the organisation tomorrow, who could take over their work on [component] without additional training?' Allow thirty minutes per interview. Spontaneous answers often reveal SPOFs that nobody had formalised."
+     >Les entretiens structurés sont l'outil le plus fiable. La question à poser à chaque personne : « Si [Nom] quittait l'organisation demain, qui pourrait reprendre son travail sur [composant] sans formation supplémentaire ? » Comptez trente minutes par entretien. Les réponses spontanées révèlent souvent des SPOF que personne n'avait formalisés.</p>
+
+  <p data-fr="L'analyse des tickets et logs constitue un signal complémentaire. Si 80% des tickets liés à un composant sont assignés à une seule personne sur les douze derniers mois, son Bus Factor est probablement 1 — même si officiellement deux personnes sont censées le maîtriser."
+     data-en="Analysis of tickets and logs provides a complementary signal. If 80% of tickets related to a component have been assigned to a single person over the past twelve months, their Bus Factor is probably 1 — even if officially two people are supposed to master it."
+     >L'analyse des tickets et logs constitue un signal complémentaire. Si 80% des tickets liés à un composant sont assignés à une seule personne sur les douze derniers mois, son Bus Factor est probablement 1 — même si officiellement deux personnes sont censées le maîtriser.</p>
+
+  <!-- ── ÉTAPE 4 ── -->
+  <h2 data-fr="Étape 4 — Calculer le score de risque et prioriser"
+      data-en="Step 4 — Calculating the risk score and prioritising"
+      >Étape 4 — Calculer le score de risque et prioriser</h2>
+
+  <p data-fr="Le Bus Factor seul ne suffit pas à prioriser les actions. Un Bus Factor de 1 sur un script interne peu utilisé est très différent d'un Bus Factor de 1 sur le module de paiement. Pour prendre des décisions, il faut croiser le Bus Factor avec la criticité du composant et l'impact en cas de défaillance."
+     data-en="The Bus Factor alone is not enough to prioritise actions. A Bus Factor of 1 on a rarely used internal script is very different from a Bus Factor of 1 on the payment module. To make decisions, you need to cross the Bus Factor with the component's criticality and the impact in case of failure."
+     >Le Bus Factor seul ne suffit pas à prioriser les actions. Un Bus Factor de 1 sur un script interne peu utilisé est très différent d'un Bus Factor de 1 sur le module de paiement. Pour prendre des décisions, il faut croiser le Bus Factor avec la criticité du composant et l'impact en cas de défaillance.</p>
+
+  <h3 data-fr="La formule" data-en="The formula">La formule</h3>
+
+  <div class="highlight">
+    <span data-fr="Score de risque = (1 / Bus Factor) × Criticité × Impact — avec Criticité et Impact notés de 1 (faible) à 5 (maximal)."
+          data-en="Risk score = (1 / Bus Factor) × Criticality × Impact — with Criticality and Impact rated from 1 (low) to 5 (maximum)."
+          >Score de risque = (1 / Bus Factor) × Criticité × Impact — avec Criticité et Impact notés de 1 (faible) à 5 (maximal).</span>
+  </div>
+
+  <p data-fr="Une note sur la formule : multiplier des variables ordinales (des échelles de 1 à 5) produit un résultat dont la précision est apparente. Ce score est un outil de comparaison et de conversation, pas une mesure absolue. Son intérêt est de forcer une discussion explicite sur les priorités — pas de remplacer le jugement."
+     data-en="A note on the formula: multiplying ordinal variables (scales of 1 to 5) produces a result whose precision is apparent. This score is a comparison and conversation tool, not an absolute measure. Its value lies in forcing an explicit discussion about priorities — not in replacing judgement."
+     >Une note sur la formule : multiplier des variables ordinales (des échelles de 1 à 5) produit un résultat dont la précision est apparente. Ce score est un outil de comparaison et de conversation, pas une mesure absolue. Son intérêt est de forcer une discussion explicite sur les priorités — pas de remplacer le jugement.</p>
+
+  <p data-fr="Application au cas NexaCrypt :"
+     data-en="Applied to the NexaCrypt case:"
+     >Application au cas NexaCrypt :</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th data-fr="Composant" data-en="Component">Composant</th>
+        <th>Bus Factor</th>
+        <th data-fr="Criticité" data-en="Criticality">Criticité</th>
+        <th>Impact</th>
+        <th>Score</th>
+        <th data-fr="Priorité" data-en="Priority">Priorité</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>NexaCrypt</td>
+        <td>1</td>
+        <td>5</td>
+        <td>5</td>
+        <td class="ko">25</td>
+        <td class="ko" data-fr="Urgence" data-en="Urgent">Urgence</td>
+      </tr>
+      <tr>
+        <td data-fr="Serveurs" data-en="Servers">Serveurs</td>
+        <td>1</td>
+        <td>4</td>
+        <td>4</td>
+        <td class="warn">16</td>
+        <td class="warn" data-fr="Haute" data-en="High">Haute</td>
+      </tr>
+      <tr>
+        <td data-fr="Scripts de récup." data-en="Recovery scripts">Scripts de récup.</td>
+        <td>1</td>
+        <td>5</td>
+        <td>3</td>
+        <td class="warn">15</td>
+        <td class="warn" data-fr="Haute" data-en="High">Haute</td>
+      </tr>
+      <tr>
+        <td data-fr="Documentation" data-en="Documentation">Documentation</td>
+        <td>4</td>
+        <td>2</td>
+        <td>2</td>
+        <td class="ok">1</td>
+        <td class="ok" data-fr="Surveillance" data-en="Monitor">Surveillance</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p data-fr="Les seuils de lecture : au-dessus de 20, l'action est immédiate. Entre 10 et 20, c'est une priorité haute à traiter dans le trimestre. En dessous de 10, une réévaluation semestrielle suffit. Ces seuils sont indicatifs — ils sont à ajuster selon le contexte de votre organisation."
+     data-en="Threshold reading: above 20, action is immediate. Between 10 and 20, it is a high priority to address within the quarter. Below 10, a half-yearly reassessment is sufficient. These thresholds are indicative — they should be adjusted to your organisation's context."
+     >Les seuils de lecture : au-dessus de 20, l'action est immédiate. Entre 10 et 20, c'est une priorité haute à traiter dans le trimestre. En dessous de 10, une réévaluation semestrielle suffit. Ces seuils sont indicatifs — ils sont à ajuster selon le contexte de votre organisation.</p>
+
+  <!-- ── ÉTAPE 5 ── -->
+  <h2 data-fr="Étape 5 — Réduire le Bus Factor : principes et arbitrages"
+      data-en="Step 5 — Reducing the Bus Factor: principles and trade-offs"
+      >Étape 5 — Réduire le Bus Factor : principes et arbitrages</h2>
+
+  <p data-fr="Réduire le Bus Factor ne signifie pas former tout le monde sur tout. C'est un arbitrage entre coût, temps et risque résiduel acceptable. Les actions disponibles se regroupent en trois catégories."
+     data-en="Reducing the Bus Factor does not mean training everyone on everything. It is a trade-off between cost, time and acceptable residual risk. The available actions fall into three categories."
+     >Réduire le Bus Factor ne signifie pas former tout le monde sur tout. C'est un arbitrage entre coût, temps et risque résiduel acceptable. Les actions disponibles se regroupent en trois catégories.</p>
+
+  <p data-fr="<strong>Former un backup</strong> — c'est l'action la plus directe, mais aussi la plus longue. Former quelqu'un à intervenir seul sur un composant critique prend de six mois à deux ans selon sa complexité. C'est l'action à lancer en premier pour les composants à score ≥ 20, même si le résultat n'est pas immédiat."
+     data-en="<strong>Training a backup</strong> — this is the most direct action, but also the longest. Training someone to intervene alone on a critical component takes six months to two years depending on its complexity. It is the first action to launch for components with a score ≥ 20, even if the result is not immediate."
+     ><strong>Former un backup</strong> — c'est l'action la plus directe, mais aussi la plus longue. Former quelqu'un à intervenir seul sur un composant critique prend de six mois à deux ans selon sa complexité. C'est l'action à lancer en premier pour les composants à score ≥ 20, même si le résultat n'est pas immédiat.</p>
+
+  <p data-fr="<strong>Documenter les procédures critiques</strong> — moins efficace que la formation, mais réalisable en quelques semaines. L'objectif n'est pas d'écrire un manuel exhaustif : c'est de permettre à quelqu'un de compétent mais non spécialiste d'intervenir sur l'essentiel en situation de crise. Privilegiez les procédures de restauration, les accès, et les décisions non évidentes."
+     data-en="<strong>Documenting critical procedures</strong> — less effective than training, but achievable within a few weeks. The objective is not to write an exhaustive manual: it is to allow a competent but non-specialist person to handle the essentials in a crisis. Prioritise restoration procedures, access credentials, and non-obvious decisions."
+     ><strong>Documenter les procédures critiques</strong> — moins efficace que la formation, mais réalisable en quelques semaines. L'objectif n'est pas d'écrire un manuel exhaustif : c'est de permettre à quelqu'un de compétent mais non spécialiste d'intervenir sur l'essentiel en situation de crise. Privilegiez les procédures de restauration, les accès, et les décisions non évidentes.</p>
+
+  <p data-fr="<strong>Automatiser ce qui peut l'être</strong> — les sauvegardes, les tests de restauration, les alertes. L'automatisation ne réduit pas directement le Bus Factor humain, mais elle réduit la fréquence des interventions manuelles — et donc le risque que la connaissance soit sollicitée en urgence."
+     data-en="<strong>Automating what can be automated</strong> — backups, restoration tests, alerts. Automation does not directly reduce the human Bus Factor, but it reduces the frequency of manual interventions — and therefore the risk that knowledge is called upon in an emergency."
+     ><strong>Automatiser ce qui peut l'être</strong> — les sauvegardes, les tests de restauration, les alertes. L'automatisation ne réduit pas directement le Bus Factor humain, mais elle réduit la fréquence des interventions manuelles — et donc le risque que la connaissance soit sollicitée en urgence.</p>
+
+  <p data-fr="Plan d'action pour NexaCrypt, par ordre de priorité :"
+     data-en="Action plan for NexaCrypt, in priority order:"
+     >Plan d'action pour NexaCrypt, par ordre de priorité :</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th data-fr="Composant" data-en="Component">Composant</th>
+        <th data-fr="Action" data-en="Action">Action</th>
+        <th data-fr="Échéance" data-en="Deadline">Échéance</th>
+        <th data-fr="Indicateur de succès" data-en="Success indicator">Indicateur de succès</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>NexaCrypt</td>
+        <td data-fr="Former un second développeur à intervenir seul sur le module." data-en="Train a second developer to intervene alone on the module.">Former un second développeur à intervenir seul sur le module.</td>
+        <td data-fr="3 mois" data-en="3 months">3 mois</td>
+        <td data-fr="Bus Factor passe de 1 à 2." data-en="Bus Factor rises from 1 to 2.">Bus Factor passe de 1 à 2.</td>
+      </tr>
+      <tr>
+        <td data-fr="Serveurs" data-en="Servers">Serveurs</td>
+        <td data-fr="Documenter les procédures de redémarrage. Compléter la maîtrise de Dave." data-en="Document restart procedures. Complete Dave's mastery.">Documenter les procédures de redémarrage. Compléter la maîtrise de Dave.</td>
+        <td data-fr="2 mois" data-en="2 months">2 mois</td>
+        <td data-fr="Intervention possible sans Bob en cas d'incident." data-en="Intervention possible without Bob in case of incident.">Intervention possible sans Bob en cas d'incident.</td>
+      </tr>
+      <tr>
+        <td data-fr="Scripts de récup." data-en="Recovery scripts">Scripts de récup.</td>
+        <td data-fr="Automatiser les sauvegardes. Tester la restauration mensuellement." data-en="Automate backups. Test restoration monthly.">Automatiser les sauvegardes. Tester la restauration mensuellement.</td>
+        <td data-fr="1 mois" data-en="1 month">1 mois</td>
+        <td data-fr="Temps de récupération &lt; 1h sans intervention manuelle." data-en="Recovery time &lt; 1h without manual intervention.">Temps de récupération &lt; 1h sans intervention manuelle.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- ── CONCLUSION ── -->
+  <h2 data-fr="Conclusion"
+      data-en="Conclusion"
+      >Conclusion</h2>
+
+  <p data-fr="Mesurer le Bus Factor, c'est rendre visible ce qui était tacite. La méthode décrite ici — inventaire des composants critiques, matrice des compétences, score de risque — n'est pas une fin en soi. C'est un point de départ pour une conversation structurée avec les décideurs, et pour des actions concrètes hiérarchisées."
+     data-en="Measuring the Bus Factor makes visible what was tacit. The method described here — inventory of critical components, skills matrix, risk score — is not an end in itself. It is a starting point for a structured conversation with decision-makers, and for concrete, prioritised actions."
+     >Mesurer le Bus Factor, c'est rendre visible ce qui était tacite. La méthode décrite ici — inventaire des composants critiques, matrice des compétences, score de risque — n'est pas une fin en soi. C'est un point de départ pour une conversation structurée avec les décideurs, et pour des actions concrètes hiérarchisées.</p>
+
+  <p data-fr="La limite de cette méthode est réelle : elle repose sur des entretiens et des déclarations. Les personnes ont tendance à surestimer leur propre maîtrise et à sous-estimer leur dépendance à d'autres. C'est pourquoi l'analyse des données objectives — tickets, logs, commits — est un contre-poids indispensable."
+     data-en="The limitation of this method is real: it relies on interviews and declarations. People tend to overestimate their own mastery and underestimate their dependence on others. This is why the analysis of objective data — tickets, logs, commits — is an indispensable counterweight."
+     >La limite de cette méthode est réelle : elle repose sur des entretiens et des déclarations. Les personnes ont tendance à surestimer leur propre maîtrise et à sous-estimer leur dépendance à d'autres. C'est pourquoi l'analyse des données objectives — tickets, logs, commits — est un contre-poids indispensable.</p>
+
+  <div class="highlight">
+    <span data-fr="Un Bus Factor de 1 n'est pas une fatalité — mais il ne se réduit pas tout seul. Il faut décider de le traiter, allouer du temps, et suivre l'évolution de la matrice dans la durée."
+          data-en="A Bus Factor of 1 is not inevitable — but it does not reduce itself. You have to decide to address it, allocate time, and track the evolution of the matrix over time."
+          >Un Bus Factor de 1 n'est pas une fatalité — mais il ne se réduit pas tout seul. Il faut décider de le traiter, allouer du temps, et suivre l'évolution de la matrice dans la durée.</span>
+  </div>
+
+  <!-- ── NEXT ARTICLE ── -->
+  <div class="next-article">
+    <p class="eyebrow" style="margin:0 0 0.5rem"
+       data-fr="Prochain article"
+       data-en="Next article"
+       >Prochain article</p>
+    <p data-fr="<strong>Article 3 — Cartographier la connaissance métier avec l'IA</strong> : comment des agents IA peuvent analyser vos données existantes — entretiens, tickets, documentation — pour détecter les SPOF humains et produire une cartographie des dépendances."
+       data-en="<strong>Article 3 — Mapping business knowledge with AI</strong>: how AI agents can analyse your existing data — interviews, tickets, documentation — to detect human SPOFs and produce a dependency map."
+       ><strong>Article 3 — Cartographier la connaissance métier avec l'IA</strong> : comment des agents IA peuvent analyser vos données existantes — entretiens, tickets, documentation — pour détecter les SPOF humains et produire une cartographie des dépendances.</p>
+    <a href="article-3-long.html"
+       data-fr="Lire l'Article 3 →"
+       data-en="Read Article 3 →"
+       >Lire l'Article 3 →</a>
+  </div>
+
+  <footer>
+    <span data-fr="Pierre Pistenon — Business Analyst Senior"
+          data-en="Pierre Pistenon — Senior Business Analyst"
+          >Pierre Pistenon — Business Analyst Senior</span>
+    <a href="index.html#articles"
+       data-fr="← Retour aux articles"
+       data-en="← Back to articles"
+       >← Retour aux articles</a>
+  </footer>
+
+</div><!-- /wrap -->
+
+<script>
+  function applyLang(lang) {
+    document.documentElement.lang = lang;
+    document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+    const btn = document.querySelector(`.lang-btn[onclick="setLang('${lang}')"]`);
+    if (btn) btn.classList.add('active');
+
+    document.querySelectorAll('[data-fr]').forEach(el => {
+      const txt = el.getAttribute(`data-${lang}`);
+      if (!txt) return;
+      if (el.tagName === 'H1' || txt.includes('<')) {
+        el.innerHTML = txt;
+      } else {
+        el.textContent = txt;
+      }
+    });
+  }
+
+  function setLang(lang) {
+    localStorage.setItem('lang', lang);
+    applyLang(lang);
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const saved = localStorage.getItem('lang') || 'fr';
+    applyLang(saved);
+  });
+</script>
+</body>
+</html>

@@ -82,6 +82,15 @@
       display: flex; justify-content: space-between; flex-wrap: wrap; gap: 1rem;
     }
     footer a { color: var(--accent); text-decoration: none; }
+    .next-article {
+      margin-top: 3rem; padding: 1.5rem; background: var(--bg2);
+      border: 1px solid var(--border); border-radius: 8px;
+    }
+    .next-article p { margin-bottom: 0.5rem; }
+    .next-article a {
+      color: var(--accent); text-decoration: none; font-size: 0.9rem;
+      font-family: 'JetBrains Mono', monospace;
+    }
   </style>
 </head>
 <body>
@@ -315,6 +324,20 @@
   <p data-fr="Tout cela était disponible dans l’organisation. Il manquait la méthode pour l’assembler."
      data-en="All of this was available within the organisation. What was missing was the method to assemble it."
      >Tout cela était disponible dans l’organisation. Il manquait la méthode pour l’assembler.</p>
+
+  <div class="next-article">
+    <p class="eyebrow" style="margin:0 0 0.5rem; color: var(--accent)"
+       data-fr="Article précédent"
+       data-en="Previous article"
+       >Article précédent</p>
+    <p data-fr="<strong>Article 2 — Comment mesurer le Bus Factor de votre organisation</strong> : matrice des compétences, score de risque, plan d'action concret."
+       data-en="<strong>Article 2 — How to measure the Bus Factor in your organisation</strong>: skills matrix, risk score, concrete action plan."
+       ><strong>Article 2 — Comment mesurer le Bus Factor de votre organisation</strong> : matrice des compétences, score de risque, plan d'action concret.</p>
+    <a href="article-2-long.html"
+       data-fr="← Lire l'Article 2"
+       data-en="← Read Article 2"
+       >← Lire l'Article 2</a>
+  </div>
 
   <footer>
     <span data-fr="Pierre Pistenon — Business Analyst Senior"

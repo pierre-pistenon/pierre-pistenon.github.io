@@ -81,6 +81,15 @@
       display: flex; justify-content: space-between; flex-wrap: wrap; gap: 1rem;
     }
     footer a { color: var(--accent); text-decoration: none; }
+    .next-article {
+      margin-top: 3rem; padding: 1.5rem; background: var(--bg2);
+      border: 1px solid var(--border); border-radius: 8px;
+    }
+    .next-article p { margin-bottom: 0.5rem; }
+    .next-article a {
+      color: var(--accent); text-decoration: none; font-size: 0.9rem;
+      font-family: 'JetBrains Mono', monospace;
+    }
   </style>
 </head>
 <body>
@@ -396,6 +405,20 @@
   <p data-fr="Dans les prochains articles : comment cartographier la connaissance métier avec l'IA (et éviter un nouveau Heartbleed), puis un cas pratique de transformation d'interviews en cartographie de dépendances."
      data-en="In the next articles: how to map business knowledge with AI (and avoid a new Heartbleed), then a practical case study turning interviews into a dependency map."
      >Dans les prochains articles : comment cartographier la connaissance métier avec l'IA (et éviter un nouveau Heartbleed), puis un cas pratique de transformation d'interviews en cartographie de dépendances.</p>
+
+  <div class="next-article">
+    <p class="eyebrow" style="margin:0 0 0.5rem"
+       data-fr="Prochain article"
+       data-en="Next article"
+       >Prochain article</p>
+    <p data-fr="<strong>Article 2 — Comment mesurer le Bus Factor de votre organisation</strong> : matrice des compétences, score de risque, plan d'action concret pour identifier et prioriser vos SPOF humains."
+       data-en="<strong>Article 2 — How to measure the Bus Factor in your organisation</strong>: skills matrix, risk score, concrete action plan to identify and prioritise your human SPOFs."
+       ><strong>Article 2 — Comment mesurer le Bus Factor de votre organisation</strong> : matrice des compétences, score de risque, plan d'action concret pour identifier et prioriser vos SPOF humains.</p>
+    <a href="article-2-long.html"
+       data-fr="Lire l'Article 2 →"
+       data-en="Read Article 2 →"
+       >Lire l'Article 2 →</a>
+  </div>
 
   <footer>
     <span data-fr="Pierre Pistenon — Business Analyst Senior"

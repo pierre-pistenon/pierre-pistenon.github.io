@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-EFS661MDV9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-EFS661MDV9');
+  </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Article complet — Bus Factor, Coverage, Concentration, Fragmentation : les quatre dimensions de la résilience des connaissances. Série Bus Factor, article 4.">
+  <title>Les quatre dimensions de la résilience des connaissances — Pierre Pistenon</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0D1117; --bg2: #161B22; --border: #30363D;
+      --text: #E6EDF3; --muted: #8B949E; --accent: #4FC3F7; --warn: #D29922;
+    }
+    body {
+      background: var(--bg); color: var(--text);
+      font-family: 'Inter', sans-serif; font-size: 16px; line-height: 1.75;
+      -webkit-font-smoothing: antialiased;
+    }
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(13,17,23,0.92); backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 1.5rem; height: 52px;
+    }
+    .nav-back {
+      display: inline-flex; align-items: center; gap: 6px;
+      color: var(--accent); text-decoration: none;
+      font-family: 'JetBrains Mono', monospace; font-size: 0.82rem;
+    }
+    .lang-toggle { display: flex; gap: 4px; }
+    .lang-btn {
+      font-family: 'JetBrains Mono', monospace; font-size: 0.75rem;
+      background: transparent; border: 1px solid var(--border);
+      color: var(--muted); padding: 0.2rem 0.55rem; border-radius: 4px;
+      cursor: pointer; transition: all 0.15s;
+    }
+    .lang-btn.active { background: var(--accent); color: var(--bg); font-weight: 500; border-color: var(--accent); }
+    .wrap { max-width: 700px; margin: 0 auto; padding: 52px 1.5rem 100px; }
+    .eyebrow {
+      font-family: 'JetBrains Mono', monospace; font-size: 0.78rem;
+      color: var(--warn); letter-spacing: 0.08em; text-transform: uppercase;
+      margin: 2.5rem 0 0.75rem;
+    }
+    h1 { font-size: clamp(1.6rem, 4vw, 2.3rem); font-weight: 600; line-height: 1.25; margin-bottom: 1rem; letter-spacing: -0.01em; }
+    .article-sub { color: var(--muted); font-size: 0.95rem; margin-bottom: 2rem; }
+    .disclaimer {
+      background: var(--bg2); border-left: 2px solid var(--accent);
+      padding: 1rem 1.25rem; font-size: 0.86rem; color: var(--muted);
+      font-style: italic; margin-bottom: 2.5rem; border-radius: 0 6px 6px 0;
+    }
+    h2 { font-size: 1.15rem; font-weight: 600; margin-top: 2.5rem; margin-bottom: 0.9rem; color: var(--text); }
+    h3 { font-size: 0.98rem; font-weight: 600; margin-top: 1.8rem; margin-bottom: 0.6rem; color: var(--accent); font-family: 'JetBrains Mono', monospace; }
+    p { color: var(--muted); margin-bottom: 1.1rem; font-size: 0.95rem; }
+    strong { color: var(--text); font-weight: 600; }
+    ul { margin: 1rem 0 1.1rem 1.3rem; }
+    li { color: var(--muted); margin-bottom: 0.5rem; font-size: 0.95rem; }
+    li::marker { color: var(--accent); }
+    table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.85rem; }
+    th, td { border: 1px solid var(--border); padding: 0.6rem 0.8rem; text-align: left; }
+    th { background: var(--bg2); color: var(--text); font-weight: 600; }
+    td { color: var(--muted); }
+    td strong { color: var(--text); }
+    .highlight {
+      background: rgba(79,195,247,0.05); border-left: 2px solid var(--accent);
+      padding: 1rem 1.25rem; margin: 1.5rem 0;
+      color: var(--muted); border-radius: 0 6px 6px 0; font-style: italic;
+    }
+    .dim-label {
+      display: inline-block;
+      font-family: 'JetBrains Mono', monospace; font-size: 0.75rem;
+      color: var(--bg); background: var(--accent);
+      padding: 0.15rem 0.55rem; border-radius: 3px;
+      margin-bottom: 0.5rem; letter-spacing: 0.05em;
+    }
+    footer {
+      margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--border);
+      font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; color: var(--muted);
+      display: flex; justify-content: space-between; flex-wrap: wrap; gap: 1rem;
+    }
+    footer a { color: var(--accent); text-decoration: none; }
+    .next-article {
+      margin-top: 3rem; padding: 1.5rem; background: var(--bg2);
+      border: 1px solid var(--border); border-radius: 8px;
+    }
+    .next-article p { margin-bottom: 0.5rem; }
+    .next-article a {
+      color: var(--accent); text-decoration: none; font-size: 0.9rem;
+      font-family: 'JetBrains Mono', monospace;
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html#articles" class="nav-back"
+     data-fr="← Retour au site"
+     data-en="← Back to site">← Retour au site</a>
+  <div class="lang-toggle">
+    <button class="lang-btn active" data-lang="fr" onclick="setLang('fr')">FR</button>
+    <button class="lang-btn"        data-lang="en" onclick="setLang('en')">EN</button>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <p class="eyebrow"
+     data-fr="Série Bus Factor — Article 4 — Version longue"
+     data-en="Bus Factor Series — Article 4 — Long version"
+     >Série Bus Factor — Article 4 — Version longue</p>
+
+  <h1 data-fr="Les quatre dimensions de la résilience des connaissances"
+      data-en="The four dimensions of knowledge resilience"
+      >Les quatre dimensions de la résilience des connaissances</h1>
+
+  <p class="article-sub"
+     data-fr="Bus Factor, Coverage, Concentration, Fragmentation — pourquoi un seul chiffre ne suffit jamais à décrire un risque de connaissance"
+     data-en="Bus Factor, Coverage, Concentration, Fragmentation — why a single number never tells the whole story of a knowledge risk"
+     >Bus Factor, Coverage, Concentration, Fragmentation — pourquoi un seul chiffre ne suffit jamais à décrire un risque de connaissance</p>
+
+  <div class="disclaimer">
+    <span data-fr="Ce qui suit s'appuie sur le cas pédagogique NexaCrypt introduit dans l'Article 1, et sur des situations représentatives observées en mission. Les mécanismes décrits sont documentés et fréquemment rencontrés dans des organisations de toutes tailles."
+          data-en="The following builds on the NexaCrypt teaching case introduced in Article 1, and on representative situations observed during assignments. The mechanisms described are documented and commonly encountered in organisations of all sizes."
+          >Ce qui suit s'appuie sur le cas pédagogique NexaCrypt introduit dans l'Article 1, et sur des situations représentatives observées en mission. Les mécanismes décrits sont documentés et fréquemment rencontrés dans des organisations de toutes tailles.</span>
+  </div>
+
+  <!-- ── INTRO ── -->
+  <p data-fr="Deux organisations peuvent afficher exactement le même Bus Factor et n'avoir, en réalité, rien à voir en termes de résilience. Dans l'une, le savoir critique est documenté, réparti, régulièrement mis à jour. Dans l'autre, il est implicite, concentré, jamais couché sur le papier. Le Bus Factor ne fait pas cette différence — il compte des têtes, il ne dit rien de ce qu'il y a dedans."
+     data-en="Two organisations can display the exact same Bus Factor and have, in reality, nothing in common in terms of resilience. In one, critical knowledge is documented, distributed, regularly updated. In the other, it is implicit, concentrated, never written down. The Bus Factor does not capture that difference — it counts heads, it says nothing about what is inside them."
+     >Deux organisations peuvent afficher exactement le même Bus Factor et n'avoir, en réalité, rien à voir en termes de résilience. Dans l'une, le savoir critique est documenté, réparti, régulièrement mis à jour. Dans l'autre, il est implicite, concentré, jamais couché sur le papier. Le Bus Factor ne fait pas cette différence — il compte des têtes, il ne dit rien de ce qu'il y a dedans.</p>
+
+  <p data-fr="C'est le rappel du précédent article de cette série : le Bus Factor n'est pas le problème, il en est le symptôme. Un excellent signal d'alerte, qui ne raconte qu'une partie de l'histoire. Cet article raconte le reste : trois dimensions supplémentaires, aussi simples à mesurer, qui à elles quatre donnent une image complète du risque de connaissance d'une organisation."
+     data-en="That is the reminder from the previous article in this series: the Bus Factor is not the problem, it is the symptom. An excellent warning signal, which only tells part of the story. This article tells the rest: three additional dimensions, just as simple to measure, which together give a complete picture of an organisation's knowledge risk."
+     >C'est le rappel du précédent article de cette série : le Bus Factor n'est pas le problème, il en est le symptôme. Un excellent signal d'alerte, qui ne raconte qu'une partie de l'histoire. Cet article raconte le reste : trois dimensions supplémentaires, aussi simples à mesurer, qui à elles quatre donnent une image complète du risque de connaissance d'une organisation.</p>
+
+  <p data-fr="Une carte n'est utile que si elle possède une légende. Voilà exactement ce qu'est le modèle Bus Factor / Coverage / Concentration / Fragmentation : la légende qui permet de lire la carte, une fois qu'on sait la produire."
+     data-en="A map is only useful if it has a legend. That is exactly what the Bus Factor / Coverage / Concentration / Fragmentation model is: the legend that makes the map readable, once you know how to produce it."
+     >Une carte n'est utile que si elle possède une légende. Voilà exactement ce qu'est le modèle Bus Factor / Coverage / Concentration / Fragmentation : la légende qui permet de lire la carte, une fois qu'on sait la produire.</p>
+
+  <div class="highlight">
+    <span data-fr="La connaissance est un patrimoine. Comme tout patrimoine, elle doit être cartographiée, mesurée et gouvernée."
+          data-en="Knowledge is an asset. Like any asset, it must be mapped, measured and governed."
+          >La connaissance est un patrimoine. Comme tout patrimoine, elle doit être cartographiée, mesurée et gouvernée.</span>
+  </div>
+
+  <!-- ── VUE D'ENSEMBLE ── -->
+  <h2 data-fr="Quatre questions, pas une" data-en="Four questions, not one">Quatre questions, pas une</h2>
+
+  <p data-fr="Chaque dimension répond à une question différente, et aucune ne peut se déduire des trois autres :"
+     data-en="Each dimension answers a different question, and none can be inferred from the other three:"
+     >Chaque dimension répond à une question différente, et aucune ne peut se déduire des trois autres :</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th data-fr="Dimension" data-en="Dimension">Dimension</th>
+        <th data-fr="Question posée" data-en="Question asked">Question posée</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Bus Factor</strong></td>
+        <td data-fr="Combien de personnes peut-on perdre avant qu'un savoir nécessaire ne disparaisse ?" data-en="How many people can we lose before a necessary piece of knowledge disappears?">Combien de personnes peut-on perdre avant qu'un savoir nécessaire ne disparaisse ?</td>
+      </tr>
+      <tr>
+        <td><strong>Coverage</strong></td>
+        <td data-fr="Ce savoir est-il sorti des têtes pour être écrit quelque part ?" data-en="Has this knowledge left people's heads to be written down somewhere?">Ce savoir est-il sorti des têtes pour être écrit quelque part ?</td>
+      </tr>
+      <tr>
+        <td><strong>Concentration</strong></td>
+        <td data-fr="À l'échelle de l'équipe, le savoir est-il réparti ou empilé sur quelques personnes ?" data-en="Across the team, is knowledge spread out or stacked on a few people?">À l'échelle de l'équipe, le savoir est-il réparti ou empilé sur quelques personnes ?</td>
+      </tr>
+      <tr>
+        <td><strong>Fragmentation</strong></td>
+        <td data-fr="Pour agir en situation de crise, faut-il réunir plusieurs personnes différentes qui ne se recoupent jamais ?" data-en="To act in a crisis, do we need to assemble several different people who never overlap?">Pour agir en situation de crise, faut-il réunir plusieurs personnes différentes qui ne se recoupent jamais ?</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p data-fr="Les deux premières se lisent composant par composant. La troisième se lit à l'échelle d'une équipe entière. La quatrième se lit à l'échelle d'un processus, pas d'un actif isolé. Ce n'est pas un défaut de cohérence : c'est précisément parce qu'un même risque se loge à des niveaux différents de l'organisation qu'un seul chiffre ne peut jamais suffire."
+     data-en="The first two are read component by component. The third is read across an entire team. The fourth is read at the level of a process, not a single asset. This is not an inconsistency: it is precisely because the same risk lives at different levels of the organisation that a single number can never be enough."
+     >Les deux premières se lisent composant par composant. La troisième se lit à l'échelle d'une équipe entière. La quatrième se lit à l'échelle d'un processus, pas d'un actif isolé. Ce n'est pas un défaut de cohérence : c'est précisément parce qu'un même risque se loge à des niveaux différents de l'organisation qu'un seul chiffre ne peut jamais suffire.</p>
+
+  <!-- ── DIMENSION 1 : BUS FACTOR ── -->
+  <span class="dim-label">01 — BUS FACTOR</span>
+  <h2 data-fr="Combien de personnes peut-on perdre ?" data-en="How many people can we lose?">Combien de personnes peut-on perdre ?</h2>
+
+  <p data-fr="Déjà présenté dans les articles précédents de cette série : le nombre minimal de personnes dont la disparition simultanée rendrait un savoir nécessaire indisponible. Chez NexaCrypt, il vaut 1 sur les trois composants examinés jusqu'ici — NexaCrypt Engine (Alice), Serveurs Infrastructure (Bob), Scripts de récupération RAID (Dave). Rien de nouveau ici : c'est le point de départ, pas l'arrivée."
+     data-en="Already introduced in the earlier articles of this series: the minimum number of people whose simultaneous disappearance would make a necessary piece of knowledge unavailable. At NexaCrypt, it equals 1 on the three components examined so far — NexaCrypt Engine (Alice), Serveurs Infrastructure (Bob), RAID recovery scripts (Dave). Nothing new here: it is the starting point, not the destination."
+     >Déjà présenté dans les articles précédents de cette série : le nombre minimal de personnes dont la disparition simultanée rendrait un savoir nécessaire indisponible. Chez NexaCrypt, il vaut 1 sur les trois composants examinés jusqu'ici — NexaCrypt Engine (Alice), Serveurs Infrastructure (Bob), Scripts de récupération RAID (Dave). Rien de nouveau ici : c'est le point de départ, pas l'arrivée.</p>
+
+  <!-- ── DIMENSION 2 : COVERAGE ── -->
+  <span class="dim-label">02 — COVERAGE</span>
+  <h2 data-fr="Ce savoir est-il écrit quelque part ?" data-en="Is this knowledge written down anywhere?">Ce savoir est-il écrit quelque part ?</h2>
+
+  <p data-fr="Coverage mesure la part d'un savoir nécessaire qui a quitté la tête d'une personne pour exister sous une forme que d'autres peuvent consulter — une documentation à jour, une procédure testée, un runbook. Ce n'est pas une question de compétence : Alice peut être une experte reconnue de NexaCrypt Engine tout en laissant une Coverage très faible, si rien de ce qu'elle sait n'est écrit ailleurs que dans sa tête."
+     data-en="Coverage measures how much of a necessary piece of knowledge has left one person's head to exist in a form others can consult — up-to-date documentation, a tested procedure, a runbook. It is not a question of competence: Alice can be a recognised expert on NexaCrypt Engine while still leaving Coverage very low, if nothing she knows exists anywhere but in her own head."
+     >Coverage mesure la part d'un savoir nécessaire qui a quitté la tête d'une personne pour exister sous une forme que d'autres peuvent consulter — une documentation à jour, une procédure testée, un runbook. Ce n'est pas une question de compétence : Alice peut être une experte reconnue de NexaCrypt Engine tout en laissant une Coverage très faible, si rien de ce qu'elle sait n'est écrit ailleurs que dans sa tête.</p>
+
+  <table>
+    <thead><tr><th data-fr="Composant" data-en="Component">Composant</th><th data-fr="Savoir nécessaire documenté" data-en="Documented necessary knowledge">Savoir nécessaire documenté</th><th>Coverage</th></tr></thead>
+    <tbody>
+      <tr><td>NexaCrypt Engine</td><td data-fr="Algorithmes de chiffrement (20 %), Rotation des clés (40 %)" data-en="Encryption algorithms (20%), Key rotation (40%)">Algorithmes de chiffrement (20 %), Rotation des clés (40 %)</td><td><strong>30 %</strong></td></tr>
+      <tr><td data-fr="Serveurs Infrastructure" data-en="Server Infrastructure">Serveurs Infrastructure</td><td data-fr="Administration systèmes (50 %)" data-en="Systems administration (50%)">Administration systèmes (50 %)</td><td><strong>50 %</strong></td></tr>
+      <tr><td data-fr="Scripts Récupération RAID" data-en="RAID recovery scripts">Scripts Récupération RAID</td><td data-fr="Récupération RAID (10 %)" data-en="RAID recovery (10%)">Récupération RAID (10 %)</td><td><strong>10 %</strong></td></tr>
+    </tbody>
+  </table>
+
+  <p data-fr="C'est le composant le mieux couvert (Serveurs, 50 %) qui a le Bus Factor le plus trompeur : suffisamment documenté pour donner un faux sentiment de sécurité, pas assez pour qu'un remplaçant improvisé s'en sorte seul un dimanche à 3h du matin. Et c'est le plus mal couvert (Scripts RAID, 10 %) qui, en cas de départ de Dave, ne se remplace pas en formant quelqu'un rapidement — il faudrait d'abord redécouvrir ce que Dave sait avant même de pouvoir le transmettre."
+     data-en="The best-covered component (Servers, 50%) has the most misleading Bus Factor: documented enough to create a false sense of security, not enough for an improvised replacement to manage alone on a Sunday at 3am. And the worst-covered one (RAID scripts, 10%) cannot, if Dave leaves, simply be fixed by training someone quickly — one would first have to rediscover what Dave knows before even being able to pass it on."
+     >C'est le composant le mieux couvert (Serveurs, 50 %) qui a le Bus Factor le plus trompeur : suffisamment documenté pour donner un faux sentiment de sécurité, pas assez pour qu'un remplaçant improvisé s'en sorte seul un dimanche à 3h du matin. Et c'est le plus mal couvert (Scripts RAID, 10 %) qui, en cas de départ de Dave, ne se remplace pas en formant quelqu'un rapidement — il faudrait d'abord redécouvrir ce que Dave sait avant même de pouvoir le transmettre.</p>
+
+  <!-- ── DIMENSION 3 : CONCENTRATION ── -->
+  <span class="dim-label">03 — CONCENTRATION</span>
+  <h2 data-fr="Le savoir est-il réparti, ou empilé ?" data-en="Is knowledge spread out, or stacked?">Le savoir est-il réparti, ou empilé ?</h2>
+
+  <p data-fr="Le Bus Factor se lit composant par composant. La Concentration se lit à l'échelle d'une équipe entière, et répond à une question différente : si l'on pondère chaque connaissance détenue par la criticité de ce qu'elle sert, le savoir de l'équipe est-il réparti, ou repose-t-il sur deux ou trois personnes qui cumulent l'essentiel ? On la mesure avec un coefficient de Gini — l'outil qu'utilisent les économistes pour mesurer les inégalités de revenus, appliqué ici à la répartition du savoir critique."
+     data-en="The Bus Factor is read component by component. Concentration is read across an entire team, and answers a different question: if each piece of knowledge held is weighted by the criticality of what it serves, is the team's knowledge spread out, or does it rest on two or three people who hold most of it? It is measured with a Gini coefficient — the tool economists use to measure income inequality, applied here to the distribution of critical knowledge."
+     >Le Bus Factor se lit composant par composant. La Concentration se lit à l'échelle d'une équipe entière, et répond à une question différente : si l'on pondère chaque connaissance détenue par la criticité de ce qu'elle sert, le savoir de l'équipe est-il réparti, ou repose-t-il sur deux ou trois personnes qui cumulent l'essentiel ? On la mesure avec un coefficient de Gini — l'outil qu'utilisent les économistes pour mesurer les inégalités de revenus, appliqué ici à la répartition du savoir critique.</p>
+
+  <table>
+    <thead><tr><th>Personne</th><th data-fr="Savoir détenu (pondéré par criticité)" data-en="Knowledge held (weighted by criticality)">Savoir détenu (pondéré par criticité)</th><th data-fr="Score" data-en="Score">Score</th></tr></thead>
+    <tbody>
+      <tr><td>Alice</td><td data-fr="Algorithmes de chiffrement + Rotation des clés (Engine, criticité maximale)" data-en="Encryption algorithms + Key rotation (Engine, maximum criticality)">Algorithmes de chiffrement + Rotation des clés (Engine, criticité maximale)</td><td><strong>8</strong></td></tr>
+      <tr><td>Bob</td><td data-fr="Administration systèmes (Serveurs)" data-en="Systems administration (Servers)">Administration systèmes (Serveurs)</td><td><strong>3</strong></td></tr>
+      <tr><td>Dave</td><td data-fr="Récupération RAID (Scripts RAID)" data-en="RAID recovery (RAID scripts)">Récupération RAID (Scripts RAID)</td><td><strong>3</strong></td></tr>
+      <tr><td>Marc</td><td data-fr="Débutant sur Engine — sous le seuil de comptage" data-en="Beginner on Engine — below counting threshold">Débutant sur Engine — sous le seuil de comptage</td><td><strong>0</strong></td></tr>
+      <tr><td>Grace</td><td data-fr="Règles métier historiques" data-en="Historical business rules">Règles métier historiques</td><td><strong>2</strong></td></tr>
+    </tbody>
+  </table>
+
+  <p data-fr="Sur ces cinq personnes, la Concentration ressort à 0,425 — élevée : Alice, à elle seule, porte davantage de savoir pondéré que Bob et Dave réunis. Deux équipes peuvent avoir le même Bus Factor moyen et une Concentration très différente : l'une où chacun détient une part comparable du savoir critique, l'autre où deux ou trois personnes cumulent l'essentiel pendant que les autres se partagent des connaissances secondaires. La seconde équipe est plus fragile, même si aucun de ses composants pris isolément n'a un Bus Factor plus bas que l'autre."
+     data-en="Across these five people, Concentration comes out at 0.425 — high: Alice alone holds more weighted knowledge than Bob and Dave combined. Two teams can have the same average Bus Factor and very different Concentration: in one, everyone holds a comparable share of critical knowledge; in the other, two or three people hold most of it while everyone else shares secondary knowledge. The second team is more fragile, even though none of its components taken individually has a lower Bus Factor than the other."
+     >Sur ces cinq personnes, la Concentration ressort à 0,425 — élevée : Alice, à elle seule, porte davantage de savoir pondéré que Bob et Dave réunis. Deux équipes peuvent avoir le même Bus Factor moyen et une Concentration très différente : l'une où chacun détient une part comparable du savoir critique, l'autre où deux ou trois personnes cumulent l'essentiel pendant que les autres se partagent des connaissances secondaires. La seconde équipe est plus fragile, même si aucun de ses composants pris isolément n'a un Bus Factor plus bas que l'autre.</p>
+
+  <!-- ── DIMENSION 4 : FRAGMENTATION ── -->
+  <span class="dim-label">04 — FRAGMENTATION</span>
+  <h2 data-fr="Faut-il réunir tout le monde à la fois ?" data-en="Do you need everyone in the room at once?">Faut-il réunir tout le monde à la fois ?</h2>
+
+  <p data-fr="C'est la dimension la plus facile à manquer, parce qu'elle ne se voit pas composant par composant : elle se voit au niveau d'un processus. Un processus de reprise après sinistre peut afficher un Bus Factor de 1 sur chacune de ses étapes prises séparément, tout en exigeant, en pratique, de réunir simultanément plusieurs personnes qui ne se recoupent jamais — chacune irremplaçable sur sa propre étape, aucune capable de couvrir celle d'une autre."
+     data-en="This is the dimension most easily missed, because it does not show up component by component: it shows up at the level of a process. A disaster-recovery process can display a Bus Factor of 1 on each of its steps taken separately, while in practice requiring several people to be assembled at the same time, none of whom ever overlap — each irreplaceable on their own step, none able to cover another's."
+     >C'est la dimension la plus facile à manquer, parce qu'elle ne se voit pas composant par composant : elle se voit au niveau d'un processus. Un processus de reprise après sinistre peut afficher un Bus Factor de 1 sur chacune de ses étapes prises séparément, tout en exigeant, en pratique, de réunir simultanément plusieurs personnes qui ne se recoupent jamais — chacune irremplaçable sur sa propre étape, aucune capable de couvrir celle d'une autre.</p>
+
+  <p data-fr="Fragmentation compte simplement ce nombre : combien de personnes distinctes, sans chevauchement possible, faut-il rassembler pour mener le processus à son terme ? C'est exactement ce qui s'est produit chez NexaCrypt le 15 janvier 2026 :"
+     data-en="Fragmentation simply counts that number: how many distinct people, with no possible overlap, need to be brought together to complete the process? This is exactly what happened at NexaCrypt on 15 January 2026:"
+     >Fragmentation compte simplement ce nombre : combien de personnes distinctes, sans chevauchement possible, faut-il rassembler pour mener le processus à son terme ? C'est exactement ce qui s'est produit chez NexaCrypt le 15 janvier 2026 :</p>
+
+  <table>
+    <thead><tr><th data-fr="Étape du processus" data-en="Process step">Étape du processus</th><th data-fr="Seule personne capable" data-en="Only person able to do it">Seule personne capable</th></tr></thead>
+    <tbody>
+      <tr><td data-fr="Diagnostiquer la panne" data-en="Diagnose the failure">Diagnostiquer la panne</td><td>Bob</td></tr>
+      <tr><td data-fr="Restaurer via les scripts RAID" data-en="Restore via RAID scripts">Restaurer via les scripts RAID</td><td>Dave</td></tr>
+      <tr><td data-fr="Reconfigurer les clés de chiffrement" data-en="Reconfigure encryption keys">Reconfigurer les clés de chiffrement</td><td>Alice</td></tr>
+      <tr><td data-fr="Valider le retour à la normale avec les clients" data-en="Confirm return to normal with clients">Valider le retour à la normale avec les clients</td><td>Grace</td></tr>
+    </tbody>
+  </table>
+
+  <p data-fr="Fragmentation = 4. Aucune de ces quatre personnes ne peut se substituer à une autre. C'est très exactement pourquoi l'incident a duré six heures plutôt qu'une : chaque étape avait, prise isolément, un Bus Factor gérable, mais le processus dans son ensemble exigeait de rassembler, dans la même fenêtre de temps, quatre personnes dont aucune n'était de garde ni jointe immédiatement. Une organisation qui ne regarde que le Bus Factor par composant ne verra jamais ce risque — il n'existe qu'au niveau du processus."
+     data-en="Fragmentation = 4. None of these four people can stand in for another. This is precisely why the incident lasted six hours rather than one: each step, taken in isolation, had a manageable Bus Factor, but the process as a whole required assembling, within the same time window, four people none of whom were on call or immediately reachable. An organisation that only looks at Bus Factor per component will never see this risk — it only exists at the level of the process."
+     >Fragmentation = 4. Aucune de ces quatre personnes ne peut se substituer à une autre. C'est très exactement pourquoi l'incident a duré six heures plutôt qu'une : chaque étape avait, prise isolément, un Bus Factor gérable, mais le processus dans son ensemble exigeait de rassembler, dans la même fenêtre de temps, quatre personnes dont aucune n'était de garde ni jointe immédiatement. Une organisation qui ne regarde que le Bus Factor par composant ne verra jamais ce risque — il n'existe qu'au niveau du processus.</p>
+
+  <!-- ── SYNTHESE ── -->
+  <h2 data-fr="Une même situation, quatre lectures" data-en="One situation, four readings">Une même situation, quatre lectures</h2>
+
+  <table>
+    <thead>
+      <tr>
+        <th data-fr="Dimension" data-en="Dimension">Dimension</th>
+        <th data-fr="Se lit au niveau de" data-en="Read at the level of">Se lit au niveau de</th>
+        <th data-fr="Chez NexaCrypt" data-en="At NexaCrypt">Chez NexaCrypt</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>Bus Factor</td><td data-fr="un composant" data-en="a component">un composant</td><td data-fr="1 sur les 3 composants examinés" data-en="1 on all 3 components examined">1 sur les 3 composants examinés</td></tr>
+      <tr><td>Coverage</td><td data-fr="un composant" data-en="a component">un composant</td><td data-fr="10 % à 50 % selon le composant" data-en="10% to 50% depending on the component">10 % à 50 % selon le composant</td></tr>
+      <tr><td>Concentration</td><td data-fr="une équipe" data-en="a team">une équipe</td><td data-fr="0,425 (élevée)" data-en="0.425 (high)">0,425 (élevée)</td></tr>
+      <tr><td>Fragmentation</td><td data-fr="un processus" data-en="a process">un processus</td><td data-fr="4 (reprise après sinistre)" data-en="4 (disaster recovery)">4 (reprise après sinistre)</td></tr>
+    </tbody>
+  </table>
+
+  <div class="highlight">
+    <span data-fr="Quatre chiffres, quatre niveaux de lecture — composant, équipe, processus — et pourtant une seule et même fragilité organisationnelle vue sous quatre angles différents. Aucun des quatre, pris seul, n'aurait suffi à convaincre un comité de direction. Les quatre ensemble racontent une histoire qu'aucun ne raconte seul."
+          data-en="Four numbers, four levels of reading — component, team, process — and yet a single organisational fragility seen from four different angles. None of the four, taken alone, would have been enough to convince a board. The four together tell a story that none of them tells alone."
+          >Quatre chiffres, quatre niveaux de lecture — composant, équipe, processus — et pourtant une seule et même fragilité organisationnelle vue sous quatre angles différents. Aucun des quatre, pris seul, n'aurait suffi à convaincre un comité de direction. Les quatre ensemble racontent une histoire qu'aucun ne raconte seul.</span>
+  </div>
+
+  <!-- ── CONCLUSION ── -->
+  <h2 data-fr="Ce que ça change concrètement" data-en="What this changes in practice">Ce que ça change concrètement</h2>
+
+  <p data-fr="Prioriser sur un seul chiffre pousse presque toujours vers la même réponse : former un backup. C'est utile, mais ça ne traite qu'une des quatre dimensions. Un Bus Factor corrigé par une formation ne change rien à la Coverage si personne n'a documenté entre-temps. Il ne change rien à la Concentration si le nouveau backup vient s'ajouter au portefeuille de la même personne surchargée. Et il ne change strictement rien à la Fragmentation d'un processus, qui se traite différemment : en réduisant le nombre d'étapes qui exigent une personne unique, ou en formant des doublures capables de couvrir plusieurs étapes à la fois plutôt qu'une seule."
+     data-en="Prioritising on a single number almost always pushes toward the same answer: train a backup. That is useful, but it only addresses one of the four dimensions. A Bus Factor fixed by training changes nothing about Coverage if nobody documents anything in the meantime. It changes nothing about Concentration if the new backup is simply added to the portfolio of the same overloaded person. And it changes strictly nothing about a process's Fragmentation, which is addressed differently: by reducing the number of steps that require one unique person, or by training understudies able to cover several steps at once rather than just one."
+     >Prioriser sur un seul chiffre pousse presque toujours vers la même réponse : former un backup. C'est utile, mais ça ne traite qu'une des quatre dimensions. Un Bus Factor corrigé par une formation ne change rien à la Coverage si personne n'a documenté entre-temps. Il ne change rien à la Concentration si le nouveau backup vient s'ajouter au portefeuille de la même personne surchargée. Et il ne change strictement rien à la Fragmentation d'un processus, qui se traite différemment : en réduisant le nombre d'étapes qui exigent une personne unique, ou en formant des doublures capables de couvrir plusieurs étapes à la fois plutôt qu'une seule.</p>
+
+  <p data-fr="C'est la vraie raison de mesurer les quatre dimensions séparément : chacune appelle une action différente, et une organisation qui n'en corrige qu'une seule peut légitimement croire avoir traité le problème, tout en restant exposée sur les trois autres."
+     data-en="This is the real reason to measure the four dimensions separately: each calls for a different action, and an organisation that only fixes one of them may legitimately believe the problem is solved, while remaining exposed on the other three."
+     >C'est la vraie raison de mesurer les quatre dimensions séparément : chacune appelle une action différente, et une organisation qui n'en corrige qu'une seule peut légitimement croire avoir traité le problème, tout en restant exposée sur les trois autres.</p>
+
+  <div class="next-article">
+    <p class="eyebrow" style="margin:0 0 0.5rem"
+       data-fr="Prochain article"
+       data-en="Next article"
+       >Prochain article</p>
+    <p data-fr="<strong>Article 5 — Cartographier automatiquement la connaissance avec l'IA</strong> : comment ces quatre dimensions se calculent à l'échelle d'une organisation entière plutôt qu'à la main, composant par composant."
+       data-en="<strong>Article 5 — Automatically mapping knowledge with AI</strong>: how these four dimensions are computed across an entire organisation rather than by hand, component by component."
+       ><strong>Article 5 — Cartographier automatiquement la connaissance avec l'IA</strong> : comment ces quatre dimensions se calculent à l'échelle d'une organisation entière plutôt qu'à la main, composant par composant.</p>
+    <a href="article-5-long.html"
+       data-fr="Lire l'Article 5 →"
+       data-en="Read Article 5 →"
+       >Lire l'Article 5 →</a>
+  </div>
+
+  <footer>
+    <span data-fr="Pierre Pistenon — Business Analyst Senior"
+          data-en="Pierre Pistenon — Senior Business Analyst"
+          >Pierre Pistenon — Business Analyst Senior</span>
+    <a href="article-3-long.html"
+       data-fr="← Article précédent"
+       data-en="← Previous article"
+       >← Article précédent</a>
+  </footer>
+
+</div>
+
+<script>
+  function applyLang(lang) {
+    document.documentElement.lang = lang;
+    document.querySelectorAll('.lang-btn').forEach(function(b) {
+      b.classList.toggle('active', b.dataset.lang === lang);
+    });
+    document.querySelectorAll('[data-fr]').forEach(function(el) {
+      var val = el.getAttribute('data-' + lang);
+      if (!val) return;
+      var frVal = el.getAttribute('data-fr') || '';
+      var enVal = el.getAttribute('data-en') || '';
+      if (frVal.indexOf('<') !== -1 || enVal.indexOf('<') !== -1) {
+        el.innerHTML = val;
+      } else {
+        el.textContent = val;
+      }
+    });
+  }
+
+  function setLang(lang) {
+    localStorage.setItem('lang', lang);
+    applyLang(lang);
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    var saved = localStorage.getItem('lang') || 'fr';
+    applyLang(saved);
+  });
+</script>
+</body>
+</html>

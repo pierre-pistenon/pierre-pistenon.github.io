@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-EFS661MDV9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-EFS661MDV9');
+  </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Article 8 — Comment l'IA construit automatiquement une ontologie de la connaissance métier. Pipeline hybride règles + IA avec Make.com / n8n.">
+  <title>Comment l'IA construit automatiquement cette ontologie — Pierre Pistenon</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0D1117; --bg2: #161B22; --border: #30363D;
+      --text: #E6EDF3; --muted: #8B949E; --accent: #4FC3F7;
+    }
+    body {
+      background: var(--bg); color: var(--text);
+      font-family: 'Inter', sans-serif; font-size: 16px; line-height: 1.75;
+      -webkit-font-smoothing: antialiased;
+    }
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(13,17,23,0.92); backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 1.5rem; height: 52px;
+    }
+    .nav-back {
+      display: inline-flex; align-items: center; gap: 6px;
+      color: var(--accent); text-decoration: none;
+      font-family: 'JetBrains Mono', monospace; font-size: 0.82rem;
+    }
+    .lang-toggle { display: flex; gap: 4px; }
+    .lang-btn {
+      font-family: 'JetBrains Mono', monospace; font-size: 0.75rem;
+      background: transparent; border: 1px solid var(--border);
+      color: var(--muted); padding: 0.2rem 0.55rem; border-radius: 4px;
+      cursor: pointer; transition: all 0.15s;
+    }
+    .lang-btn.active { background: var(--accent); color: var(--bg); font-weight: 500; border-color: var(--accent); }
+    .wrap { max-width: 700px; margin: 0 auto; padding: 52px 1.5rem 100px; }
+    .eyebrow {
+      font-family: 'JetBrains Mono', monospace; font-size: 0.78rem;
+      color: var(--accent); letter-spacing: 0.08em; text-transform: uppercase;
+      margin: 2.5rem 0 0.75rem;
+    }
+    h1 {
+      font-size: clamp(1.6rem, 4vw, 2.3rem); font-weight: 600;
+      line-height: 1.25; margin-bottom: 1rem; letter-spacing: -0.01em;
+    }
+    .article-sub { color: var(--muted); font-size: 0.95rem; margin-bottom: 1.8rem; }
+    .disclaimer {
+      background: var(--bg2); border-left: 2px solid var(--accent);
+      padding: 1rem 1.25rem; font-size: 0.86rem; color: var(--muted);
+      font-style: italic; margin-bottom: 2.5rem; border-radius: 0 6px 6px 0;
+    }
+    h2 { font-size: 1.15rem; font-weight: 600; margin-top: 2.5rem; margin-bottom: 0.9rem; color: var(--text); }
+    h3 { font-size: 0.98rem; font-weight: 600; margin-top: 1.8rem; margin-bottom: 0.6rem; color: var(--accent); font-family: 'JetBrains Mono', monospace; }
+    p { color: var(--muted); margin-bottom: 1.1rem; font-size: 0.95rem; }
+    strong { color: var(--text); font-weight: 600; }
+    ul, ol { margin: 1rem 0 1.1rem 1.3rem; }
+    li { color: var(--muted); margin-bottom: 0.5rem; font-size: 0.95rem; }
+    li::marker { color: var(--accent); }
+    table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.85rem; }
+    th, td { border: 1px solid var(--border); padding: 0.6rem 0.8rem; text-align: left; }
+    th { background: var(--bg2); color: var(--text); font-weight: 600; }
+    td { color: var(--muted); }
+    .highlight {
+      background: rgba(79,195,247,0.05); border-left: 2px solid var(--accent);
+      padding: 1rem 1.25rem; margin: 1.5rem 0; font-style: italic;
+      color: var(--muted); border-radius: 0 6px 6px 0;
+    }
+    .next-article {
+      margin-top: 3rem; padding: 1.5rem; background: var(--bg2);
+      border: 1px solid var(--border); border-radius: 8px;
+    }
+    .next-article a { color: var(--accent); text-decoration: none; font-size: 0.9rem; font-family: 'JetBrains Mono', monospace; }
+    footer {
+      margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--border);
+      font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; color: var(--muted);
+      display: flex; justify-content: space-between; flex-wrap: wrap; gap: 1rem;
+    }
+    footer a { color: var(--accent); text-decoration: none; }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html#articles" class="nav-back" data-fr="← Retour au site" data-en="← Back to site">← Retour au site</a>
+  <div class="lang-toggle">
+    <button class="lang-btn active" data-lang="fr" onclick="setLang('fr')">FR</button>
+    <button class="lang-btn" data-lang="en" onclick="setLang('en')">EN</button>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <p class="eyebrow" data-fr="Série Bus Factor — Article 8" data-en="Bus Factor Series — Article 8">Série Bus Factor — Article 8</p>
+
+  <h1 data-fr="Comment l'IA construit automatiquement cette ontologie" data-en="How AI automatically builds this ontology">Comment l'IA construit automatiquement cette ontologie</h1>
+
+  <p class="article-sub" data-fr="Pipeline hybride règles métier + IA : de l'interview brute à la cartographie exploitable" data-en="A hybrid business-rules + AI pipeline: from raw interview to actionable mapping">Pipeline hybride règles métier + IA : de l'interview brute à la cartographie exploitable</p>
+
+  <div class="disclaimer">
+    <span data-fr="Ce qui suit s'appuie sur le cas pédagogique NexaCrypt et sur l'ontologie présentée dans l'Article 7. L'objectif est de montrer une mise en œuvre pragmatique, no-code/low-code, accessible en mission."
+          data-en="The following builds on the NexaCrypt teaching case and the ontology presented in Article 7. The goal is to show a pragmatic, no-code/low-code implementation, usable in real assignments."
+          >Ce qui suit s'appuie sur le cas pédagogique NexaCrypt et sur l'ontologie présentée dans l'Article 7. L'objectif est de montrer une mise en œuvre pragmatique, no-code/low-code, accessible en mission.</span>
+  </div>
+
+  <p data-fr="Une ontologie bien conçue n'a de valeur que si elle peut être alimentée et maintenue sans effort démesuré. C'est là que l'IA devient un accélérateur puissant — à condition de la placer derrière un cadre de règles métier explicites."
+     data-en="A well-designed ontology only has value if it can be fed and maintained without disproportionate effort. This is where AI becomes a powerful accelerator — provided it sits behind an explicit business-rules framework."
+     >Une ontologie bien conçue n'a de valeur que si elle peut être alimentée et maintenue sans effort démesuré. C'est là que l'IA devient un accélérateur puissant — à condition de la placer derrière un cadre de règles métier explicites.</p>
+
+  <h2 data-fr="Architecture globale du pipeline" data-en="Overall pipeline architecture">Architecture globale du pipeline</h2>
+
+  <p data-fr="Le flux suit une logique hybride :" data-en="The flow follows a hybrid logic:">Le flux suit une logique hybride :</p>
+
+  <ol>
+    <li data-fr="<strong>Collecte</strong> : interviews, tickets, documentation, logs" data-en="<strong>Collection</strong>: interviews, tickets, documentation, logs"><strong>Collecte</strong> : interviews, tickets, documentation, logs</li>
+    <li data-fr="<strong>Pré-traitement par règles</strong> : extraction structurée, nettoyage, normalisation" data-en="<strong>Rule-based pre-processing</strong>: structured extraction, cleaning, normalisation"><strong>Pré-traitement par règles</strong> : extraction structurée, nettoyage, normalisation</li>
+    <li data-fr="<strong>Enrichissement par IA</strong> : interprétation métier, détection de nuances, génération d'explications" data-en="<strong>AI enrichment</strong>: business interpretation, nuance detection, explanation generation"><strong>Enrichissement par IA</strong> : interprétation métier, détection de nuances, génération d'explications</li>
+    <li data-fr="<strong>Validation humaine</strong> : chaque Fait proposé par l'IA est relu et approuvé, corrigé ou rejeté avant d'exister ailleurs que comme proposition" data-en="<strong>Human validation</strong>: every Fact proposed by the AI is reviewed and approved, corrected or rejected before it exists as anything more than a proposal"><strong>Validation humaine</strong> : chaque Fait proposé par l'IA est relu et approuvé, corrigé ou rejeté avant d'exister ailleurs que comme proposition</li>
+    <li data-fr="<strong>Alimentation de l'ontologie</strong> : création ou mise à jour des nœuds et relations, uniquement pour les faits validés" data-en="<strong>Feeding the ontology</strong>: creating or updating nodes and relationships, only for validated facts"><strong>Alimentation de l'ontologie</strong> : création ou mise à jour des nœuds et relations, uniquement pour les faits validés</li>
+    <li data-fr="<strong>Calculs et visualisation</strong> : Bus Factor, Coverage, Concentration (Gini), Fragmentation, graphes de dépendances, rapports" data-en="<strong>Calculations and visualisation</strong>: Bus Factor, Coverage, Concentration (Gini), Fragmentation, dependency graphs, reports"><strong>Calculs et visualisation</strong> : Bus Factor, Coverage, Concentration (Gini), Fragmentation, graphes de dépendances, rapports</li>
+  </ol>
+
+  <h2 data-fr="Exemple concret de mise en œuvre" data-en="A concrete implementation example">Exemple concret de mise en œuvre</h2>
+
+  <h3 data-fr="1. Orchestration no-code/low-code" data-en="1. No-code/low-code orchestration">1. Orchestration no-code/low-code</h3>
+  <p data-fr="Make.com (ou n8n en self-hosted) joue le rôle de chef d'orchestre : il récupère les sources, lance les traitements, et stocke les résultats dans Google Sheets ou une base de graphe."
+     data-en="Make.com (or self-hosted n8n) acts as the conductor: it retrieves the sources, triggers the processing, and stores the results in Google Sheets or a graph database."
+     >Make.com (ou n8n en self-hosted) joue le rôle de chef d'orchestre : il récupère les sources, lance les traitements, et stocke les résultats dans Google Sheets ou une base de graphe.</p>
+
+  <h3 data-fr="2. Règles métier en première ligne" data-en="2. Business rules on the front line">2. Règles métier en première ligne</h3>
+  <p data-fr="Avant tout appel à l'IA, des règles déterministes extraient les entités évidentes (noms de personnes, de systèmes, dates, statuts). Cela garantit la fiabilité et limite les hallucinations."
+     data-en="Before any AI call, deterministic rules extract the obvious entities (person names, system names, dates, statuses). This guarantees reliability and limits hallucinations."
+     >Avant tout appel à l'IA, des règles déterministes extraient les entités évidentes (noms de personnes, de systèmes, dates, statuts). Cela garantit la fiabilité et limite les hallucinations.</p>
+
+  <h3 data-fr="3. Rôle précis de l'IA" data-en="3. The precise role of AI">3. Rôle précis de l'IA</h3>
+  <p data-fr="L'IA intervient sur les cas ambigus ou pour enrichir :" data-en="AI steps in on ambiguous cases, or to enrich:">L'IA intervient sur les cas ambigus ou pour enrichir :</p>
+  <ul>
+    <li data-fr="Transformer une citation brute en Fait structuré" data-en="Turning a raw quote into a structured Fact">Transformer une citation brute en Fait structuré</li>
+    <li data-fr="Évaluer le niveau d'expertise implicite" data-en="Assessing an implicit level of expertise">Évaluer le niveau d'expertise implicite</li>
+    <li data-fr="Générer une explication métier compréhensible pour les décideurs" data-en="Generating a business explanation decision-makers can understand">Générer une explication métier compréhensible pour les décideurs</li>
+    <li data-fr="Proposer des liens entre Connaissance et Activité" data-en="Proposing links between Knowledge and Activity">Proposer des liens entre Connaissance et Activité</li>
+  </ul>
+
+  <div class="highlight">
+    <span data-fr="L'IA générative accélère l'analyse mais nécessite un cadre explicite de règles métier pour garantir cohérence et fiabilité."
+          data-en="Generative AI speeds up analysis but requires an explicit business-rules framework to guarantee consistency and reliability."
+          >L'IA générative accélère l'analyse mais nécessite un cadre explicite de règles métier pour garantir cohérence et fiabilité.</span>
+  </div>
+
+  <h2 data-fr="Exemple de flux sur une interview" data-en="Example flow on an interview">Exemple de flux sur une interview</h2>
+
+  <p data-fr="Input : Extrait d'interview de Bob → « Les scripts de récupération RAID sont uniquement sur le poste de Dave, pas dans Git. »"
+     data-en="Input: Excerpt from Bob's interview → 'The RAID recovery scripts are only on Dave's machine, not in Git.'"
+     >Input : Extrait d'interview de Bob → « Les scripts de récupération RAID sont uniquement sur le poste de Dave, pas dans Git. »</p>
+
+  <p data-fr="Output du pipeline :" data-en="Pipeline output:">Output du pipeline :</p>
+  <ul>
+    <li data-fr="Création d'une <strong>Preuve</strong> — l'extrait littéral, rattaché à l'interview source" data-en="Creation of a <strong>Proof</strong> — the literal excerpt, attached to the source interview">Création d'une <strong>Preuve</strong> — l'extrait littéral, rattaché à l'interview source</li>
+    <li data-fr="Création d'un <strong>Fait</strong> proposé : « Récupération RAID » — « N'EST_PAS_DOCUMENTÉ_DANS » — « dépôt partagé », statut « à valider »" data-en="Creation of a proposed <strong>Fact</strong>: 'RAID recovery' — 'IS_NOT_DOCUMENTED_IN' — 'shared repository', status 'pending validation'">Création d'un <strong>Fait</strong> proposé : « Récupération RAID » — « N'EST_PAS_DOCUMENTÉ_DANS » — « dépôt partagé », statut « à valider »</li>
+    <li data-fr="<strong>Validation humaine</strong> : un consultant confirme que le fait est correct et complet — c'est cette étape, pas l'IA, qui autorise la suite" data-en="<strong>Human validation</strong>: a consultant confirms the fact is correct and complete — this step, not the AI, is what authorises what follows"><strong>Validation humaine</strong> : un consultant confirme que le fait est correct et complet — c'est cette étape, pas l'IA, qui autorise la suite</li>
+    <li data-fr="Mise à jour de l'<strong>Expertise</strong> de Dave sur cette Connaissance, une fois le fait validé" data-en="Update of Dave's <strong>Expertise</strong> on this Knowledge item, once the fact is validated">Mise à jour de l'<strong>Expertise</strong> de Dave sur cette Connaissance, une fois le fait validé</li>
+    <li data-fr="Calcul automatique du Bus Factor et de la Coverage mis à jour pour ce composant" data-en="Automatic recalculation of Bus Factor and Coverage for this component">Calcul automatique du Bus Factor et de la Coverage mis à jour pour ce composant</li>
+  </ul>
+
+  <h2 data-fr="Avantages et limites" data-en="Advantages and limits">Avantages et limites</h2>
+
+  <p><strong data-fr="Avantages" data-en="Advantages">Avantages</strong> <span data-fr=": gain de temps considérable (de plusieurs semaines à quelques heures), mise à jour continue possible, traçabilité des sources." data-en=": considerable time savings (from several weeks to a few hours), continuous updates possible, source traceability.">: gain de temps considérable (de plusieurs semaines à quelques heures), mise à jour continue possible, traçabilité des sources.</span></p>
+
+  <p><strong data-fr="Limites" data-en="Limits">Limites</strong> <span data-fr=": l'IA ne remplace jamais la validation humaine sur les éléments critiques. Le consultant reste au centre pour arbitrer, contextualiser et décider des actions." data-en=": AI never replaces human validation on critical elements. The consultant remains central to arbitrate, contextualise and decide on actions.">: l'IA ne remplace jamais la validation humaine sur les éléments critiques. Le consultant reste au centre pour arbitrer, contextualiser et décider des actions.</span></p>
+
+  <h2 data-fr="Conclusion" data-en="Conclusion">Conclusion</h2>
+
+  <p data-fr="Construire automatiquement une ontologie ne relève plus de la science-fiction. Avec une architecture hybride simple (règles + IA + validation humaine + orchestration no-code), il devient possible de maintenir une vue vivante et exploitable du patrimoine de connaissances."
+     data-en="Automatically building an ontology is no longer science fiction. With a simple hybrid architecture (rules + AI + human validation + no-code orchestration), it becomes possible to maintain a living, actionable view of the knowledge estate."
+     >Construire automatiquement une ontologie ne relève plus de la science-fiction. Avec une architecture hybride simple (règles + IA + validation humaine + orchestration no-code), il devient possible de maintenir une vue vivante et exploitable du patrimoine de connaissances.</p>
+
+  <p data-fr="C'est cette combinaison qui transforme un exercice de cartographie ponctuel en un véritable outil de gouvernance opérationnelle."
+     data-en="It is this combination that turns a one-off mapping exercise into a genuine operational governance tool."
+     >C'est cette combinaison qui transforme un exercice de cartographie ponctuel en un véritable outil de gouvernance opérationnelle.</p>
+
+  <p data-fr="Du symptôme (Bus Factor) à la mesure (Coverage, Concentration, Fragmentation), de la représentation (IA, graphe) à la fondation (ontologie), cette série a suivi un seul et même fil : rendre gouvernable ce qui ne l'était pas."
+     data-en="From the symptom (Bus Factor) to measurement (Coverage, Concentration, Fragmentation), from representation (AI, graph) to foundation (ontology), this series has followed a single thread: making governable what was not."
+     >Du symptôme (Bus Factor) à la mesure (Coverage, Concentration, Fragmentation), de la représentation (IA, graphe) à la fondation (ontologie), cette série a suivi un seul et même fil : rendre gouvernable ce qui ne l'était pas.</p>
+
+  <div class="highlight">
+    <span data-fr="La connaissance est un patrimoine. Comme tout patrimoine, elle doit être cartographiée, mesurée et gouvernée."
+          data-en="Knowledge is an asset. Like any asset, it must be mapped, measured and governed."
+          >La connaissance est un patrimoine. Comme tout patrimoine, elle doit être cartographiée, mesurée et gouvernée.</span>
+  </div>
+
+  <div class="next-article">
+    <p class="eyebrow" data-fr="Et ensuite" data-en="What's next">Et ensuite</p>
+    <p data-fr="Cette huitième étape clôt la construction du modèle — de la mesure (Articles 1 à 4) à sa cartographie automatisée par l'IA (Articles 5 à 8). Les prochains contenus s'appuieront sur cette base pour des cas pratiques et des retours d'expérience concrets."
+       data-en="This eighth step completes the construction of the model — from measurement (Articles 1 to 4) to its AI-driven automated mapping (Articles 5 to 8). Future content will build on this foundation with practical case studies and real-world feedback."
+       >Cette huitième étape clôt la construction du modèle — de la mesure (Articles 1 à 4) à sa cartographie automatisée par l'IA (Articles 5 à 8). Les prochains contenus s'appuieront sur cette base pour des cas pratiques et des retours d'expérience concrets.</p>
+    <a href="index.html#articles" data-fr="Retour à tous les articles →" data-en="Back to all articles →">Retour à tous les articles →</a>
+  </div>
+
+  <footer>
+    <span data-fr="Pierre Pistenon — Business Analyst Senior" data-en="Pierre Pistenon — Senior Business Analyst">Pierre Pistenon — Business Analyst Senior</span>
+    <a href="article-7-long.html" data-fr="← Article précédent" data-en="← Previous article">← Article précédent</a>
+  </footer>
+
+</div>
+
+<script>
+  function applyLang(lang) {
+    document.documentElement.lang = lang;
+    document.querySelectorAll('.lang-btn').forEach(function(b) { b.classList.toggle('active', b.dataset.lang === lang); });
+    document.querySelectorAll('[data-fr]').forEach(function(el) {
+      var val = el.getAttribute('data-' + lang);
+      if (!val) return;
+      var frVal = el.getAttribute('data-fr') || '';
+      var enVal = el.getAttribute('data-en') || '';
+      if (frVal.indexOf('<') !== -1 || enVal.indexOf('<') !== -1) { el.innerHTML = val; } else { el.textContent = val; }
+    });
+  }
+  function setLang(lang) { localStorage.setItem('lang', lang); applyLang(lang); }
+  document.addEventListener('DOMContentLoaded', function() {
+    var saved = localStorage.getItem('lang') || 'fr';
+    applyLang(saved);
+  });
+</script>
+</body>
+</html>

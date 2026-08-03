@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-EFS661MDV9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-EFS661MDV9');
+  </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Article 7 — L'ontologie au service de la résilience des connaissances. Structurer durablement le patrimoine de connaissances grâce à un modèle conceptuel explicite.">
+  <title>L'ontologie au service de la résilience des connaissances — Pierre Pistenon</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0D1117; --bg2: #161B22; --border: #30363D;
+      --text: #E6EDF3; --muted: #8B949E; --accent: #4FC3F7;
+    }
+    body {
+      background: var(--bg); color: var(--text);
+      font-family: 'Inter', sans-serif; font-size: 16px; line-height: 1.75;
+      -webkit-font-smoothing: antialiased;
+    }
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(13,17,23,0.92); backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 1.5rem; height: 52px;
+    }
+    .nav-back {
+      display: inline-flex; align-items: center; gap: 6px;
+      color: var(--accent); text-decoration: none;
+      font-family: 'JetBrains Mono', monospace; font-size: 0.82rem;
+    }
+    .lang-toggle { display: flex; gap: 4px; }
+    .lang-btn {
+      font-family: 'JetBrains Mono', monospace; font-size: 0.75rem;
+      background: transparent; border: 1px solid var(--border);
+      color: var(--muted); padding: 0.2rem 0.55rem; border-radius: 4px;
+      cursor: pointer; transition: all 0.15s;
+    }
+    .lang-btn.active { background: var(--accent); color: var(--bg); font-weight: 500; border-color: var(--accent); }
+    .wrap { max-width: 700px; margin: 0 auto; padding: 52px 1.5rem 100px; }
+    .eyebrow {
+      font-family: 'JetBrains Mono', monospace; font-size: 0.78rem;
+      color: var(--accent); letter-spacing: 0.08em; text-transform: uppercase;
+      margin: 2.5rem 0 0.75rem;
+    }
+    h1 {
+      font-size: clamp(1.6rem, 4vw, 2.3rem); font-weight: 600;
+      line-height: 1.25; margin-bottom: 1rem; letter-spacing: -0.01em;
+    }
+    .article-sub { color: var(--muted); font-size: 0.95rem; margin-bottom: 1.8rem; }
+    .disclaimer {
+      background: var(--bg2); border-left: 2px solid var(--accent);
+      padding: 1rem 1.25rem; font-size: 0.86rem; color: var(--muted);
+      font-style: italic; margin-bottom: 2.5rem; border-radius: 0 6px 6px 0;
+    }
+    h2 { font-size: 1.15rem; font-weight: 600; margin-top: 2.5rem; margin-bottom: 0.9rem; color: var(--text); }
+    h3 { font-size: 0.98rem; font-weight: 600; margin-top: 1.8rem; margin-bottom: 0.6rem; color: var(--accent); font-family: 'JetBrains Mono', monospace; }
+    p { color: var(--muted); margin-bottom: 1.1rem; font-size: 0.95rem; }
+    strong { color: var(--text); font-weight: 600; }
+    ul { margin: 1rem 0 1.1rem 1.3rem; }
+    li { color: var(--muted); margin-bottom: 0.5rem; font-size: 0.95rem; }
+    li::marker { color: var(--accent); }
+    table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.85rem; }
+    th, td { border: 1px solid var(--border); padding: 0.6rem 0.8rem; text-align: left; }
+    th { background: var(--bg2); color: var(--text); font-weight: 600; }
+    td { color: var(--muted); }
+    .highlight {
+      background: rgba(79,195,247,0.05); border-left: 2px solid var(--accent);
+      padding: 1rem 1.25rem; margin: 1.5rem 0; font-style: italic;
+      color: var(--muted); border-radius: 0 6px 6px 0;
+    }
+    .next-article {
+      margin-top: 3rem; padding: 1.5rem; background: var(--bg2);
+      border: 1px solid var(--border); border-radius: 8px;
+    }
+    .next-article a { color: var(--accent); text-decoration: none; font-size: 0.9rem; font-family: 'JetBrains Mono', monospace; }
+    footer {
+      margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--border);
+      font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; color: var(--muted);
+      display: flex; justify-content: space-between; flex-wrap: wrap; gap: 1rem;
+    }
+    footer a { color: var(--accent); text-decoration: none; }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html#articles" class="nav-back" data-fr="← Retour au site" data-en="← Back to site">← Retour au site</a>
+  <div class="lang-toggle">
+    <button class="lang-btn active" data-lang="fr" onclick="setLang('fr')">FR</button>
+    <button class="lang-btn" data-lang="en" onclick="setLang('en')">EN</button>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <p class="eyebrow" data-fr="Série Bus Factor — Article 7" data-en="Bus Factor Series — Article 7">Série Bus Factor — Article 7</p>
+
+  <h1 data-fr="L'ontologie au service de la résilience des connaissances" data-en="Ontology in the service of knowledge resilience">L'ontologie au service de la résilience des connaissances</h1>
+
+  <p class="article-sub" data-fr="Structurer durablement le patrimoine de connaissances grâce à un modèle conceptuel explicite" data-en="Durably structuring the knowledge estate through an explicit conceptual model">Structurer durablement le patrimoine de connaissances grâce à un modèle conceptuel explicite</p>
+
+  <div class="disclaimer">
+    <span data-fr="Ce qui suit s'appuie sur le cas pédagogique NexaCrypt et sur l'approche développée dans les articles précédents. Il s'agit d'un cadre conceptuel destiné à passer d'un diagnostic ponctuel à une gouvernance durable."
+          data-en="The following builds on the NexaCrypt teaching case and on the approach developed in the previous articles. It is a conceptual framework meant to move from a one-off diagnosis to durable governance."
+          >Ce qui suit s'appuie sur le cas pédagogique NexaCrypt et sur l'approche développée dans les articles précédents. Il s'agit d'un cadre conceptuel destiné à passer d'un diagnostic ponctuel à une gouvernance durable.</span>
+  </div>
+
+  <p data-fr="Les articles précédents ont montré que le Bus Factor est un bon signal d'alerte mais insuffisant seul, et que Coverage, Concentration et Fragmentation en complètent la lecture — chacune à un niveau différent de l'organisation. Pour mesurer, comprendre et renforcer réellement la résilience des connaissances, il faut un modèle capable de tenir ces différents niveaux ensemble : une ontologie."
+     data-en="The previous articles showed that the Bus Factor is a good warning signal but not enough on its own, and that Coverage, Concentration and Fragmentation complete the picture — each at a different level of the organisation. To truly measure, understand and strengthen knowledge resilience, a model is needed that can hold these different levels together: an ontology."
+     >Les articles précédents ont montré que le Bus Factor est un bon signal d'alerte mais insuffisant seul, et que Coverage, Concentration et Fragmentation en complètent la lecture — chacune à un niveau différent de l'organisation. Pour mesurer, comprendre et renforcer réellement la résilience des connaissances, il faut un modèle capable de tenir ces différents niveaux ensemble : une ontologie.</p>
+
+  <h2 data-fr="Pourquoi une ontologie ?" data-en="Why an ontology?">Pourquoi une ontologie ?</h2>
+
+  <p data-fr="Toute gouvernance repose sur une ontologie, même lorsqu'elle est implicite. Les organisations gouvernent leurs applications parce qu'elles disposent d'un modèle. Elles gouvernent leurs données parce qu'elles disposent d'un modèle. Elles ne gouvernent pas encore leurs connaissances, précisément parce qu'elles ne disposent pas d'un modèle partagé pour les décrire."
+     data-en="All governance rests on an ontology, even an implicit one. Organisations govern their applications because they have a model. They govern their data because they have a model. They do not yet govern their knowledge, precisely because they lack a shared model to describe it."
+     >Toute gouvernance repose sur une ontologie, même lorsqu'elle est implicite. Les organisations gouvernent leurs applications parce qu'elles disposent d'un modèle. Elles gouvernent leurs données parce qu'elles disposent d'un modèle. Elles ne gouvernent pas encore leurs connaissances, précisément parce qu'elles ne disposent pas d'un modèle partagé pour les décrire.</p>
+
+  <p data-fr="Une ontologie n'est pas un énième diagramme compliqué. C'est un cadre conceptuel qui définit clairement :"
+     data-en="An ontology is not yet another complicated diagram. It is a conceptual framework that clearly defines:"
+     >Une ontologie n'est pas un énième diagramme compliqué. C'est un cadre conceptuel qui définit clairement :</p>
+  <ul>
+    <li data-fr="Quels sont les objets qui composent le patrimoine de connaissances (personnes, expertises, activités, actifs…)" data-en="What objects make up the knowledge estate (people, expertise, activities, assets…)">Quels sont les objets qui composent le patrimoine de connaissances (personnes, expertises, activités, actifs…)</li>
+    <li data-fr="Comment ces objets sont reliés entre eux" data-en="How these objects are connected to one another">Comment ces objets sont reliés entre eux</li>
+    <li data-fr="Quels indicateurs on peut calculer de façon fiable et reproductible, et à quel niveau chacun se lit" data-en="Which indicators can be calculated reliably and reproducibly, and at what level each one is read">Quels indicateurs on peut calculer de façon fiable et reproductible, et à quel niveau chacun se lit</li>
+  </ul>
+  <p data-fr="Elle permet de passer d'une vision fragmentée (« qui sait quoi ? ») à une compréhension systémique et actionnable."
+     data-en="It allows a move from a fragmented view ('who knows what?') to a systemic, actionable understanding."
+     >Elle permet de passer d'une vision fragmentée (« qui sait quoi ? ») à une compréhension systémique et actionnable.</p>
+
+  <h2 data-fr="Ce qu'un tableur ne peut pas représenter : des niveaux différents" data-en="What a spreadsheet cannot represent: different levels">Ce qu'un tableur ne peut pas représenter : des niveaux différents</h2>
+
+  <p data-fr="C'est le point le plus important de cet article, et celui qui justifie vraiment le passage à une ontologie plutôt qu'à un tableur un peu plus élaboré. Le Bus Factor et la Coverage se lisent composant par composant. La Concentration se lit à l'échelle d'une équipe entière. La Fragmentation se lit à l'échelle d'un processus, pas d'un actif isolé."
+     data-en="This is the most important point in this article, and the one that truly justifies moving to an ontology rather than a slightly more elaborate spreadsheet. Bus Factor and Coverage are read component by component. Concentration is read across an entire team. Fragmentation is read at the level of a process, not a single asset."
+     >C'est le point le plus important de cet article, et celui qui justifie vraiment le passage à une ontologie plutôt qu'à un tableur un peu plus élaboré. Le Bus Factor et la Coverage se lisent composant par composant. La Concentration se lit à l'échelle d'une équipe entière. La Fragmentation se lit à l'échelle d'un processus, pas d'un actif isolé.</p>
+
+  <p data-fr="Un tableur organise ses données autour d'une seule granularité à la fois — une ligne par personne, ou une ligne par actif, rarement les deux à la fois et jamais un processus entier composé de plusieurs activités. Une ontologie n'a pas ce problème : Personne, Connaissance, Activité, Actif et Processus y sont des objets de même rang, reliés entre eux, et chaque indicateur interroge le graphe au niveau qui lui correspond — sans qu'on ait à reconstruire une vue différente à chaque fois."
+     data-en="A spreadsheet organises its data around a single granularity at a time — one row per person, or one row per asset, rarely both at once and never a whole process made of several activities. An ontology does not have this problem: Person, Knowledge, Activity, Asset and Process are objects of equal standing, connected to one another, and each indicator queries the graph at the level that suits it — without having to rebuild a different view each time."
+     >Un tableur organise ses données autour d'une seule granularité à la fois — une ligne par personne, ou une ligne par actif, rarement les deux à la fois et jamais un processus entier composé de plusieurs activités. Une ontologie n'a pas ce problème : Personne, Connaissance, Activité, Actif et Processus y sont des objets de même rang, reliés entre eux, et chaque indicateur interroge le graphe au niveau qui lui correspond — sans qu'on ait à reconstruire une vue différente à chaque fois.</p>
+
+  <h2 data-fr="Les grandes briques de l'ontologie" data-en="The main building blocks of the ontology">Les grandes briques de l'ontologie</h2>
+
+  <h3 data-fr="1. Couche épistémique (comment on sait)" data-en="1. Epistemic layer (how we know)">1. Couche épistémique (comment on sait)</h3>
+  <p data-fr="Source d'information → Observation → Fait → Preuve. Cette couche garantit que chaque élément du modèle est étayé par des éléments vérifiables (interview, ticket, document…), et qu'aucun fait n'entre dans le graphe sans validation humaine."
+     data-en="Source of information → Observation → Fact → Proof. This layer guarantees that every element of the model is backed by verifiable material (interview, ticket, document…), and that no fact enters the graph without human validation."
+     >Source d'information → Observation → Fait → Preuve. Cette couche garantit que chaque élément du modèle est étayé par des éléments vérifiables (interview, ticket, document…), et qu'aucun fait n'entre dans le graphe sans validation humaine.</p>
+
+  <h3 data-fr="2. Couche métier (ce qui existe dans l'organisation)" data-en="2. Business layer (what exists in the organisation)">2. Couche métier (ce qui existe dans l'organisation)</h3>
+  <p data-fr="Principales classes :" data-en="Main classes:">Principales classes :</p>
+  <ul>
+    <li data-fr="<strong>Personne</strong> et <strong>Expertise</strong> (niveau réel de maîtrise, distinct de la connaissance elle-même)" data-en="<strong>Person</strong> and <strong>Expertise</strong> (actual level of mastery, distinct from the knowledge item itself)"><strong>Personne</strong> et <strong>Expertise</strong> (niveau réel de maîtrise, distinct de la connaissance elle-même)</li>
+    <li data-fr="<strong>Connaissance</strong> et <strong>Activité</strong>" data-en="<strong>Knowledge</strong> and <strong>Activity</strong>"><strong>Connaissance</strong> et <strong>Activité</strong></li>
+    <li data-fr="<strong>Actif</strong> (systèmes, processus, outils critiques)" data-en="<strong>Asset</strong> (systems, processes, critical tools)"><strong>Actif</strong> (systèmes, processus, outils critiques)</li>
+    <li data-fr="<strong>Risque</strong> et <strong>Action de résilience</strong>" data-en="<strong>Risk</strong> and <strong>Resilience action</strong>"><strong>Risque</strong> et <strong>Action de résilience</strong></li>
+    <li data-fr="<strong>Décision</strong> — pourquoi un choix a été fait, par qui, et sur quelle connaissance il s'appuyait ; c'est souvent cette justification, plus que la décision elle-même, qui disparaît en premier quand une personne clé part" data-en="<strong>Decision</strong> — why a choice was made, by whom, and on which knowledge it relied; it is often this justification, more than the decision itself, that disappears first when a key person leaves"><strong>Décision</strong> — pourquoi un choix a été fait, par qui, et sur quelle connaissance il s'appuyait ; c'est souvent cette justification, plus que la décision elle-même, qui disparaît en premier quand une personne clé part</li>
+  </ul>
+
+  <h3 data-fr="3. Règles et calculs" data-en="3. Rules and calculations">3. Règles et calculs</h3>
+  <p data-fr="Les quatre dimensions présentées dans l'article précédent — Bus Factor, Coverage (couverture documentaire), Concentration (indice de Gini pondéré par criticité) et Fragmentation — ainsi que la dette documentaire et les risques critiques, sont toutes calculées dynamiquement à partir du modèle, sans duplication de données."
+     data-en="The four dimensions presented in the previous article — Bus Factor, Coverage (documentation coverage), Concentration (criticality-weighted Gini index) and Fragmentation — along with documentation debt and critical risks, are all calculated dynamically from the model, with no data duplication."
+     >Les quatre dimensions présentées dans l'article précédent — Bus Factor, Coverage (couverture documentaire), Concentration (indice de Gini pondéré par criticité) et Fragmentation — ainsi que la dette documentaire et les risques critiques, sont toutes calculées dynamiquement à partir du modèle, sans duplication de données.</p>
+
+  <div class="highlight">
+    <span data-fr="L'ontologie ne remplace pas le jugement humain. Elle le rend plus rapide, plus fiable et plus reproductible."
+          data-en="The ontology does not replace human judgement. It makes it faster, more reliable and more reproducible."
+          >L'ontologie ne remplace pas le jugement humain. Elle le rend plus rapide, plus fiable et plus reproductible.</span>
+  </div>
+
+  <h2 data-fr="Exemple avec NexaCrypt" data-en="Example with NexaCrypt">Exemple avec NexaCrypt</h2>
+
+  <p data-fr="Grâce à ce modèle, on ne se contente plus de dire « Alice est critique sur NexaCrypt Engine ». On peut répondre précisément à des questions comme :"
+     data-en="With this model, one no longer just says 'Alice is critical for NexaCrypt Engine'. Precise questions can be answered, such as:"
+     >Grâce à ce modèle, on ne se contente plus de dire « Alice est critique sur NexaCrypt Engine ». On peut répondre précisément à des questions comme :</p>
+  <ul>
+    <li data-fr="Quelles autres activités dépendent de ses expertises ?" data-en="What other activities depend on her expertise?">Quelles autres activités dépendent de ses expertises ?</li>
+    <li data-fr="Quels actifs seraient impactés en cascade ?" data-en="What assets would be impacted in cascade?">Quels actifs seraient impactés en cascade ?</li>
+    <li data-fr="Quelles preuves documentent son niveau d'expertise ?" data-en="What proof documents her level of expertise?">Quelles preuves documentent son niveau d'expertise ?</li>
+    <li data-fr="Quelle décision a conduit à concentrer ce savoir sur une seule personne, et sur quelle connaissance s'appuyait-elle ?" data-en="What decision led to concentrating this knowledge on a single person, and on which knowledge did it rely?">Quelle décision a conduit à concentrer ce savoir sur une seule personne, et sur quelle connaissance s'appuyait-elle ?</li>
+    <li data-fr="Quelles actions de résilience auraient le meilleur retour sur investissement ?" data-en="Which resilience actions would have the best return on investment?">Quelles actions de résilience auraient le meilleur retour sur investissement ?</li>
+  </ul>
+
+  <h2 data-fr="Conclusion" data-en="Conclusion">Conclusion</h2>
+
+  <p data-fr="Une ontologie bien conçue transforme le diagnostic du Bus Factor — et des trois dimensions qui l'accompagnent — en un véritable outil de gouvernance. Elle permet non seulement d'identifier les vulnérabilités, mais aussi de piloter leur réduction dans le temps avec des indicateurs fiables, à chacun des niveaux où ils se lisent."
+     data-en="A well-designed ontology turns the Bus Factor diagnosis — and the three dimensions accompanying it — into a genuine governance tool. It not only identifies vulnerabilities but also allows their reduction to be steered over time with reliable indicators, at each of the levels where they are read."
+     >Une ontologie bien conçue transforme le diagnostic du Bus Factor — et des trois dimensions qui l'accompagnent — en un véritable outil de gouvernance. Elle permet non seulement d'identifier les vulnérabilités, mais aussi de piloter leur réduction dans le temps avec des indicateurs fiables, à chacun des niveaux où ils se lisent.</p>
+
+  <p data-fr="C'est cette approche structurée — règles métier explicites + augmentation par l'IA — qui permet de passer d'une réaction ponctuelle à une maîtrise durable du patrimoine de connaissances."
+     data-en="It is this structured approach — explicit business rules plus AI augmentation — that allows a move from a one-off reaction to durable mastery of the knowledge estate."
+     >C'est cette approche structurée — règles métier explicites + augmentation par l'IA — qui permet de passer d'une réaction ponctuelle à une maîtrise durable du patrimoine de connaissances.</p>
+
+  <p><strong data-fr="L'IA générative accélère l'analyse mais nécessite un cadre explicite de règles métier pour garantir cohérence et fiabilité." data-en="Generative AI speeds up analysis but requires an explicit business-rules framework to guarantee consistency and reliability.">L'IA générative accélère l'analyse mais nécessite un cadre explicite de règles métier pour garantir cohérence et fiabilité.</strong></p>
+
+  <p data-fr="Toute discipline mature finit par produire son propre langage. La cybersécurité possède ses référentiels. La qualité possède ses normes. La gouvernance des données possède ses modèles. La résilience des connaissances nécessite désormais son propre cadre conceptuel. Cette ontologie constitue une première proposition en ce sens."
+     data-en="Every mature discipline eventually produces its own language. Cybersecurity has its frameworks. Quality has its standards. Data governance has its models. Knowledge resilience now needs its own conceptual framework. This ontology is a first proposal in that direction."
+     >Toute discipline mature finit par produire son propre langage. La cybersécurité possède ses référentiels. La qualité possède ses normes. La gouvernance des données possède ses modèles. La résilience des connaissances nécessite désormais son propre cadre conceptuel. Cette ontologie constitue une première proposition en ce sens.</p>
+
+  <div class="highlight">
+    <span data-fr="La connaissance est un patrimoine. Comme tout patrimoine, elle doit être cartographiée, mesurée et gouvernée."
+          data-en="Knowledge is an asset. Like any asset, it must be mapped, measured and governed."
+          >La connaissance est un patrimoine. Comme tout patrimoine, elle doit être cartographiée, mesurée et gouvernée.</span>
+  </div>
+
+  <div class="next-article">
+    <p class="eyebrow" data-fr="Article suivant" data-en="Next article">Article suivant</p>
+    <p data-fr="<strong>Article 8 — Comment l'IA construit automatiquement cette ontologie</strong> : mise en pratique avec des agents et un pipeline no-code/low-code."
+       data-en="<strong>Article 8 — How AI automatically builds this ontology</strong>: a practical implementation with agents and a no-code/low-code pipeline."
+       ><strong>Article 8 — Comment l'IA construit automatiquement cette ontologie</strong> : mise en pratique avec des agents et un pipeline no-code/low-code.</p>
+    <a href="article-8-long.html" data-fr="Lire l'Article 8 →" data-en="Read Article 8 →">Lire l'Article 8 →</a>
+  </div>
+
+  <footer>
+    <span data-fr="Pierre Pistenon — Business Analyst Senior" data-en="Pierre Pistenon — Senior Business Analyst">Pierre Pistenon — Business Analyst Senior</span>
+    <a href="article-6-long.html" data-fr="← Article précédent" data-en="← Previous article">← Article précédent</a>
+  </footer>
+
+</div>
+
+<script>
+  function applyLang(lang) {
+    document.documentElement.lang = lang;
+    document.querySelectorAll('.lang-btn').forEach(function(b) { b.classList.toggle('active', b.dataset.lang === lang); });
+    document.querySelectorAll('[data-fr]').forEach(function(el) {
+      var val = el.getAttribute('data-' + lang);
+      if (!val) return;
+      var frVal = el.getAttribute('data-fr') || '';
+      var enVal = el.getAttribute('data-en') || '';
+      if (frVal.indexOf('<') !== -1 || enVal.indexOf('<') !== -1) { el.innerHTML = val; } else { el.textContent = val; }
+    });
+  }
+  function setLang(lang) { localStorage.setItem('lang', lang); applyLang(lang); }
+  document.addEventListener('DOMContentLoaded', function() {
+    var saved = localStorage.getItem('lang') || 'fr';
+    applyLang(saved);
+  });
+</script>
+</body>
+</html>

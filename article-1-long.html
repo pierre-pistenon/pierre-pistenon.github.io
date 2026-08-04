@@ -483,8 +483,21 @@
 
   // Appliquer la langue enregistrée au chargement
   document.addEventListener('DOMContentLoaded', () => {
+
+    // 1. regarde si la langue est imposée dans l'URL
+    const params = new URLSearchParams(window.location.search);
+    const urlLang = params.get('lang');
+
+    if (urlLang === 'fr' || urlLang === 'en') {
+        localStorage.setItem('lang', urlLang);
+        applyLang(urlLang);
+        return;
+    }
+
+    // 2. sinon on reprend la langue mémorisée
     const saved = localStorage.getItem('lang') || 'fr';
     applyLang(saved);
+
   });
 </script>
 </body>

@@ -476,9 +476,9 @@
   </h1>
 
   <p class="hero-sub"
-     data-fr="Vingt-cinq ans de programmes SI complexes, recentrés sur ce qui produit de la valeur : clarifier les règles, fiabiliser les données, automatiser ce qui mérite de l'être. Avec l'IA là où elle accélère — et les règles métier là où elle ne suffit pas."
-     data-en="Twenty-five years of complex IT programmes, refocused on what delivers value: making rules explicit, making data reliable, automating what deserves it. AI where it accelerates — business rules where AI alone is not enough.">
-    Vingt-cinq ans de programmes SI complexes, recentrés sur ce qui produit de la valeur : clarifier les règles, fiabiliser les données, automatiser ce qui mérite de l'être. Avec l'IA là où elle accélère — et les règles métier là où elle ne suffit pas.
+     data-fr="Vingt-cinq ans de programmes SI complexes, recentrés sur ce qui produit de la valeur : clarifier les règles, modéliser les dépendances, fiabiliser les données, automatiser ce qui mérite de l'être. Avec l'IA là où elle accélère — et les règles métier là où elle ne suffit pas."
+     data-en="Twenty-five years of complex IT programmes, refocused on what delivers value: making rules explicit, modelling dependencies, making data reliable, automating what deserves it. AI where it accelerates — business rules where AI alone is not enough.">
+    Vingt-cinq ans de programmes SI complexes, recentrés sur ce qui produit de la valeur : clarifier les règles, modéliser les dépendances, fiabiliser les données, automatiser ce qui mérite de l'être. Avec l'IA là où elle accélère — et les règles métier là où elle ne suffit pas.
   </p>
 
   <!-- Terminal — illustration du pipeline Make (pas une exécution réelle) -->
@@ -620,9 +620,9 @@
       data-en="Case studies">Cas pratiques</h2>
 
   <p class="section-sub"
-     data-fr="Scénarios représentatifs issus de ma pratique, augmentés a posteriori par des démonstrateurs techniques (orchestrateurs, agents IA) illustrant comment j'aborde ces mêmes problèmes avec les outils d'aujourd'hui. Cliquez sur un cas pour voir le détail complet."
-     data-en="Representative scenarios drawn from my practice, augmented after the fact with technical demonstrators (orchestrators, AI agents) illustrating how I approach these same problems with today's tools. Click on a case for the full detail.">
-    Scénarios représentatifs issus de ma pratique, augmentés a posteriori par des démonstrateurs techniques (orchestrateurs, agents IA) illustrant comment j'aborde ces mêmes problèmes avec les outils d'aujourd'hui. Cliquez sur un cas pour voir le détail complet.
+     data-fr="Scénarios représentatifs issus de ma pratique, augmentés a posteriori par des démonstrateurs techniques (orchestrateurs, agents IA, modélisation par ontologies) illustrant comment j'aborde ces mêmes problèmes avec les outils d'aujourd'hui. Cliquez sur un cas pour voir le détail complet."
+     data-en="Representative scenarios drawn from my practice, augmented after the fact with technical demonstrators (orchestrators, AI agents, ontology-based modelling) illustrating how I approach these same problems with today's tools. Click on a case for the full detail.">
+    Scénarios représentatifs issus de ma pratique, augmentés a posteriori par des démonstrateurs techniques (orchestrateurs, agents IA, modélisation par ontologies) illustrant comment j'aborde ces mêmes problèmes avec les outils d'aujourd'hui. Cliquez sur un cas pour voir le détail complet.
   </p>
 
   <div class="cases">
@@ -696,6 +696,8 @@
           <li data-fr="Enrichissement par LLM (Mistral) sur les textes longs ou ambigus, en complément des règles" data-en="LLM enrichment (Mistral) on long or ambiguous texts, complementing the rules">Enrichissement par LLM (Mistral) sur les textes longs ou ambigus</li>
           <li data-fr="API développée en Python/FastAPI" data-en="API developed in Python/FastAPI, as personal technical deepening">API développée en Python/FastAPI</li>
         </ul>
+        <!-- À enrichir d'un lien vers l'article sur le graphe / l'ontologie une fois celui-ci publié. -->
+        <p data-fr="Ce périmètre couvre la détection et l'enrichissement contextuel des signaux. La modélisation plus fine des dépendances entre connaissances critiques — au-delà de la détection d'anomalies isolées — fait l'objet d'un travail distinct, mené en parallèle sur la base des mêmes principes." data-en="This scope covers detection and contextual enrichment of signals. The finer modelling of dependencies between critical knowledge items — beyond isolated anomaly detection — is the subject of separate work, carried out in parallel on the same underlying principles.">Ce périmètre couvre la détection et l'enrichissement contextuel des signaux. La modélisation plus fine des dépendances entre connaissances critiques — au-delà de la détection d'anomalies isolées — fait l'objet d'un travail distinct, mené en parallèle sur la base des mêmes principes.</p>
         <h4 data-fr="Ce que révèle ce type d'analyse" data-en="What this type of analysis reveals">Ce que révèle ce type d'analyse</h4>
         <p data-fr="Une analyse hybride de ce type permet de relier des signaux de risque qu'aucune fonction de l'organisation, prise isolément, ne pourrait connecter — à une vitesse et sur un volume qu'un travail manuel ne permettrait pas. Elle ne remplace pas le jugement métier : elle accélère la collecte et la mise en relation, pour laisser plus de temps à l'analyse et à la décision." data-en="A hybrid analysis of this type connects risk signals that no single function in the organisation could link in isolation — at a speed and volume manual work could not achieve. It does not replace business judgement: it speeds up collection and cross-referencing, leaving more time for analysis and decision-making.">
           Une analyse hybride de ce type permet de relier des signaux de risque qu'aucune fonction de l'organisation, prise isolément, ne pourrait connecter — à une vitesse et sur un volume qu'un travail manuel ne permettrait pas. Elle ne remplace pas le jugement métier : elle accélère la collecte et la mise en relation, pour laisser plus de temps à l'analyse et à la décision.
@@ -747,47 +749,20 @@
 <!-- ARTICLES -->
 <section id="articles">
   <p class="section-label" data-fr="Réflexions & publications" data-en="Insights & publications">Réflexions & publications</p>
-  <h2 class="section-title" data-fr="Vers une gouvernance de la résilience des connaissances" data-en="Towards a governance of knowledge resilience">Vers une gouvernance de la résilience des connaissances</h2>
+  <h2 class="section-title" data-fr="Le Bus Factor : un risque de gouvernance, pas seulement un risque technique" data-en="The Bus Factor: a governance risk, not just a technical one">Le Bus Factor : un risque de gouvernance, pas seulement un risque technique</h2>
   <p class="section-sub"
-     data-fr="Cette série a commencé par un risque concret : un système qui repose sur une ou deux personnes. Elle est devenue, article après article, une réflexion sur un sujet plus large — pourquoi la connaissance d'une organisation est un actif qu'il faut cartographier, mesurer et gouverner, au même titre que ses données ou ses applications."
-     data-en="This series began with a concrete risk: a system resting on one or two people. It became, article after article, a reflection on a broader subject — why an organisation's knowledge is an asset that must be mapped, measured and governed, in the same way as its data or its applications."
-     >Cette série a commencé par un risque concret : un système qui repose sur une ou deux personnes. Elle est devenue, article après article, une réflexion sur un sujet plus large — pourquoi la connaissance d'une organisation est un actif qu'il faut cartographier, mesurer et gouverner, au même titre que ses données ou ses applications.</p>
+     data-fr="Le Bus Factor n'est que la manifestation la plus visible d'un phénomène plus large — la manière dont une organisation cartographie, ou ne cartographie pas, son propre patrimoine de connaissances. Les trois premiers articles posent ce constat, pas à pas : un incident qui semble purement technique révèle en réalité un problème de gouvernance ; le Bus Factor permet de le mesurer objectivement ; et pourtant, à lui seul, il ne suffit pas à en évaluer toute la gravité. La suite de cette réflexion sera publiée progressivement."
+     data-en="The Bus Factor is only the most visible manifestation of a broader phenomenon — the way an organisation maps, or fails to map, its own knowledge estate. The first three articles lay out this observation, step by step: an incident that looks purely technical actually reveals a governance problem; the Bus Factor makes it possible to measure it objectively; and yet, on its own, it isn't enough to assess its full severity. The rest of this reflection will be published progressively."
+     >Le Bus Factor n'est que la manifestation la plus visible d'un phénomène plus large — la manière dont une organisation cartographie, ou ne cartographie pas, son propre patrimoine de connaissances. Les trois premiers articles posent ce constat, pas à pas : un incident qui semble purement technique révèle en réalité un problème de gouvernance ; le Bus Factor permet de le mesurer objectivement ; et pourtant, à lui seul, il ne suffit pas à en évaluer toute la gravité. La suite de cette réflexion sera publiée progressivement.</p>
 
-  <p class="section-sub"
-     data-fr="Le Bus Factor n'était que la porte d'entrée. Une fois qu'on l'a mesuré, on découvre qu'il ne raconte qu'une partie de l'histoire — qu'il faut aussi regarder si le savoir est documenté, s'il est concentré sur quelques personnes, et s'il faut réunir toute une équipe pour agir en situation de crise. Une fois qu'on sait regarder ces quatre dimensions, il faut un moyen de les observer à l'échelle d'une organisation entière — l'IA, puis un graphe plutôt qu'un tableur. Et une fois qu'on dispose de ce graphe, il faut un modèle qui explique pourquoi il tient — une ontologie, avec son propre langage, comme toute discipline arrivée à maturité."
-     data-en="The Bus Factor was only the entry point. Once measured, it turns out to tell only part of the story — one must also look at whether knowledge is documented, concentrated on a few people, and whether a whole team needs to be assembled to act in a crisis. Once these four dimensions can be read, a way is needed to observe them across an entire organisation — AI, then a graph rather than a spreadsheet. And once that graph exists, a model is needed to explain why it holds together — an ontology, with its own language, as in any discipline that has reached maturity."
-     >Le Bus Factor n'était que la porte d'entrée. Une fois qu'on l'a mesuré, on découvre qu'il ne raconte qu'une partie de l'histoire — qu'il faut aussi regarder si le savoir est documenté, s'il est concentré sur quelques personnes, et s'il faut réunir toute une équipe pour agir en situation de crise. Une fois qu'on sait regarder ces quatre dimensions, il faut un moyen de les observer à l'échelle d'une organisation entière — l'IA, puis un graphe plutôt qu'un tableur. Et une fois qu'on dispose de ce graphe, il faut un modèle qui explique pourquoi il tient — une ontologie, avec son propre langage, comme toute discipline arrivée à maturité.</p>
 
   <div class="domains-pilot" style="margin-bottom: 1.5rem;">
     <span class="pilot-icon">◆</span>
     <div class="pilot-text">
       <p class="pilot-title" data-fr="La connaissance est un patrimoine" data-en="Knowledge is an asset">La connaissance est un patrimoine</p>
-      <p class="pilot-body" data-fr="Comme tout patrimoine, elle doit être cartographiée, mesurée et gouvernée. C'est le fil qui traverse les huit articles de cette série." data-en="Like any asset, it must be mapped, measured and governed. This is the thread running through the eight articles of this series.">
-        Comme tout patrimoine, elle doit être cartographiée, mesurée et gouvernée. C'est le fil qui traverse les huit articles de cette série.
+      <p class="pilot-body" data-fr="Comme tout patrimoine, elle doit être cartographiée, mesurée et gouvernée. C'est le fil conducteur de cette série." data-en="Like any asset, it must be mapped, measured and governed. This is the thread running through this series.">
+        Comme tout patrimoine, elle doit être cartographiée, mesurée et gouvernée. C'est le fil conducteur de cette série.
       </p>
-    </div>
-  </div>
-
-  <div class="domains-grid" style="margin-bottom: 2rem;">
-    <div class="domain-card">
-      <span class="domain-icon">①</span>
-      <p class="domain-title" data-fr="Le symptôme" data-en="The symptom">Le symptôme</p>
-      <p class="domain-body" data-fr="Articles 1-2 — Faire prendre conscience du risque, puis donner une première mesure actionable : le Bus Factor." data-en="Articles 1-2 — Raising awareness of the risk, then giving a first actionable measure: the Bus Factor.">Articles 1-2 — Faire prendre conscience du risque, puis donner une première mesure actionable : le Bus Factor.</p>
-    </div>
-    <div class="domain-card">
-      <span class="domain-icon">②</span>
-      <p class="domain-title" data-fr="Le changement de paradigme" data-en="The paradigm shift">Le changement de paradigme</p>
-      <p class="domain-body" data-fr="Articles 3-4 — Pourquoi un seul chiffre ne suffit pas, et les quatre dimensions qui complètent l'image : Coverage, Concentration, Fragmentation." data-en="Articles 3-4 — Why a single number is not enough, and the four dimensions that complete the picture: Coverage, Concentration, Fragmentation.">Articles 3-4 — Pourquoi un seul chiffre ne suffit pas, et les quatre dimensions qui complètent l'image : Coverage, Concentration, Fragmentation.</p>
-    </div>
-    <div class="domain-card">
-      <span class="domain-icon">③</span>
-      <p class="domain-title" data-fr="L'opérationnalisation" data-en="Operationalisation">L'opérationnalisation</p>
-      <p class="domain-body" data-fr="Articles 5-6 — Comment observer ces dimensions à grande échelle avec l'IA, et pourquoi les représenter dans un graphe plutôt qu'un tableur." data-en="Articles 5-6 — How to observe these dimensions at scale with AI, and why to represent them in a graph rather than a spreadsheet.">Articles 5-6 — Comment observer ces dimensions à grande échelle avec l'IA, et pourquoi les représenter dans un graphe plutôt qu'un tableur.</p>
-    </div>
-    <div class="domain-card">
-      <span class="domain-icon">④</span>
-      <p class="domain-title" data-fr="La fondation" data-en="The foundation">La fondation</p>
-      <p class="domain-body" data-fr="Articles 7-8 — Pourquoi ce modèle tient (une ontologie de la résilience des connaissances), et comment l'IA en industrialise la construction." data-en="Articles 7-8 — Why this model holds together (an ontology of knowledge resilience), and how AI industrialises its construction.">Articles 7-8 — Pourquoi ce modèle tient (une ontologie de la résilience des connaissances), et comment l'IA en industrialise la construction.</p>
     </div>
   </div>
 
@@ -870,7 +845,6 @@
         </div>
 
         <div class="article-links">
-          <a href="https://www.linkedin.com/posts/pierre-pistenon-87730a6_busfactor-riskmanagement-knowledgemanagement-share-7490411502601003008-smKj/?utm_source=share&utm_medium=member_desktop&rcm=ACoAAAEdDFsBERg1D0geCz0U5V71-QDUKltjWpc" target="_blank" class="article-link" data-fr="← Version courte sur LinkedIn" data-en="← Short version on LinkedIn">← Version courte sur LinkedIn</a>
           <a href="article-2-long.html" class="article-link article-link-right" data-fr="Version longue →" data-en="Long version →">Version longue →</a>
         </div>
       </div>
@@ -885,166 +859,32 @@
         <span class="article-arrow">›</span>
       </summary>
       <div class="article-body">
+        <p data-fr="Ce qui suit s'appuie sur le cas pédagogique NexaCrypt introduit dans l'Article 1, et sur des situations représentatives observées en mission. Les mécanismes décrits sont documentés et fréquemment rencontrés dans des organisations de toutes tailles."
+           data-en="The following builds on the NexaCrypt teaching case introduced in Article 1, and on representative situations observed during assignments. The mechanisms described are documented and commonly encountered in organisations of all sizes.">
+          <em>Ce qui suit s'appuie sur le cas pédagogique NexaCrypt introduit dans l'Article 1, et sur des situations représentatives observées en mission.</em>
+        </p>
+
+        <h3 data-fr="Le même Bus Factor, des réalités très différentes" data-en="The same Bus Factor, very different realities">Le même Bus Factor, des réalités très différentes</h3>
         <p data-fr="Deux organisations peuvent présenter le même Bus Factor tout en ayant des niveaux de résilience très différents. Dans l'une, la connaissance critique est documentée et testée régulièrement. Dans l'autre, elle reste tacite et repose sur un seul expert injoignable." data-en="Two organisations can show the same Bus Factor while having very different levels of resilience. In one, critical knowledge is documented and regularly tested. In the other, it stays tacit and rests on a single, unreachable expert.">
           Deux organisations peuvent présenter le même Bus Factor tout en ayant des niveaux de résilience très différents. Dans l'une, la connaissance critique est documentée et testée régulièrement. Dans l'autre, elle reste tacite et repose sur un seul expert injoignable.
         </p>
         <div class="highlight" data-fr="Le Bus Factor mesure la concentration de la connaissance, mais il ne dit rien sur sa qualité de distribution, de documentation et de transmission." data-en="The Bus Factor measures the concentration of knowledge, but says nothing about the quality of its distribution, documentation and transmission.">
           Le Bus Factor mesure la concentration de la connaissance, mais il ne dit rien sur sa qualité de distribution, de documentation et de transmission.
         </div>
+
+        <h3 data-fr="Trois angles morts" data-en="Three blind spots">Trois angles morts</h3>
+        <p data-fr="La documentation et la capitalisation du savoir, sa fragmentation entre personnes dont les compétences ne se recoupent jamais, la vitesse à laquelle un nouveau venu peut devenir autonome : trois dimensions que le seul chiffre du Bus Factor ne capture pas." data-en="Knowledge documentation and capitalisation, its fragmentation across people whose skills never overlap, the speed at which a newcomer can become autonomous: three dimensions the Bus Factor's single number does not capture.">
+          La documentation et la capitalisation du savoir, sa fragmentation entre personnes dont les compétences ne se recoupent jamais, la vitesse à laquelle un nouveau venu peut devenir autonome : trois dimensions que le seul chiffre du Bus Factor ne capture pas.
+        </p>
+
         <div class="article-links">
           <a href="article-3-long.html" class="article-link article-link-right" data-fr="Version longue →" data-en="Long version →">Version longue →</a>
         </div>
       </div>
     </details>
 
-    <details class="article-card">
-      <summary class="article-summary">
-        <div class="article-summary-left">
-          <p class="article-label" data-fr="Série Bus Factor — Article 4" data-en="Bus Factor Series — Article 4">Série Bus Factor — Article 4</p>
-          <p class="article-title" data-fr="Les quatre dimensions de la résilience des connaissances" data-en="The four dimensions of knowledge resilience">Les quatre dimensions de la résilience des connaissances</p>
-        </div>
-        <span class="article-arrow">›</span>
-      </summary>
-      <div class="article-body">
-        <p data-fr="Deux organisations peuvent afficher le même Bus Factor et n'avoir, en réalité, rien à voir en termes de résilience. Coverage, Concentration et Fragmentation complètent la lecture — chacune à un niveau différent de l'organisation." data-en="Two organisations can display the same Bus Factor and have, in reality, nothing in common in terms of resilience. Coverage, Concentration and Fragmentation complete the picture — each at a different level of the organisation.">
-          Deux organisations peuvent afficher le même Bus Factor et n'avoir, en réalité, rien à voir en termes de résilience. Coverage, Concentration et Fragmentation complètent la lecture — chacune à un niveau différent de l'organisation.
-        </p>
-        <h3 data-fr="Quatre questions, pas une" data-en="Four questions, not one">Quatre questions, pas une</h3>
-        <p data-fr="Bus Factor et Coverage se lisent composant par composant. Concentration se lit à l'échelle d'une équipe. Fragmentation se lit à l'échelle d'un processus — c'est la dimension la plus facile à manquer, révélée par la chronologie même de l'incident du 15 janvier." data-en="Bus Factor and Coverage are read component by component. Concentration is read across a team. Fragmentation is read at the level of a process — the dimension most easily missed, revealed by the very timeline of the 15 January incident.">
-          Bus Factor et Coverage se lisent composant par composant. Concentration se lit à l'échelle d'une équipe. Fragmentation se lit à l'échelle d'un processus — c'est la dimension la plus facile à manquer, révélée par la chronologie même de l'incident du 15 janvier.
-        </p>
-        <div class="highlight" data-fr="Quatre chiffres, quatre niveaux de lecture — composant, équipe, processus — et pourtant une seule et même fragilité organisationnelle vue sous quatre angles différents." data-en="Four numbers, four levels of reading — component, team, process — and yet a single organisational fragility seen from four different angles.">
-          Quatre chiffres, quatre niveaux de lecture — composant, équipe, processus — et pourtant une seule et même fragilité organisationnelle vue sous quatre angles différents.
-        </div>
-        <div class="article-links">
-          <a href="article-4-long.html" class="article-link article-link-right" data-fr="Version longue →" data-en="Long version →">Version longue →</a>
-        </div>
-      </div>
-    </details>
-
-    <details class="article-card">
-      <summary class="article-summary">
-        <div class="article-summary-left">
-          <p class="article-label" data-fr="Série Bus Factor — Article 5" data-en="Bus Factor Series — Article 5">Série Bus Factor — Article 5</p>
-          <p class="article-title" data-fr="Cartographier la connaissance métier avec l'IA" data-en="Mapping business knowledge with AI">Cartographier la connaissance métier avec l'IA</p>
-        </div>
-        <span class="article-arrow">›</span>
-      </summary>
-      <div class="article-body">
-        <h3 data-fr="Connue localement, invisible globalement" data-en="Known locally, invisible globally">Connue localement, invisible globalement</h3>
-        <p data-fr="Dans un cas comme NexaCrypt, l'information existe : la direction technique sait que le chiffrement repose sur une seule personne, les RH savent qu'un départ à la retraite est imminent, la sécurité a remonté des vulnérabilités. Mais aucune fonction ne possède la cartographie complète qui relierait ces signaux entre eux." data-en="In a case like NexaCrypt, the information exists: technical management knows encryption relies on one person, HR knows a retirement is imminent, security has flagged vulnerabilities. But no function holds the complete map that would connect these signals together.">
-          Dans un cas comme NexaCrypt, l'information existe : la direction technique sait que le chiffrement repose sur une seule personne, les RH savent qu'un départ à la retraite est imminent, la sécurité a remonté des vulnérabilités. Mais aucune fonction ne possède la cartographie complète qui relierait ces signaux entre eux.
-        </p>
-        <div class="highlight" data-fr="Le problème n'est pas l'ignorance. Le problème est qu'aucune fonction de l'organisation ne possède la cartographie complète — celle qui relierait entre eux ces signaux éparpillés." data-en="The problem is not ignorance. The problem is that no function in the organisation holds the complete map — the one that would connect these scattered signals.">
-          Le problème n'est pas l'ignorance. Le problème est qu'aucune fonction de l'organisation ne possède la cartographie complète — celle qui relierait entre eux ces signaux éparpillés.
-        </div>
-
-        <h3 data-fr="Les limites des approches traditionnelles" data-en="The limits of traditional approaches">Les limites des approches traditionnelles</h3>
-        <p data-fr="Interviews, ateliers, matrices de compétences : ces méthodes existent depuis des années. Le problème n'est pas leur qualité, mais leur coût, leur durée, et leur obsolescence rapide. Pour une organisation de la taille de NexaCrypt, plusieurs semaines seraient nécessaires pour une première cartographie — déjà périmée au moment de sa livraison." data-en="Interviews, workshops, skills matrices: these methods have existed for years. The problem is not their quality, but their cost, duration, and rapid obsolescence. For an organisation the size of NexaCrypt, several weeks would be needed for a first mapping — already outdated by the time it's delivered.">
-          Interviews, ateliers, matrices de compétences : ces méthodes existent depuis des années. Le problème n'est pas leur qualité, mais leur coût, leur durée, et leur obsolescence rapide.
-        </p>
-
-        <h3 data-fr="Ce que l'IA change réellement" data-en="What AI really changes">Ce que l'IA change réellement</h3>
-        <p data-fr="L'erreur consiste à croire que l'IA remplace l'expert. La véritable rupture est ailleurs : l'IA permet de relier entre eux des signaux qu'aucune fonction, prise isolément, ne pourrait connecter — à une vitesse et sur un volume qu'aucune équipe ne pourrait traiter manuellement." data-en="The mistake is believing AI replaces the expert. The real breakthrough lies elsewhere: AI connects signals that no single function, taken in isolation, could link — at a speed and volume no team could process manually.">
-          L'erreur consiste à croire que l'IA remplace l'expert. La véritable rupture est ailleurs : l'IA permet de relier entre eux des signaux qu'aucune fonction, prise isolément, ne pourrait connecter.
-        </p>
-
-        <h3 data-fr="Une carte à quatre niveaux" data-en="A four-level map">Une carte à quatre niveaux</h3>
-        <p data-fr="Continuité opérationnelle → risques business → savoirs critiques qui les portent → systèmes concernés. Lue ainsi, la représentation change la nature de la conversation : on ne parle plus de documentation technique, mais de continuité de l'entreprise." data-en="Operational continuity → business risks → critical knowledge that carries them → systems involved. Read this way, the representation changes the nature of the conversation: it is no longer about technical documentation, but about business continuity.">
-          Continuité opérationnelle → risques business → savoirs critiques qui les portent → systèmes concernés. Lue ainsi, la représentation change la nature de la conversation : on ne parle plus de documentation technique, mais de continuité de l'entreprise.
-        </p>
-
-        <h3 data-fr="Trois constats typiques" data-en="Three typical findings">Trois constats typiques</h3>
-        <ul>
-          <li data-fr="La connaissance n'est pas répartie, elle est concentrée — chaque dépendance prise isolément semblait gérable, leur superposition ne l'est plus" data-en="Knowledge is not distributed, it is concentrated — each dependency seemed manageable in isolation, their combination no longer is">La connaissance n'est pas répartie, elle est concentrée — chaque dépendance prise isolément semblait gérable, leur superposition ne l'est plus</li>
-          <li data-fr="Les procédures critiques n'ont jamais été éprouvées en conditions réelles" data-en="Critical procedures have never been tested under real conditions">Les procédures critiques n'ont jamais été éprouvées en conditions réelles</li>
-          <li data-fr="Chaque signal était connu, mais nulle part rassemblé pour donner une vue d'ensemble" data-en="Each signal was known, but never gathered to give an overall view">Chaque signal était connu, mais nulle part rassemblé pour donner une vue d'ensemble</li>
-        </ul>
-
-        <h3 data-fr="L'IA n'est pas le consultant" data-en="AI is not the consultant">L'IA n'est pas le consultant</h3>
-        <p data-fr="L'IA peut extraire, repérer les récurrences, relier les signaux et synthétiser en quelques heures plutôt qu'en plusieurs semaines. Elle ne peut pas arbitrer entre deux actions prioritaires, convaincre un comité de direction, ni porter la responsabilité d'une recommandation." data-en="AI can extract, spot recurrences, connect signals and synthesise in hours rather than weeks. It cannot arbitrate between two priority actions, convince a board, or carry the responsibility of a recommendation.">
-          L'IA peut extraire, repérer les récurrences, relier les signaux et synthétiser en quelques heures plutôt qu'en plusieurs semaines. Elle ne peut pas arbitrer entre deux actions prioritaires, convaincre un comité de direction, ni porter la responsabilité d'une recommandation.
-        </p>
-        <div class="highlight" data-fr="La valeur ne réside pas dans le modèle d'IA. Elle réside dans la capacité à transformer des données brutes éparpillées en une lecture commune — et cette lecture commune en décision." data-en="The value does not lie in the AI model. It lies in the ability to turn scattered raw data into a shared understanding — and that shared understanding into a decision.">
-          La valeur ne réside pas dans le modèle d'IA. Elle réside dans la capacité à transformer des données brutes éparpillées en une lecture commune — et cette lecture commune en décision.
-        </div>
-
-        <div class="article-links">
-          <a href="https://www.linkedin.com/in/pierre-pistenon-87730a6/" target="_blank" class="article-link" data-fr="← Version courte sur LinkedIn" data-en="← Short version on LinkedIn">← Version courte sur LinkedIn</a>
-          <a href="article-5-long.html" class="article-link article-link-right" data-fr="Version longue →" data-en="Long version →">Version longue →</a>
-        </div>
-      </div>
-    </details>
-
-    <details class="article-card">
-      <summary class="article-summary">
-        <div class="article-summary-left">
-          <p class="article-label" data-fr="Série Bus Factor — Article 6" data-en="Bus Factor Series — Article 6">Série Bus Factor — Article 6</p>
-          <p class="article-title" data-fr="Pourquoi un graphe plutôt qu'Excel ?" data-en="Why a graph rather than Excel?">Pourquoi un graphe plutôt qu'Excel ?</p>
-        </div>
-        <span class="article-arrow">›</span>
-      </summary>
-      <div class="article-body">
-        <p data-fr="Une matrice Compétences × Personnes fonctionne pour une petite équipe. Au-delà, elle devient illisible et ne représente jamais les dépendances indirectes — comme un actif qui dépend lui-même d'un autre actif." data-en="A Skills × People matrix works for a small team. Beyond that, it becomes illegible and never represents indirect dependencies — such as an asset that itself depends on another asset.">
-          Une matrice Compétences × Personnes fonctionne pour une petite équipe. Au-delà, elle devient illisible et ne représente jamais les dépendances indirectes — comme un actif qui dépend lui-même d'un autre actif.
-        </p>
-        <div class="highlight" data-fr="La vraie question n'est pas « que se passe-t-il si Alice part ? » mais « que se passe-t-il si Alice part ET que le serveur qui héberge son travail tombe la même semaine ? ». Un graphe répond à la seconde en une requête ; un tableur n'y répond pas du tout." data-en="The real question is not 'what happens if Alice leaves?' but 'what happens if Alice leaves AND the server hosting her work fails the same week?'. A graph answers the second in one query; a spreadsheet does not answer it at all.">
-          La vraie question n'est pas « que se passe-t-il si Alice part ? » mais « que se passe-t-il si Alice part ET que le serveur qui héberge son travail tombe la même semaine ? ». Un graphe répond à la seconde en une requête ; un tableur n'y répond pas du tout.
-        </div>
-        <div class="article-links">
-          <a href="article-6-long.html" class="article-link article-link-right" data-fr="Version longue →" data-en="Long version →">Version longue →</a>
-        </div>
-      </div>
-    </details>
-
-    <details class="article-card">
-      <summary class="article-summary">
-        <div class="article-summary-left">
-          <p class="article-label" data-fr="Série Bus Factor — Article 7" data-en="Bus Factor Series — Article 7">Série Bus Factor — Article 7</p>
-          <p class="article-title" data-fr="L'ontologie au service de la résilience des connaissances" data-en="Ontology in the service of knowledge resilience">L'ontologie au service de la résilience des connaissances</p>
-        </div>
-        <span class="article-arrow">›</span>
-      </summary>
-      <div class="article-body">
-        <p data-fr="Bus Factor et Coverage se lisent composant par composant, Concentration à l'échelle d'une équipe, Fragmentation à l'échelle d'un processus. Un tableur ne tient pas ces niveaux ensemble ; une ontologie le fait nativement." data-en="Bus Factor and Coverage are read component by component, Concentration across a team, Fragmentation across a process. A spreadsheet cannot hold these levels together; an ontology does so natively.">
-          Bus Factor et Coverage se lisent composant par composant, Concentration à l'échelle d'une équipe, Fragmentation à l'échelle d'un processus. Un tableur ne tient pas ces niveaux ensemble ; une ontologie le fait nativement.
-        </p>
-        <p data-fr="Le modèle ajoute aussi une classe Décision : pourquoi un choix a été fait, par qui, et sur quelle connaissance il s'appuyait — souvent la première chose qui disparaît quand une personne clé part." data-en="The model also adds a Decision class: why a choice was made, by whom, and on which knowledge it relied — often the first thing to disappear when a key person leaves.">
-          Le modèle ajoute aussi une classe Décision : pourquoi un choix a été fait, par qui, et sur quelle connaissance il s'appuyait — souvent la première chose qui disparaît quand une personne clé part.
-        </p>
-        <div class="highlight" data-fr="L'ontologie ne remplace pas le jugement humain. Elle le rend plus rapide, plus fiable et plus reproductible." data-en="The ontology does not replace human judgement. It makes it faster, more reliable and more reproducible.">
-          L'ontologie ne remplace pas le jugement humain. Elle le rend plus rapide, plus fiable et plus reproductible.
-        </div>
-        <div class="article-links">
-          <a href="article-7-long.html" class="article-link article-link-right" data-fr="Version longue →" data-en="Long version →">Version longue →</a>
-        </div>
-      </div>
-    </details>
-
-    <details class="article-card">
-      <summary class="article-summary">
-        <div class="article-summary-left">
-          <p class="article-label" data-fr="Série Bus Factor — Article 8" data-en="Bus Factor Series — Article 8">Série Bus Factor — Article 8</p>
-          <p class="article-title" data-fr="Comment l'IA construit automatiquement cette ontologie" data-en="How AI automatically builds this ontology">Comment l'IA construit automatiquement cette ontologie</p>
-        </div>
-        <span class="article-arrow">›</span>
-      </summary>
-      <div class="article-body">
-        <p data-fr="Un pipeline hybride : des règles déterministes extraient ce qu'elles savent traiter de façon fiable, l'IA enrichit les cas ambigus, et rien n'entre dans le graphe sans validation humaine explicite du fait proposé." data-en="A hybrid pipeline: deterministic rules extract what they can reliably process, AI enriches ambiguous cases, and nothing enters the graph without explicit human validation of the proposed fact.">
-          Un pipeline hybride : des règles déterministes extraient ce qu'elles savent traiter de façon fiable, l'IA enrichit les cas ambigus, et rien n'entre dans le graphe sans validation humaine explicite du fait proposé.
-        </p>
-        <div class="highlight" data-fr="L'IA générative accélère l'analyse mais nécessite un cadre explicite de règles métier pour garantir cohérence et fiabilité." data-en="Generative AI speeds up analysis but requires an explicit business-rules framework to guarantee consistency and reliability.">
-          L'IA générative accélère l'analyse mais nécessite un cadre explicite de règles métier pour garantir cohérence et fiabilité.
-        </div>
-        <div class="article-links">
-          <a href="article-8-long.html" class="article-link article-link-right" data-fr="Version longue →" data-en="Long version →">Version longue →</a>
-        </div>
-      </div>
-    </details>
-
   </div>
 </section>
-
 
 <hr class="divider">
 

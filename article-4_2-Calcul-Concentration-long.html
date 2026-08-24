@@ -1,0 +1,1783 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-EFS661MDV9"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-EFS661MDV9');
+</script>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Comment est calculée la Concentration ? — Pierre Pistenon</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<script>
+MathJax = {
+  tex: {
+    inlineMath: [['\\(','\\)']],
+    displayMath: [['$$','$$']]
+  }
+};
+</script>
+
+<script async
+src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+</script>
+
+<style>
+
+*,*::before,*::after{
+box-sizing:border-box;
+margin:0;
+padding:0;
+}
+
+:root{
+
+--bg:#0D1117;
+--bg2:#161B22;
+--border:#30363D;
+
+--text:#E6EDF3;
+--muted:#8B949E;
+
+--accent:#4FC3F7;
+--green:#3FB950;
+--orange:#D29922;
+--red:#F85149;
+
+}
+
+body{
+
+background:var(--bg);
+color:var(--text);
+
+font-family:Inter,sans-serif;
+font-size:16px;
+line-height:1.75;
+
+}
+
+.wrap{
+
+max-width:760px;
+margin:auto;
+padding:40px 30px 80px;
+
+}
+
+h1{
+
+font-size:2rem;
+font-weight:600;
+
+margin-bottom:12px;
+
+}
+
+h2{
+
+font-size:1.35rem;
+
+margin-top:50px;
+margin-bottom:18px;
+
+color:var(--accent);
+
+}
+
+h3{
+
+font-size:1.1rem;
+
+margin-top:32px;
+margin-bottom:12px;
+
+}
+
+p{
+
+margin-bottom:18px;
+color:var(--muted);
+
+}
+
+strong{
+
+color:var(--text);
+
+}
+
+table{
+
+width:100%;
+border-collapse:collapse;
+
+margin:25px 0;
+
+}
+
+th{
+
+background:var(--bg2);
+
+color:var(--accent);
+
+padding:12px;
+
+border:1px solid var(--border);
+
+}
+
+td{
+
+padding:12px;
+
+border:1px solid var(--border);
+
+}
+
+blockquote{
+
+border-left:4px solid var(--accent);
+
+padding-left:20px;
+
+margin:25px 0;
+
+font-style:italic;
+
+color:var(--text);
+
+}
+
+.highlight{
+
+background:rgba(79,195,247,.08);
+
+border-left:4px solid var(--accent);
+
+padding:18px;
+
+margin:30px 0;
+
+border-radius:6px;
+
+}
+
+.formula{
+
+background:var(--bg2);
+
+padding:18px;
+
+border-radius:6px;
+
+margin:25px 0;
+
+font-family:JetBrains Mono,monospace;
+
+overflow-x:auto;
+
+}
+
+.note{
+
+background:#111827;
+
+border:1px solid var(--border);
+
+padding:18px;
+
+border-radius:6px;
+
+margin:30px 0;
+
+}
+
+svg{
+
+max-width:100%;
+
+height:auto;
+
+}
+
+
+nav {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(13,17,23,0.92); backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center;
+  padding: 0 1.5rem; height: 52px;
+}
+.nav-back {
+  display: inline-flex; align-items: center; gap: 6px;
+  color: var(--accent); text-decoration: none;
+  font-family: 'JetBrains Mono', monospace; font-size: 0.82rem;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<nav>
+  <a href="article-4-long.html" class="nav-back">&#8592; Retour à l'article 4</a>
+</nav>
+
+
+<div class="wrap">
+
+<h1>Comment est calculée la Concentration ?</h1>
+
+<p style="font-size:1.05rem;">
+Du <strong>Bus Factor</strong> à la mesure de la
+<strong>répartition du savoir critique</strong>.
+</p>
+
+<div class="highlight">
+
+<p>
+
+Le <strong>Bus Factor</strong> répond à une question locale :
+
+</p>
+
+<blockquote>
+
+Que se passe-t-il si je perds les experts
+d'un composant donné ?
+
+</blockquote>
+
+<p>
+
+La <strong>Concentration</strong> répond à une
+question beaucoup plus globale :
+
+</p>
+
+<blockquote>
+
+Le savoir critique est-il réparti
+dans toute l'équipe,
+ou repose-t-il essentiellement
+sur deux ou trois personnes ?
+
+</blockquote>
+
+</div>
+
+<p>
+
+Deux équipes peuvent présenter exactement
+le même Bus Factor moyen tout en étant
+très différentes.
+
+Dans la première,
+les connaissances critiques sont réparties
+entre de nombreux collaborateurs.
+
+Dans la seconde,
+quelques personnes concentrent
+l'essentiel du savoir stratégique.
+
+Le rôle de la métrique de
+<strong>Concentration</strong>
+est précisément de détecter cette situation.
+
+</p>
+
+<h2>Le principe général</h2>
+
+<p>
+
+La Concentration ne compte pas
+le nombre de connaissances détenues.
+
+Elle mesure la manière
+dont le
+<strong>savoir critique</strong>
+est réparti dans l'organisation.
+
+Le calcul suit toujours la même chaîne.
+
+</p>
+
+<div class="formula">
+
+Connaissances
+
+<br>↓
+
+<br>Criticité
+
+<br>↓
+
+<br>Score individuel
+
+<br>↓
+
+<br>Distribution des scores
+
+<br>↓
+
+<br>Courbe de Lorenz
+
+<br>↓
+
+<br>Coefficient de Gini
+
+<br>↓
+
+<br>Interprétation
+
+</div>
+
+<p>
+
+Chaque étape s'appuie sur la précédente.
+
+Le coefficient de Gini n'est donc
+pas calculé directement à partir
+des personnes,
+mais à partir de la répartition
+du savoir critique
+qu'elles portent.
+
+</p>
+
+<h2>Étape 1 — Évaluer la criticité des actifs</h2>
+
+<p>
+
+Toutes les connaissances
+n'ont pas la même importance.
+
+Connaître une procédure administrative
+n'a pas le même impact
+que maîtriser
+le moteur cryptographique
+d'une application.
+
+Avant toute mesure,
+chaque actif
+(composant logiciel,
+processus métier,
+base de données,
+infrastructure...)
+reçoit donc une
+<strong>note de criticité</strong>.
+
+</p>
+
+<table>
+
+<tr>
+
+<th>Criticité</th>
+
+<th>Interprétation</th>
+
+</tr>
+
+<tr>
+
+<td>1</td>
+
+<td>Faible impact métier</td>
+
+</tr>
+
+<tr>
+
+<td>2</td>
+
+<td>Impact limité</td>
+
+</tr>
+
+<tr>
+
+<td>3</td>
+
+<td>Important</td>
+
+</tr>
+
+<tr>
+
+<td>4</td>
+
+<td>Très important</td>
+
+</tr>
+
+<tr>
+
+<td>5</td>
+
+<td>Critique pour l'activité</td>
+
+</tr>
+
+</table>
+
+<p>
+
+Cette criticité peut être déterminée
+à partir de plusieurs critères :
+
+</p>
+
+<ul>
+
+<li>impact financier ;</li>
+
+<li>impact opérationnel ;</li>
+
+<li>impact réglementaire ;</li>
+
+<li>impact cybersécurité ;</li>
+
+<li>impact réputationnel.</li>
+
+</ul>
+<h2>Étape 2 — Associer chaque connaissance à sa criticité</h2>
+
+<p>
+
+Une fois la criticité des actifs définie,
+chaque connaissance est rattachée
+à l'actif auquel elle se rapporte.
+
+Elle hérite ainsi de sa criticité.
+
+Autrement dit, une connaissance portant
+sur un composant critique contribue
+davantage au score global qu'une connaissance
+concernant un actif secondaire.
+
+</p>
+
+<div class="highlight">
+
+<strong>Principe</strong><br><br>
+
+Criticité d'une connaissance
+=
+Criticité de l'actif
+qu'elle permet de concevoir,
+d'exploiter,
+de maintenir
+ou de faire évoluer.
+
+</div>
+
+<p>
+
+Dans cette première version du modèle,
+la criticité est portée par l'actif.
+
+Toutes les connaissances rattachées
+à cet actif héritent donc de la même valeur.
+
+Cette approche présente deux avantages :
+
+</p>
+
+<ul>
+
+<li>elle est simple à mettre en œuvre ;</li>
+
+<li>elle garantit une cohérence d'évaluation entre les connaissances d'un même domaine.</li>
+
+</ul>
+
+<p>
+
+Des modèles plus avancés pourront ensuite
+attribuer une criticité propre à certaines connaissances
+lorsqu'elles présentent un enjeu particulier,
+mais cette distinction n'est pas indispensable
+pour calculer la Concentration.
+
+</p>
+
+<h3>Exemple</h3>
+
+<table>
+
+<tr>
+<th>Connaissance</th>
+<th>Actif concerné</th>
+<th>Criticité de l'actif</th>
+<th>Criticité retenue</th>
+</tr>
+
+<tr>
+<td>Algorithmes de chiffrement</td>
+<td>Engine</td>
+<td>4</td>
+<td><strong>4</strong></td>
+</tr>
+
+<tr>
+<td>Rotation des clés</td>
+<td>Engine</td>
+<td>4</td>
+<td><strong>4</strong></td>
+</tr>
+
+<tr>
+<td>Administration systèmes</td>
+<td>Serveurs</td>
+<td>3</td>
+<td><strong>3</strong></td>
+</tr>
+
+<tr>
+<td>Scripts de récupération RAID</td>
+<td>Infrastructure RAID</td>
+<td>3</td>
+<td><strong>3</strong></td>
+</tr>
+
+<tr>
+<td>Règles métier historiques</td>
+<td>Référentiel métier</td>
+<td>2</td>
+<td><strong>2</strong></td>
+</tr>
+
+</table>
+
+<div class="note">
+
+<strong>À retenir</strong>
+
+<p style="margin-top:12px;">
+
+La Concentration ne cherche pas à compter
+combien de connaissances possède une personne.
+
+Elle cherche à mesurer
+<strong>quelle quantité de savoir critique</strong>
+elle porte.
+
+Deux collaborateurs possédant chacun
+cinq connaissances peuvent ainsi avoir
+des contributions très différentes
+si ces connaissances concernent
+des actifs de criticité différente.
+
+</p>
+
+</div>
+<h2>Étape 3 — Calculer le score individuel</h2>
+
+<p>
+
+À ce stade, chaque connaissance possède une criticité.
+
+Il reste maintenant à déterminer
+<strong>quelle quantité de savoir critique
+porte chaque personne</strong>.
+
+Pour cela, NexaCrypt additionne la criticité
+des connaissances effectivement maîtrisées
+par chaque collaborateur.
+
+Le résultat est appelé
+<strong>score individuel de savoir critique</strong>.
+
+</p>
+
+<div class="highlight">
+
+Le score individuel correspond à la somme
+des criticités des connaissances
+maîtrisées à un niveau suffisant.
+
+</div>
+
+<p>
+
+Une connaissance n'est prise en compte
+que si la personne possède un niveau
+de maîtrise lui permettant
+d'intervenir de manière autonome.
+
+L'objectif est d'éviter
+de surestimer artificiellement
+la résilience de l'équipe
+en comptabilisant des collaborateurs
+qui nécessitent encore
+un accompagnement important.
+
+</p>
+
+<h3>Exemple</h3>
+
+<table>
+
+<tr>
+<th>Personne</th>
+<th>Connaissances maîtrisées</th>
+<th>Calcul</th>
+<th>Score</th>
+</tr>
+
+<tr>
+<td>Alice</td>
+<td>
+Algorithmes de chiffrement<br>
+Rotation des clés
+</td>
+<td>4 + 4</td>
+<td><strong>8</strong></td>
+</tr>
+
+<tr>
+<td>Bob</td>
+<td>
+Administration systèmes
+</td>
+<td>3</td>
+<td><strong>3</strong></td>
+</tr>
+
+<tr>
+<td>Dave</td>
+<td>
+Scripts de récupération RAID
+</td>
+<td>3</td>
+<td><strong>3</strong></td>
+</tr>
+
+<tr>
+<td>Grace</td>
+<td>
+Règles métier historiques
+</td>
+<td>2</td>
+<td><strong>2</strong></td>
+</tr>
+
+<tr>
+<td>Marc</td>
+<td>
+Connaissances débutantes sur Engine
+</td>
+<td>Sous le seuil de comptage</td>
+<td><strong>0</strong></td>
+</tr>
+
+</table>
+
+<p>
+
+On obtient ainsi les scores individuels suivants :
+
+</p>
+
+<table>
+
+<tr>
+<th>Personne</th>
+<th>Score individuel</th>
+</tr>
+
+<tr>
+<td>Alice</td>
+<td><strong>8</strong></td>
+</tr>
+
+<tr>
+<td>Bob</td>
+<td><strong>3</strong></td>
+</tr>
+
+<tr>
+<td>Dave</td>
+<td><strong>3</strong></td>
+</tr>
+
+<tr>
+<td>Grace</td>
+<td><strong>2</strong></td>
+</tr>
+
+<tr>
+<td>Marc</td>
+<td><strong>0</strong></td>
+</tr>
+
+</table>
+
+<div class="note">
+
+<strong>Pourquoi Marc obtient-il un score nul&nbsp;?</strong>
+
+<p style="margin-top:12px;">
+
+Marc possède quelques connaissances
+sur le composant <em>Engine</em>,
+mais son niveau de maîtrise
+reste inférieur au seuil retenu.
+
+Il peut participer,
+observer ou être accompagné,
+mais il ne peut pas encore
+assurer seul les activités critiques.
+
+Le comptabiliser comme expert
+donnerait une vision artificiellement optimiste
+de la répartition des connaissances.
+
+</p>
+
+</div>
+
+<p>
+
+À l'issue de cette étape,
+chaque membre de l'équipe
+est représenté par un unique score.
+
+Ces scores constituent les données d'entrée
+du calcul de la Concentration.
+
+L'étape suivante ne s'intéresse plus
+aux personnes elles-mêmes,
+mais à la manière dont ces scores
+sont répartis dans l'équipe.
+
+</p>
+
+<h3>Criticité des actifs</h3>
+
+<table>
+
+<tr>
+<th>Actif</th>
+<th>Description</th>
+<th>Criticité</th>
+</tr>
+
+<tr>
+<td>Engine</td>
+<td>Moteur de chiffrement</td>
+<td><strong>4</strong></td>
+</tr>
+
+<tr>
+<td>Serveurs</td>
+<td>Administration des serveurs</td>
+<td><strong>3</strong></td>
+</tr>
+
+<tr>
+<td>Infrastructure RAID</td>
+<td>Procédures de récupération RAID</td>
+<td><strong>3</strong></td>
+</tr>
+
+<tr>
+<td>Référentiel métier</td>
+<td>Règles métier historiques</td>
+<td><strong>2</strong></td>
+</tr>
+
+</table>
+<h3>Connaissances identifiées</h3>
+
+<table>
+
+<tr>
+<th>Connaissance</th>
+<th>Actif associé</th>
+<th>Criticité</th>
+</tr>
+
+<tr>
+<td>Algorithmes de chiffrement</td>
+<td>Engine</td>
+<td>4</td>
+</tr>
+
+<tr>
+<td>Rotation des clés</td>
+<td>Engine</td>
+<td>4</td>
+</tr>
+
+<tr>
+<td>Administration systèmes</td>
+<td>Serveurs</td>
+<td>3</td>
+</tr>
+
+<tr>
+<td>Scripts de récupération RAID</td>
+<td>Infrastructure RAID</td>
+<td>3</td>
+</tr>
+
+<tr>
+<td>Règles métier historiques</td>
+<td>Référentiel métier</td>
+<td>2</td>
+</tr>
+
+</table>
+<h3>Calcul du score individuel</h3>
+
+<table>
+
+<tr>
+<th>Personne</th>
+<th>Connaissances comptabilisées</th>
+<th>Calcul</th>
+<th>Score</th>
+</tr>
+
+<tr>
+
+<td>Alice</td>
+
+<td>
+
+• Algorithmes de chiffrement (4)<br>
+
+• Rotation des clés (4)
+
+</td>
+
+<td>
+
+4 + 4
+
+</td>
+
+<td>
+
+<strong>8</strong>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td>Bob</td>
+
+<td>
+
+• Administration systèmes (3)
+
+</td>
+
+<td>
+
+3
+
+</td>
+
+<td>
+
+<strong>3</strong>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td>Dave</td>
+
+<td>
+
+• Scripts de récupération RAID (3)
+
+</td>
+
+<td>
+
+3
+
+</td>
+
+<td>
+
+<strong>3</strong>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td>Grace</td>
+
+<td>
+
+• Règles métier historiques (2)
+
+</td>
+
+<td>
+
+2
+
+</td>
+
+<td>
+
+<strong>2</strong>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td>Marc</td>
+
+<td>
+
+• Connaissances débutantes sur Engine
+
+</td>
+
+<td>
+
+Sous le seuil de comptage
+
+</td>
+
+<td>
+
+<strong>0</strong>
+
+</td>
+
+</tr>
+
+</table>
+<h3>Distribution des scores</h3>
+
+<table>
+
+<tr>
+
+<th>Rang</th>
+
+<th>Personne</th>
+
+<th>Score individuel</th>
+
+</tr>
+
+<tr>
+
+<td>1</td>
+
+<td>Marc</td>
+
+<td>0</td>
+
+</tr>
+
+<tr>
+
+<td>2</td>
+
+<td>Grace</td>
+
+<td>2</td>
+
+</tr>
+
+<tr>
+
+<td>3</td>
+
+<td>Bob</td>
+
+<td>3</td>
+
+</tr>
+
+<tr>
+
+<td>4</td>
+
+<td>Dave</td>
+
+<td>3</td>
+
+</tr>
+
+<tr>
+
+<td>5</td>
+
+<td>Alice</td>
+
+<td>8</td>
+
+</tr>
+
+<tr>
+
+<th colspan="2">Total</th>
+
+<th>16</th>
+
+</tr>
+
+<tr>
+
+<th colspan="2">Moyenne</th>
+
+<th>3,2</th>
+
+</tr>
+
+</table>
+<h2>Étape 4 — Calculer le coefficient de Gini</h2>
+
+<p>
+
+À ce stade, chaque membre de l'équipe est représenté
+par un unique <strong>score individuel de savoir critique</strong>.
+
+La question devient alors :
+
+</p>
+
+<blockquote>
+
+Le savoir critique est-il réparti équitablement
+entre tous les membres de l'équipe,
+ou est-il concentré entre les mains
+de quelques personnes ?
+
+</blockquote>
+
+<p>
+
+Pour répondre à cette question,
+NexaCrypt utilise le
+<strong>coefficient de Gini</strong>,
+largement employé en économie
+pour mesurer les inégalités de revenus.
+
+Appliqué aux connaissances,
+il mesure l'inégalité
+de la répartition du savoir critique.
+
+</p>
+
+<h3>La formule générale</h3>
+
+<div class="formula">
+
+$$
+
+G=
+\frac{\sum_{i=1}^{n}\sum_{j=1}^{n}|x_i-x_j|}
+{2n^2\mu}
+
+$$
+
+</div>
+
+<table>
+
+<tr>
+<th>Symbole</th>
+<th>Signification</th>
+</tr>
+
+<tr>
+<td><strong>x<sub>i</sub></strong></td>
+<td>Score individuel de la personne <em>i</em></td>
+</tr>
+
+<tr>
+<td><strong>n</strong></td>
+<td>Nombre total de personnes</td>
+</tr>
+
+<tr>
+<td><strong>μ</strong></td>
+<td>Score moyen de l'équipe</td>
+</tr>
+
+<tr>
+<td><strong>Σ |xi − xj|</strong></td>
+<td>Somme des écarts absolus entre toutes les paires de personnes</td>
+</tr>
+
+</table>
+
+<h3>Données de départ</h3>
+
+<table>
+
+<tr>
+
+<th>Personne</th>
+
+<th>Score</th>
+
+</tr>
+
+<tr><td>Marc</td><td>0</td></tr>
+
+<tr><td>Grace</td><td>2</td></tr>
+
+<tr><td>Bob</td><td>3</td></tr>
+
+<tr><td>Dave</td><td>3</td></tr>
+
+<tr><td>Alice</td><td>8</td></tr>
+
+</table>
+
+<p>
+
+Les scores sont toujours triés
+par ordre croissant.
+
+</p>
+
+<h3>1. Calcul de la moyenne</h3>
+
+<div class="formula">
+
+Score total = 0 + 2 + 3 + 3 + 8 = 16
+
+<br><br>
+
+Moyenne :
+
+$$
+
+\mu=\frac{16}{5}=3,2
+
+$$
+
+</div>
+
+<h3>2. Calcul des écarts entre toutes les personnes</h3>
+
+<p>
+
+Le coefficient de Gini compare
+chaque personne avec toutes les autres.
+
+Pour chaque paire,
+on calcule la différence absolue
+entre leurs scores.
+
+</p>
+
+<table>
+
+<tr>
+
+<th></th>
+
+<th>0</th>
+
+<th>2</th>
+
+<th>3</th>
+
+<th>3</th>
+
+<th>8</th>
+
+</tr>
+
+<tr>
+
+<th>0</th>
+
+<td>0</td>
+
+<td>2</td>
+
+<td>3</td>
+
+<td>3</td>
+
+<td>8</td>
+
+</tr>
+
+<tr>
+
+<th>2</th>
+
+<td>2</td>
+
+<td>0</td>
+
+<td>1</td>
+
+<td>1</td>
+
+<td>6</td>
+
+</tr>
+
+<tr>
+
+<th>3</th>
+
+<td>3</td>
+
+<td>1</td>
+
+<td>0</td>
+
+<td>0</td>
+
+<td>5</td>
+
+</tr>
+
+<tr>
+
+<th>3</th>
+
+<td>3</td>
+
+<td>1</td>
+
+<td>0</td>
+
+<td>0</td>
+
+<td>5</td>
+
+</tr>
+
+<tr>
+
+<th>8</th>
+
+<td>8</td>
+
+<td>6</td>
+
+<td>5</td>
+
+<td>5</td>
+
+<td>0</td>
+
+</tr>
+
+</table>
+
+<p>
+
+En additionnant toutes ces différences,
+on obtient :
+
+</p>
+
+<div class="formula">
+
+$$
+
+\sum |x_i-x_j| = 68
+
+$$
+
+</div>
+
+<h3>3. Application de la formule</h3>
+
+<div class="formula">
+
+$$
+
+G=
+\frac{68}
+{2\times5^2\times3,2}
+
+$$
+
+<br>
+
+$$
+
+G=
+\frac{68}{160}
+
+=0,425
+
+$$
+
+</div>
+
+<div class="highlight">
+
+<strong>Résultat :</strong>
+
+<p style="margin-top:12px;">
+
+La Concentration de cette équipe est de
+
+<strong>0,425</strong>.
+
+Le savoir critique est donc
+<strong>significativement concentré</strong>.
+
+</p>
+
+</div>
+
+<h2>Comment interpréter le résultat ?</h2>
+
+<p>
+
+Le coefficient de Gini est toujours compris
+entre <strong>0</strong> et <strong>1</strong>.
+
+Plus il est élevé,
+plus la connaissance est concentrée
+sur un petit nombre de personnes.
+
+</p>
+
+<table>
+
+<tr>
+
+<th>Valeur</th>
+
+<th>Interprétation</th>
+
+</tr>
+
+<tr>
+
+<td>0</td>
+
+<td>Répartition parfaitement équilibrée.</td>
+
+</tr>
+
+<tr>
+
+<td>0,10 à 0,20</td>
+
+<td>Répartition très homogène.</td>
+
+</tr>
+
+<tr>
+
+<td>0,20 à 0,35</td>
+
+<td>Légère concentration.</td>
+
+</tr>
+
+<tr>
+
+<td><strong>0,35 à 0,50</strong></td>
+
+<td><strong>Concentration significative.</strong></td>
+
+</tr>
+
+<tr>
+
+<td>0,50 à 0,70</td>
+
+<td>Forte concentration.</td>
+
+</tr>
+
+<tr>
+
+<td>0,70 à 1</td>
+
+<td>Concentration extrême : quelques personnes portent presque tout le savoir critique.</td>
+
+</tr>
+
+</table>
+
+<div class="note">
+
+<strong>Important</strong>
+
+<p style="margin-top:12px;">
+
+Ces seuils constituent des
+<strong>repères d'interprétation</strong>
+proposés pour la gouvernance des connaissances.
+
+Ils ne correspondent pas à une norme internationale,
+mais permettent de comparer les équipes,
+de suivre leur évolution
+et de détecter les situations
+où la connaissance devient excessivement concentrée.
+
+</p>
+
+</div>
+
+
+
+<h2>Visualiser la Concentration : la courbe de Lorenz</h2>
+
+<p>
+
+Le coefficient de Gini est la traduction numérique
+d'une représentation graphique appelée
+<strong>courbe de Lorenz</strong>.
+
+Cette courbe compare :
+
+</p>
+
+<ul>
+
+<li>la répartition réelle du savoir critique ;</li>
+
+<li>une répartition parfaitement équilibrée.</li>
+
+</ul>
+
+<p>
+
+Plus la courbe s'éloigne de la diagonale,
+plus le savoir est concentré
+entre les mains d'un petit nombre
+de collaborateurs.
+
+Le coefficient de Gini mesure précisément
+cet écart.
+
+</p>
+
+<h3>Exemple 1 — Répartition parfaitement équilibrée (Gini = 0)</h3>
+
+<svg width="520" height="420" viewBox="0 0 520 420">
+
+<line x1="60" y1="360" x2="460" y2="360"
+stroke="#666" stroke-width="2"/>
+
+<line x1="60" y1="360" x2="60" y2="40"
+stroke="#666" stroke-width="2"/>
+
+<line x1="60" y1="360"
+x2="460" y2="40"
+stroke="#4FC3F7"
+stroke-width="3"
+stroke-dasharray="8 6"/>
+
+<polyline
+fill="none"
+stroke="#3FB950"
+stroke-width="4"
+points="
+60,360
+460,40
+"/>
+
+<text x="250" y="390"
+fill="#AAA"
+font-size="14">
+% cumulé des personnes
+</text>
+
+<text
+transform="rotate(-90 18 210)"
+x="18"
+y="210"
+fill="#AAA"
+font-size="14">
+% cumulé du savoir critique
+</text>
+
+</svg>
+
+<p>
+
+Lorsque chacun porte exactement
+la même quantité de savoir critique,
+la courbe de Lorenz se confond
+avec la diagonale.
+
+Le coefficient de Gini est nul.
+
+</p>
+
+<hr>
+
+<h3>Exemple 2 — Cas NexaCrypt (Gini = 0,425)</h3>
+
+<svg width="520" height="420" viewBox="0 0 520 420">
+
+<line x1="60" y1="360" x2="460" y2="360"
+stroke="#666" stroke-width="2"/>
+
+<line x1="60" y1="360" x2="60" y2="40"
+stroke="#666" stroke-width="2"/>
+
+<line
+x1="60"
+y1="360"
+x2="460"
+y2="40"
+stroke="#4FC3F7"
+stroke-width="3"
+stroke-dasharray="8 6"/>
+
+<polygon
+
+fill="rgba(79,195,247,.15)"
+
+points="
+
+60,360
+
+140,360
+
+220,320
+
+300,260
+
+380,200
+
+460,40
+
+460,360
+
+60,360
+
+"/>
+
+<polyline
+
+fill="none"
+
+stroke="#3FB950"
+
+stroke-width="4"
+
+points="
+
+60,360
+
+140,360
+
+220,320
+
+300,260
+
+380,200
+
+460,40
+
+"/>
+
+<circle cx="60" cy="360" r="4" fill="#FFF"/>
+
+<circle cx="140" cy="360" r="4" fill="#FFF"/>
+
+<circle cx="220" cy="320" r="4" fill="#FFF"/>
+
+<circle cx="300" cy="260" r="4" fill="#FFF"/>
+
+<circle cx="380" cy="200" r="4" fill="#FFF"/>
+
+<circle cx="460" cy="40" r="4" fill="#FFF"/>
+
+<text
+x="180"
+y="110"
+fill="#4FC3F7"
+font-size="16">
+
+Surface = Gini
+
+</text>
+
+</svg>
+
+<p>
+
+La courbe reste relativement proche
+de la diagonale,
+mais s'en écarte suffisamment
+pour montrer que le savoir critique
+est déjà concentré.
+
+Dans cet exemple,
+Alice porte à elle seule
+la moitié du savoir critique.
+
+Le coefficient obtenu est :
+
+</p>
+
+<div class="formula">
+
+$$
+
+G=0,425
+
+$$
+
+</div>
+
+<hr>
+
+<h3>Exemple 3 — Concentration extrême (Gini ≈ 0,80)</h3>
+
+<svg width="520" height="420" viewBox="0 0 520 420">
+
+<line x1="60" y1="360" x2="460" y2="360"
+stroke="#666" stroke-width="2"/>
+
+<line x1="60" y1="360" x2="60" y2="40"
+stroke="#666" stroke-width="2"/>
+
+<line
+
+x1="60"
+
+y1="360"
+
+x2="460"
+
+y2="40"
+
+stroke="#4FC3F7"
+
+stroke-width="3"
+
+stroke-dasharray="8 6"/>
+
+<polygon
+
+fill="rgba(248,81,73,.15)"
+
+points="
+
+60,360
+
+380,360
+
+460,40
+
+460,360
+
+60,360
+
+"/>
+
+<polyline
+
+fill="none"
+
+stroke="#F85149"
+
+stroke-width="4"
+
+points="
+
+60,360
+
+380,360
+
+460,40
+
+"/>
+
+<text
+
+x="140"
+
+y="120"
+
+fill="#F85149"
+
+font-size="16">
+
+Concentration extrême
+
+</text>
+
+</svg>
+
+<p>
+
+Dans cette situation,
+une seule personne possède presque
+tout le savoir critique.
+
+La perte de cet expert
+entraînerait une rupture majeure
+de la capacité opérationnelle.
+
+Le coefficient de Gini
+devient alors très élevé
+(proche de 1).
+
+</p>
+
+<div class="highlight">
+
+<strong>À retenir</strong>
+
+<p style="margin-top:15px;">
+
+Le coefficient de Gini ne mesure pas
+la quantité de connaissances.
+
+Il mesure une
+<strong>propriété émergente</strong>
+de leur répartition.
+
+Deux équipes peuvent posséder
+exactement le même nombre
+de connaissances
+et présenter des coefficients de Gini
+très différents.
+
+La Concentration caractérise donc
+la structure du patrimoine
+de connaissances,
+et non son volume.
+
+</p>
+
+</div>
+
+</body>
+</html>

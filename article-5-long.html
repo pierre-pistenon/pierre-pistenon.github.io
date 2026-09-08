@@ -1,4 +1,409 @@
 <!DOCTYPE html>
 <html lang="fr">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-EFS661MDV9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
 
+    gtag('config', 'G-EFS661MDV9');
+  </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Article complet — Comment l'IA permet de calculer le Bus Factor, la Coverage, la Concentration et la Fragmentation à l'échelle d'une organisation entière. Série Bus Factor, article 5.">
+  <title>Calculer la résilience à l'échelle de l'organisation — Pierre Pistenon</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0D1117; --bg2: #161B22; --border: #30363D;
+      --text: #E6EDF3; --muted: #8B949E; --accent: #4FC3F7; --warn: #D29922;
+    }
+    body {
+      background: var(--bg); color: var(--text);
+      font-family: 'Inter', sans-serif; font-size: 16px; line-height: 1.75;
+      -webkit-font-smoothing: antialiased;
+    }
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(13,17,23,0.92); backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 1.5rem; height: 52px;
+    }
+    .nav-back {
+      display: inline-flex; align-items: center; gap: 6px;
+      color: var(--accent); text-decoration: none;
+      font-family: 'JetBrains Mono', monospace; font-size: 0.82rem;
+    }
+    .lang-toggle { display: flex; gap: 4px; }
+    .lang-btn {
+      font-family: 'JetBrains Mono', monospace; font-size: 0.75rem;
+      background: transparent; border: 1px solid var(--border);
+      color: var(--muted); padding: 0.2rem 0.55rem; border-radius: 4px;
+      cursor: pointer; transition: all 0.15s;
+    }
+    .lang-btn.active { background: var(--accent); color: var(--bg); font-weight: 500; border-color: var(--accent); }
+    .wrap { max-width: 700px; margin: 0 auto; padding: 52px 1.5rem 100px; }
+    .eyebrow {
+      font-family: 'JetBrains Mono', monospace; font-size: 0.78rem;
+      color: var(--warn); letter-spacing: 0.08em; text-transform: uppercase;
+      margin: 2.5rem 0 0.75rem;
+    }
+    h1 { font-size: clamp(1.6rem, 4vw, 2.3rem); font-weight: 600; line-height: 1.25; margin-bottom: 1rem; letter-spacing: -0.01em; }
+    .article-sub { color: var(--muted); font-size: 0.95rem; margin-bottom: 2rem; }
+    .disclaimer {
+      background: var(--bg2); border-left: 2px solid var(--accent);
+      padding: 1rem 1.25rem; font-size: 0.86rem; color: var(--muted);
+      font-style: italic; margin-bottom: 2.5rem; border-radius: 0 6px 6px 0;
+    }
+    h2 { font-size: 1.15rem; font-weight: 600; margin-top: 2.5rem; margin-bottom: 0.9rem; color: var(--text); }
+    p { color: var(--muted); margin-bottom: 1.1rem; font-size: 0.95rem; }
+    strong { color: var(--text); font-weight: 600; }
+    ul { margin: 1rem 0 1.1rem 1.3rem; }
+    li { color: var(--muted); margin-bottom: 0.5rem; font-size: 0.95rem; }
+    li::marker { color: var(--accent); }
+    table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.85rem; }
+    th, td { border: 1px solid var(--border); padding: 0.6rem 0.8rem; text-align: left; }
+    th { background: var(--bg2); color: var(--text); font-weight: 600; }
+    td { color: var(--muted); }
+    td strong { color: var(--text); }
+    .highlight {
+      background: rgba(79,195,247,0.05); border-left: 2px solid var(--accent);
+      padding: 1rem 1.25rem; margin: 1.5rem 0;
+      color: var(--muted); border-radius: 0 6px 6px 0; font-style: italic;
+    }
+    .schema {
+      background: var(--bg2); border: 1px solid var(--border); border-radius: 8px;
+      padding: 1.25rem 1.5rem; margin: 1.5rem 0;
+      font-family: 'JetBrains Mono', monospace; font-size: 0.82rem; color: var(--muted);
+      line-height: 2;
+    }
+    .schema .level { color: var(--accent); font-weight: 500; }
+    .schema .arrow { color: #30363D; }
+    footer {
+      margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--border);
+      font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; color: var(--muted);
+      display: flex; justify-content: space-between; flex-wrap: wrap; gap: 1rem;
+    }
+    footer a { color: var(--accent); text-decoration: none; }
+    .next-article {
+      margin-top: 3rem; padding: 1.5rem; background: var(--bg2);
+      border: 1px solid var(--border); border-radius: 8px;
+    }
+    .next-article p { margin-bottom: 0.5rem; }
+    .next-article a {
+      color: var(--accent); text-decoration: none; font-size: 0.9rem;
+      font-family: 'JetBrains Mono', monospace;
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html#articles" class="nav-back"
+     data-fr="← Retour au site"
+     data-en="← Back to site">← Retour au site</a>
+  <div class="lang-toggle">
+    <button class="lang-btn active" data-lang="fr" onclick="setLang('fr')">FR</button>
+    <button class="lang-btn"        data-lang="en" onclick="setLang('en')">EN</button>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <p class="eyebrow"
+     data-fr="Série Bus Factor — Article 5 — Version longue"
+     data-en="Bus Factor Series — Article 5 — Long version"
+     >Série Bus Factor — Article 5 — Version longue</p>
+
+  <h1 data-fr="Calculer la résilience à l'échelle de l'organisation"
+      data-en="Measuring resilience at the scale of the organisation"
+      >Calculer la résilience à l'échelle de l'organisation</h1>
+
+  <p class="article-sub"
+     data-fr="Comment l'IA permet de passer d'un calcul manuel, composant par composant, à un calcul systématique du Bus Factor, de la Coverage, de la Concentration et de la Fragmentation sur l'ensemble d'une organisation."
+     data-en="How AI makes it possible to move from a manual, component-by-component calculation to a systematic computation of Bus Factor, Coverage, Concentration and Fragmentation across an entire organisation."
+     >Comment l'IA permet de passer d'un calcul manuel, composant par composant, à un calcul systématique du Bus Factor, de la Coverage, de la Concentration et de la Fragmentation sur l'ensemble d'une organisation.</p>
+
+  <div class="disclaimer">
+    <span data-fr="Cet article s'appuie sur le cas NexaCrypt (article 1 de la série) et sur des situations représentatives observées en mission. Les mécanismes décrits sont documentés et largement observés dans des organisations de toutes tailles."
+          data-en="This article builds on the NexaCrypt case (series article 1) and representative situations observed during assignments. The mechanisms described are documented and widely observed in organisations of all sizes."
+          >Cet article s'appuie sur le cas NexaCrypt (article 1 de la série) et sur des situations représentatives observées en mission. Les mécanismes décrits sont documentés et largement observés dans des organisations de toutes tailles.</span>
+  </div>
+
+  <p data-fr="L'article précédent a établi quatre dimensions pour lire la résilience d'un système : Bus Factor, Coverage, Concentration, Fragmentation. Sur les trois composants de NexaCrypt étudiés jusqu'ici, ces quatre indicateurs se calculent à la main, avec un tableur et quelques entretiens — c'est la méthode décrite dans l'article 2."
+     data-en="The previous article established four dimensions for reading a system's resilience: Bus Factor, Coverage, Concentration, Fragmentation. On the three NexaCrypt components studied so far, these four indicators can be calculated by hand, with a spreadsheet and a handful of interviews — the method described in article 2."
+     >L'article précédent a établi quatre dimensions pour lire la résilience d'un système : Bus Factor, Coverage, Concentration, Fragmentation. Sur les trois composants de NexaCrypt étudiés jusqu'ici, ces quatre indicateurs se calculent à la main, avec un tableur et quelques entretiens — c'est la méthode décrite dans l'article 2.</p>
+
+  <p data-fr="Une organisation réelle ne compte pas trois composants, elle en compte des centaines : des personnes, des connaissances, des activités, des actifs, des procédures, et les relations qui les relient les unes aux autres. Le calcul ne change pas de nature à cette échelle, mais la méthode manuelle, elle, ne tient plus. C'est ce passage à l'échelle — et le rôle qu'y joue l'IA — qui fait l'objet de cet article."
+     data-en="A real organisation does not have three components, it has hundreds : people, knowledge items, activities, assets, procedures, and the relationships that connect them to one another. The calculation itself does not change at this scale, but the manual method does not hold up. It is this shift in scale — and the role AI plays in it — that this article addresses."
+     >Une organisation réelle ne compte pas trois composants, elle en compte des centaines : des personnes, des connaissances, des activités, des actifs, des procédures, et les relations qui les relient les unes aux autres. Le calcul ne change pas de nature à cette échelle, mais la méthode manuelle, elle, ne tient plus. C'est ce passage à l'échelle — et le rôle qu'y joue l'IA — qui fait l'objet de cet article.</p>
+
+  <h2 data-fr="Connue localement, invisible globalement"
+      data-en="Known locally, invisible globally"
+      >Connue localement, invisible globalement</h2>
+
+  <p data-fr="Dans un cas comme NexaCrypt, l'information existe : la direction technique sait que le module de chiffrement repose sur une seule personne, les RH savent qu'un départ à la retraite est imminent, la sécurité a remonté des vulnérabilités liées à l'absence de procédures testées et Le management opérationnel sait que Bob est le seul à détenir les accès root."
+     data-en="In a case like NexaCrypt, the information exists : technical management knows the encryption module relies on one person, HR knows a retirement is imminent. Security has flagged vulnerabilities linked to the absence of tested procedures and operational management knows Bob is the only one holding root access."
+     >Dans un cas comme NexaCrypt, l'information existe : la direction technique sait que le module de chiffrement repose sur une seule personne, les RH savent qu'un départ à la retraite est imminent, la sécurité a remonté des vulnérabilités liées à l'absence de procédures testées et Le management opérationnel sait que Bob est le seul à détenir les accès root.</p>
+
+  <p data-fr="Mais aucune fonction ne possède la cartographie complète qui relierait ces signaux entre eux. Chaque équipe détient un fragment, personne ne voit l'ensemble. Et c'est précisément cet ensemble qui aurait permis d'anticiper la panne du 15 janvier — et les 2,6 M€ de pertes qui s'en sont suivis."
+     data-en="But no function holds the complete map connecting these signals. Each team holds a fragment, nobody sees the whole picture. And it is precisely this whole picture that would have made it possible to anticipate the 15 January outage — and the €2.6M in losses that followed."
+     >Mais aucune fonction ne possède la cartographie complète qui relierait ces signaux entre eux. Chaque équipe détient un fragment, personne ne voit l'ensemble. Et c'est précisément cet ensemble qui aurait permis d'anticiper la panne du 15 janvier — et les 2,6 M€ de pertes qui s'en sont suivis.</p>
+
+  <div class="highlight">
+    <span data-fr="Le problème n'est pas l'ignorance, le problème est qu'aucune fonction de l'organisation ne possède la cartographie complète — celle qui relierait entre eux ces signaux éparpillés."
+          data-en="The problem is not ignorance, the problem is that no function in the organisation holds the complete map — the one that would connect these scattered signals."
+          >Le problème n'est pas l'ignorance, le problème est qu'aucune fonction de l'organisation ne possède la cartographie complète — celle qui relierait entre eux ces signaux éparpillés.</span>
+  </div>
+
+  <h2 data-fr="Les limites des approches traditionnelles"
+      data-en="The limits of traditional approaches"
+      >Les limites des approches traditionnelles</h2>
+
+  <p data-fr="Interviews, ateliers, matrices de compétences : c'est la méthode de l'article 2, et elle fonctionne. Son problème n'est pas sa qualité, mais son coût, sa durée, et son obsolescence rapide."
+     data-en="Interviews, workshops, skills matrices: this is the method from article 2, and it works. Its problem is not its quality, but its cost, its duration, and how quickly it goes out of date."
+     >Interviews, ateliers, matrices de compétences : c'est la méthode de l'article 2, et elle fonctionne. Son problème n'est pas sa qualité, mais son coût, sa durée, et son obsolescence rapide.</p>
+
+  <table>
+    <tr>
+      <th data-fr="Approche" data-en="Approach">Approche</th>
+      <th data-fr="Avantage" data-en="Advantage">Avantage</th>
+      <th data-fr="Limite" data-en="Limit">Limite</th>
+    </tr>
+    <tr>
+      <td data-fr="Interviews individuelles" data-en="Individual interviews">Interviews individuelles</td>
+      <td data-fr="Richesse contextuelle, nuances" data-en="Contextual richness, nuance">Richesse contextuelle, nuances</td>
+      <td data-fr="Lentes, coûteuses, non scalables" data-en="Slow, costly, not scalable">Lentes, coûteuses, non scalables</td>
+    </tr>
+    <tr>
+      <td data-fr="Ateliers collectifs" data-en="Group workshops">Ateliers collectifs</td>
+      <td data-fr="Croisement des points de vue" data-en="Cross-pollination of viewpoints">Croisement des points de vue</td>
+      <td data-fr="Biais de groupe, logistique lourde" data-en="Group bias, heavy logistics">Biais de groupe, logistique lourde</td>
+    </tr>
+    <tr>
+      <td data-fr="Matrices de compétences" data-en="Skills matrices">Matrices de compétences</td>
+      <td data-fr="Vue d'ensemble structurée" data-en="Structured overview">Vue d'ensemble structurée</td>
+      <td data-fr="Déclaré, pas observé — vite périmé" data-en="Declared, not observed — quickly outdated">Déclaré, pas observé — vite périmé</td>
+    </tr>
+    <tr>
+      <td data-fr="Documentation technique" data-en="Technical documentation">Documentation technique</td>
+      <td data-fr="Précise sur ce qui est documenté" data-en="Precise on what is documented">Précise sur ce qui est documenté</td>
+      <td data-fr="Lacunaire sur la connaissance implicite" data-en="Incomplete on tacit knowledge">Lacunaire sur la connaissance implicite</td>
+    </tr>
+  </table>
+
+  <p data-fr="Pour une organisation de la taille de NexaCrypt, une première cartographie complète prendrait de trois à six semaines — déjà périmée au moment de sa livraison, si un collaborateur clé a quitté l'entreprise entre-temps."
+     data-en="For an organisation the size of NexaCrypt, a first complete mapping would take three to six weeks — already outdated by the time it is delivered, if a key person has left in the meantime."
+     >Pour une organisation de la taille de NexaCrypt, une première cartographie complète prendrait de trois à six semaines — déjà périmée au moment de sa livraison, si un collaborateur clé a quitté l'entreprise entre-temps.</p>
+
+  <h2 data-fr="Des trois composants à l'organisation entière"
+      data-en="From three components to the whole organisation"
+      >Des trois composants à l'organisation entière</h2>
+
+  <p data-fr="Ce que l'article 2 apprend à faire à la main, il faut pouvoir le faire partout, en continu, sans reconstruire l'analyse à chaque arrivée, départ ou changement de rôle. Le tableau suivant reprend les quatre dimensions telles que l'article précédent les a calculées sur NexaCrypt, et pose la question qu'elles soulèvent une fois l'organisation prise dans son ensemble."
+     data-en="What article 2 teaches you to do by hand has to be done everywhere, continuously, without rebuilding the analysis every time someone joins, leaves, or changes role. The table below takes the four dimensions as the previous article calculated them on NexaCrypt, and states the question each one raises once the whole organisation is in scope."
+     >Ce que l'article 2 apprend à faire à la main, il faut pouvoir le faire partout, en continu, sans reconstruire l'analyse à chaque arrivée, départ ou changement de rôle. Le tableau suivant reprend les quatre dimensions telles que l'article précédent les a calculées sur NexaCrypt, et pose la question qu'elles soulèvent une fois l'organisation prise dans son ensemble.</p>
+
+  <table>
+    <tr>
+      <th data-fr="Dimension" data-en="Dimension">Dimension</th>
+      <th data-fr="Sur trois composants (article 4)" data-en="On three components (article 4)">Sur trois composants (article 4)</th>
+      <th data-fr="À l'échelle de l'organisation" data-en="Across the organisation">À l'échelle de l'organisation</th>
+    </tr>
+    <tr>
+      <td><strong>Bus Factor</strong></td>
+      <td data-fr="Alice est seule à maîtriser NexaCrypt Engine." data-en="Alice is the only person who masters NexaCrypt Engine.">Alice est seule à maîtriser NexaCrypt Engine.</td>
+      <td data-fr="Quels actifs, parmi tous ceux recensés, ne dépendent que d'une seule personne ?" data-en="Of all the assets on record, which ones depend on only one person?">Quels actifs, parmi tous ceux recensés, ne dépendent que d'une seule personne ?</td>
+    </tr>
+    <tr>
+      <td><strong>Coverage</strong></td>
+      <td data-fr="La rotation des clés est documentée à 40 %." data-en="Key rotation is 40% documented.">La rotation des clés est documentée à 40 %.</td>
+      <td data-fr="Quelles connaissances critiques sont les moins documentées, une fois pondérées par la criticité de ce qu'elles servent ?" data-en="Which critical knowledge items are least documented, once weighted by the criticality of what they serve?">Quelles connaissances critiques sont les moins documentées, une fois pondérées par la criticité de ce qu'elles servent ?</td>
+    </tr>
+    <tr>
+      <td><strong>Concentration</strong></td>
+      <td data-fr="Le coefficient de Gini de l'équipe ressort à 0,425." data-en="The team's Gini coefficient comes out at 0.425.">Le coefficient de Gini de l'équipe ressort à 0,425.</td>
+      <td data-fr="Quelles équipes concentrent le savoir critique sur deux ou trois personnes ?" data-en="Which teams concentrate critical knowledge on two or three people?">Quelles équipes concentrent le savoir critique sur deux ou trois personnes ?</td>
+    </tr>
+    <tr>
+      <td><strong>Fragmentation</strong></td>
+      <td data-fr="La reprise après sinistre mobilise 4 personnes non interchangeables." data-en="Disaster recovery requires 4 non-interchangeable people.">La reprise après sinistre mobilise 4 personnes non interchangeables.</td>
+      <td data-fr="Quels processus, parmi tous ceux recensés, exigent le plus grand nombre de spécialistes différents ?" data-en="Of all the processes on record, which ones require the largest number of different specialists?">Quels processus, parmi tous ceux recensés, exigent le plus grand nombre de spécialistes différents ?</td>
+    </tr>
+  </table>
+
+  <p data-fr="Ce n'est pas le calcul qui change de nature — la formule du Bus Factor reste la formule du Bus Factor, que l'on compte trois personnes ou trois mille. Ce qui change, c'est la question posée : on ne demande plus si Alice est seule sur ce composant, mais quels composants, dans toute l'organisation, présentent ce même risque. Répondre à cette question suppose une représentation à jour et interrogeable de chaque connaissance, chaque personne, chaque activité et chaque actif. Ni les entretiens ni le tableur ne peuvent la tenir à cette échelle — c'est précisément là que l'IA change l'économie de l'exercice."
+     data-en="The calculation itself does not change — the Bus Factor formula stays the Bus Factor formula, whether you are counting three people or three thousand. What changes is the question being asked: no longer whether Alice is alone on this one component, but which components, across the whole organisation, carry the same risk. Answering that question requires an up-to-date, queryable representation of every knowledge item, person, activity and asset. Neither interviews nor a spreadsheet can hold that at this scale — this is precisely where AI changes the economics of the exercise."
+     >Ce n'est pas le calcul qui change de nature — la formule du Bus Factor reste la formule du Bus Factor, que l'on compte trois personnes ou trois mille. Ce qui change, c'est la question posée : on ne demande plus si Alice est seule sur ce composant, mais quels composants, dans toute l'organisation, présentent ce même risque. Répondre à cette question suppose une représentation à jour et interrogeable de chaque connaissance, chaque personne, chaque activité et chaque actif. Ni les entretiens ni le tableur ne peuvent la tenir à cette échelle — c'est précisément là que l'IA change l'économie de l'exercice.</p>
+
+  <h2 data-fr="Le rôle de l'IA : construire la représentation et remplacer le jugement"
+      data-en="The role of AI: building the representation, not replacing judgement"
+      >Le rôle de l'IA : construire la représentation et non remplacer le jugement</h2>
+
+  <p data-fr="L'IA ne lit pas un entretien comme un consultant, et ce n'est pas ce qu'on lui demande. Son rôle est de traiter un volume de sources — comptes rendus, tickets, documentation, procédures — qu'aucune équipe ne pourrait dépouiller manuellement dans un délai utile. Elle en extrait les personnes, les connaissances, les activités et relations qui alimentent le modèle sur lequel les quatre dimensions se calculent ensuite."
+     data-en="AI does not read an interview the way a consultant does, and that is not what it is asked to do. Its role is to process a volume of sources — meeting notes, tickets, documentation, procedures — that no team could work through manually within a useful timeframe. It extracts from them the people, knowledge items, activities and relationships that feed the model the four dimensions are then calculated on."
+     >L'IA ne lit pas un entretien comme un consultant, et ce n'est pas ce qu'on lui demande. Son rôle est de traiter un volume de sources — comptes rendus, tickets, documentation, procédures — qu'aucune équipe ne pourrait dépouiller manuellement dans un délai utile. Elle en extrait les personnes, les connaissances, les activités et relations qui alimentent le modèle sur lequel les quatre dimensions se calculent ensuite.</p>
+
+  <p data-fr="Il faut ici distinguer deux problèmes que l'on range souvent, à tort, sous le même mot d'« IA ». Le premier consiste à retrouver, dans un corpus déjà constitué, l'information pertinente pour répondre à une question ponctuelle — c'est ce que résolvent la plupart des architectures de recherche augmentée aujourd'hui. Le second, qui est le nôtre, consiste à construire une bonne fois pour toutes une représentation structurée et gouvernée, que l'on pourra ensuite interroger de multiples façons. Les deux problèmes se recoupent parfois dans les outils utilisés, mais ce ne sont pas les mêmes problèmes — et donc pas les mêmes critères de réussite."
+     data-en="Two problems are often lumped together under the single word 'AI', and they need to be told apart here. The first is retrieving, from an already-built corpus, the information relevant to a one-off question — what most retrieval-augmented architectures solve today. The second, which is ours, is building, once and for all, a structured and governed representation that can then be queried in many different ways. The two problems sometimes overlap in the tools used, but they are not the same problem — and therefore not judged by the same criteria of success."
+     >Il faut ici distinguer deux problèmes que l'on range souvent, à tort, sous le même mot d'« IA ». Le premier consiste à retrouver, dans un corpus déjà constitué, l'information pertinente pour répondre à une question ponctuelle — c'est ce que résolvent la plupart des architectures de recherche augmentée aujourd'hui. Le second, qui est le nôtre, consiste à construire une bonne fois pour toutes une représentation structurée et gouvernée, que l'on pourra ensuite interroger de multiples façons. Les deux problèmes se recoupent parfois dans les outils utilisés, mais ce ne sont pas les mêmes problèmes — et donc pas les mêmes critères de réussite.</p>
+
+  <p data-fr="Pour cette construction, les techniques disponibles ne jouent pas le même rôle. Les règles déterministes reconnaissent ce qu'elles savent reconnaître : un nom, une date, une mention explicite. Un rapprochement sémantique permet d'identifier que deux formulations désignent probablement la même personne, le même composant ou la même connaissance, alors que rien dans le texte ne le dit explicitement — utile dans un corpus où chacun nomme les choses à sa manière. Le LLM, lui, intervient là où ni les règles ni le rapprochement sémantique ne suffisent : une formulation indirecte, une exception racontée sans jamais être nommée comme telle. <u><b>En outre, rien de tout cela n'entre dans le modèle sans validation humaine.</b></u> Et surtout, aucune de ces techniques ne calcule le Bus Factor ni le coefficient de Gini : elles aident à construire la représentation structurée. Les calculs, eux, restent entièrement déterministes et vérifiables."
+     data-en="For this construction, the available techniques do not all play the same role. Deterministic rules recognise what they are built to recognise: a name, a date, an explicit mention. Semantic matching helps identify that two different formulations probably refer to the same person, the same component or the same knowledge item, even when nothing in the text says so explicitly — useful in a corpus where everyone names things their own way. The LLM, for its part, steps in where neither rules nor semantic matching are enough: an indirect phrasing, an exception recounted without ever being named as such. <u><b>Furthermore, none of it enters the model without human validation.</b></u> And crucially, none of these techniques calculates the Bus Factor or the Gini coefficient: they help build the structured representation. The calculations themselves remain entirely deterministic and auditable."
+     >Pour cette construction, les techniques disponibles ne jouent pas le même rôle. Les règles déterministes reconnaissent ce qu'elles savent reconnaître : un nom, une date, une mention explicite. Un rapprochement sémantique permet d'identifier que deux formulations désignent probablement la même personne, le même composant ou la même connaissance, alors que rien dans le texte ne le dit explicitement — utile dans un corpus où chacun nomme les choses à sa manière. Le LLM, lui, intervient là où ni les règles ni le rapprochement sémantique ne suffisent : une formulation indirecte, une exception racontée sans jamais être nommée comme telle. <u><b>En outre, rien de tout cela n'entre dans le modèle sans validation humaine.</b></u> Et surtout, aucune de ces techniques ne calcule le Bus Factor ni le coefficient de Gini : elles aident à construire la représentation structurée. Les calculs, eux, restent entièrement déterministes et vérifiables.</p>
+
+  <p data-fr="Un exemple, pris dans le corpus NexaCrypt : un entretien où une exception commerciale est décrite comme « négociée avec un client historique, mais jamais vraiment écrite nulle part ». Aucune règle n'y reconnaît un nom, une date ou un système, et rien ne la rapproche explicitement d'une connaissance déjà répertoriée. Le LLM, lui, la repère comme un signal de connaissance non documentée et la propose sous forme de fait à valider — avant qu'elle n'entre dans le modèle."
+     data-en="One example, drawn from the NexaCrypt corpus: an interview describing a commercial exception as 'negotiated with a long-standing client, but never really written down anywhere.' No rule recognises a name, a date or a system in that sentence, and nothing explicitly links it to a knowledge item already on record. The LLM, on the other hand, flags it as a signal of undocumented knowledge and proposes it as a fact awaiting validation — before it enters the model."
+     >Un exemple, pris dans le corpus NexaCrypt : un entretien où une exception commerciale est décrite comme « négociée avec un client historique, mais jamais vraiment écrite nulle part ». Aucune règle n'y reconnaît un nom, une date ou un système, et rien ne la rapproche explicitement d'une connaissance déjà répertoriée. Le LLM, lui, la repère comme un signal de connaissance non documentée et la propose sous forme de fait à valider — avant qu'elle n'entre dans le modèle.</p>
+
+  <div class="schema">
+    <div><span class="level" data-fr="Sources" data-en="Sources">Sources</span> <span data-fr="(entretiens, tickets, documentation, procédures)" data-en="(interviews, tickets, documentation, procedures)">(entretiens, tickets, documentation, procédures)</span></div>
+    <div><span class="arrow">↓</span></div>
+    <div><span class="level" data-fr="Extraction et interprétation" data-en="Extraction and interpretation">Extraction et interprétation</span> <span data-fr="(règles, rapprochement sémantique, IA sur l'ambigu)" data-en="(rules, semantic matching, AI on the ambiguous)">(règles, rapprochement sémantique, IA sur l'ambigu)</span></div>
+    <div><span class="arrow">↓</span></div>
+    <div><span class="level" data-fr="Connaissance structurée" data-en="Structured knowledge">Connaissance structurée</span> <span data-fr="(validée par un humain)" data-en="(validated by a human)">(validée par un humain)</span></div>
+    <div><span class="arrow">↓</span></div>
+    <div><span class="level">Bus Factor · Coverage · Concentration · Fragmentation</span></div>
+    <div><span class="arrow">↓</span></div>
+    <div><span class="level" data-fr="Cartographie des vulnérabilités" data-en="Map of vulnerabilities">Cartographie des vulnérabilités</span></div>
+    <div><span class="arrow">↓</span></div>
+    <div><span class="level" data-fr="Décision" data-en="Decision">Décision</span></div>
+  </div>
+
+  <p data-fr="Peu importe, au fond, la sophistication de la technique retenue pour cette extraction. Ce qui distingue une cartographie exploitable d'un empilement de données, c'est une <b><u>ontologie</u></b> qui définit à l'avance ce qui compte comme une Connaissance, une Activité ou un Actif — et <b><u>une validation humaine</u></b> qui décide, à chaque fois, ce qui a le droit d'y entrer."
+     data-en="In the end, the sophistication of the technique chosen for this extraction matters less than it seems. What distinguishes a usable map from a pile of data is an <b><u>ontology</u></b> that defines in advance what counts as a Knowledge item, an Activity or an Asset — and <b><u>a human validation step</u></b> that decides, every time, what is allowed in."
+     >Peu importe, au fond, la sophistication de la technique retenue pour cette extraction. Ce qui distingue une cartographie exploitable d'un empilement de données, c'est une <b><u>ontologie</u></b> qui définit à l'avance ce qui compte comme une Connaissance, une Activité ou un Actif — et <b><u>une validation humaine</u></b> qui décide, à chaque fois, ce qui a le droit d'y entrer.</p>
+
+  <p data-fr="Le détail de ce pipeline — les outils, les étapes, un exemple traité de bout en bout — fera l'objet d'un prochain article. Ce qui compte ici, c'est ce qu'il rend possible : recalculer les quatre dimensions sur l'ensemble de l'organisation, et pas uniquement sur les trois composants qu'un analyste a eu le temps d'étudier à la main."
+     data-en="The detail of this pipeline — the tools, the steps, a worked example from end to end — will be the subject of a future article. What matters here is what it makes possible: recalculating the four dimensions across the whole organisation, not just the three components an analyst had time to study by hand."
+     >Le détail de ce pipeline — les outils, les étapes, un exemple traité de bout en bout — fera l'objet d'un prochain article. Ce qui compte ici, c'est ce qu'il rend possible : recalculer les quatre dimensions sur l'ensemble de l'organisation, et pas uniquement sur les trois composants qu'un analyste a eu le temps d'étudier à la main.</p>
+
+  <h2 data-fr="Trois constats typiques"
+      data-en="Three typical findings"
+      >Trois constats typiques</h2>
+
+  <p data-fr="D'une manière générale, trois patterns reviennent systématiquement :"
+     data-en="Generally speaking, three patterns recur systematically:"
+     >D'une manière générale, trois patterns reviennent systématiquement :</p>
+
+  <ul>
+    <li data-fr="<strong>La connaissance n'est pas répartie, elle est concentrée.</strong> Chaque dépendance prise isolément semblait gérable ; leur superposition ne l'est plus. C'est exactement ce que mesure la Concentration : chez NexaCrypt, un coefficient de Gini de 0,425 sur des composants où le Bus Factor tombe par ailleurs à 1."
+        data-en="<strong>Knowledge is not distributed, it is concentrated.</strong> Each dependency seemed manageable in isolation; their combination no longer is. This is exactly what Concentration measures: at NexaCrypt, a Gini coefficient of 0.425 on components where the Bus Factor is also 1."
+        ><strong>La connaissance n'est pas répartie, elle est concentrée.</strong> Chaque dépendance prise isolément semblait gérable ; leur superposition ne l'est plus. C'est exactement ce que mesure la Concentration : chez NexaCrypt, un coefficient de Gini de 0,425 sur des composants où le Bus Factor tombe par ailleurs à 1.</li>
+    <li data-fr="<strong>Les procédures critiques n'ont jamais été éprouvées en conditions réelles.</strong> Un DRP non testé depuis trois ans n'est pas un DRP — c'est une illusion de sécurité. Les sauvegardes corrompues de NexaCrypt en sont la démonstration par l'absurde."
+        data-en="<strong>Critical procedures have never been tested under real conditions.</strong> A DRP untested for three years is not a DRP — it is an illusion of security. NexaCrypt's corrupted backups demonstrate this by absurdity."
+        ><strong>Les procédures critiques n'ont jamais été éprouvées en conditions réelles.</strong> Un DRP non testé depuis trois ans n'est pas un DRP — c'est une illusion de sécurité. Les sauvegardes corrompues de NexaCrypt en sont la démonstration par l'absurde.</li>
+    <li data-fr="<strong>La documentation, quand elle existe, décrit un système qui n'a plus cours.</strong> Des procédures continuent de mentionner des composants ou des versions remplacés depuis plusieurs années — à jour en apparence, mais devenues une source d'erreur plutôt qu'une protection."
+        data-en="<strong>Documentation, where it exists, describes a system that no longer holds true.</strong> Procedures keep referring to components or versions replaced years ago — up to date in appearance, but now a source of error rather than a safeguard."
+        ><strong>La documentation, quand elle existe, décrit un système qui n'a plus cours.</strong> Des procédures continuent de mentionner des composants ou des versions remplacés depuis plusieurs années — à jour en apparence, mais devenues une source d'erreur plutôt qu'une protection.</li>
+  </ul>
+
+  <h2 data-fr="L'IA n'est pas le consultant"
+      data-en="AI is not the consultant"
+      >L'IA n'est pas le consultant</h2>
+
+  <p data-fr="L'IA peut extraire, repérer les récurrences, relier les signaux et synthétiser — en quelques heures plutôt qu'en plusieurs semaines. Elle ne peut pas arbitrer entre deux actions prioritaires, convaincre un comité de direction, ni porter la responsabilité d'une recommandation."
+     data-en="AI can extract, spot recurrences, connect signals and synthesise — in hours rather than weeks. It cannot arbitrate between two priority actions, convince a board, or carry the responsibility of a recommendation."
+     >L'IA peut extraire, repérer les récurrences, relier les signaux et synthétiser — en quelques heures plutôt qu'en plusieurs semaines. Elle ne peut pas arbitrer entre deux actions prioritaires, convaincre un comité de direction, ni porter la responsabilité d'une recommandation.</p>
+
+  <p data-fr="Cette articulation reste humaine. Ce que l'IA accélère, c'est la phase de collecte et de mise en relation — pour laisser davantage de temps à ce qui compte : l'analyse, la priorisation, la décision, la mise en œuvre."
+     data-en="This articulation remains human. What AI accelerates is the collection and cross-referencing phase — to leave more time for what matters: analysis, prioritisation, decision, implementation."
+     >Cette articulation reste humaine. Ce que l'IA accélère, c'est la phase de collecte et de mise en relation — pour laisser davantage de temps à ce qui compte : l'analyse, la priorisation, la décision, la mise en œuvre.</p>
+
+  <div class="highlight">
+    <span data-fr="La valeur ne réside pas dans le modèle d'IA, elle réside dans la capacité à transformer des données brutes éparpillées en une lecture commune — et cette lecture commune en décision."
+          data-en="The value does not lie in the AI model, it lies in the ability to turn scattered raw data into a shared understanding — and that shared understanding into a decision."
+          >La valeur ne réside pas dans le modèle d'IA, elle réside dans la capacité à transformer des données brutes éparpillées en une lecture commune — et cette lecture commune en décision.</span>
+  </div>
+
+  <h2 data-fr="Et dans la pratique : le cas NexaCrypt" data-en="In practice: the NexaCrypt case">Et dans la pratique : le cas NexaCrypt</h2>
+
+  <p data-fr="Appliquée au corpus NexaCrypt, la même analyse ne s'arrête plus aux trois composants étudiés à la main dans l'article précédent. Elle recalcule les quatre dimensions sur l'ensemble du corpus — y compris les domaines qu'un audit manuel de quelques semaines n'aurait pas eu le temps de couvrir."
+     data-en="Applied to the NexaCrypt corpus, the same analysis no longer stops at the three components studied by hand in the previous article. It recalculates the four dimensions across the whole corpus — including the areas a manual audit of a few weeks would not have had time to cover."
+     >Appliquée au corpus NexaCrypt, la même analyse ne s'arrête plus aux trois composants étudiés à la main dans l'article précédent. Elle recalcule les quatre dimensions sur l'ensemble du corpus — y compris les domaines qu'un audit manuel de quelques semaines n'aurait pas eu le temps de couvrir.</p>
+
+  <p data-fr="Le cas le plus parlant : Grace, référente métier senior, n'apparaissait dans aucun des trois composants chiffrés par l'article précédent. L'analyse du corpus complet lui attribue pourtant un Bus Factor de 1 sur les exceptions métier historiques négociées avec les plus gros clients. La dépendance est aussi critique que celle d'Alice sur le moteur de chiffrement — mais elle restait invisible tant que l'étude se limitait à l'infrastructure et au chiffrement. Coverage, Concentration et Fragmentation, elles, confirment sur l'ensemble du corpus la lecture déjà établie dans l'article précédent."
+     data-en="The clearest case: Grace, the senior business lead, did not appear in any of the three components quantified in the previous article. Yet the analysis of the full corpus assigns her a Bus Factor of 1 on the historical business exceptions negotiated with the largest clients. The dependency is as critical as Alice's on the encryption engine — but it stayed invisible as long as the study was limited to infrastructure and encryption. Coverage, Concentration and Fragmentation, for their part, confirm the reading already established in the previous article across the whole corpus."
+     >Le cas le plus parlant : Grace, référente métier senior, n'apparaissait dans aucun des trois composants chiffrés par l'article précédent. L'analyse du corpus complet lui attribue pourtant un Bus Factor de 1 sur les exceptions métier historiques négociées avec les plus gros clients. La dépendance est aussi critique que celle d'Alice sur le moteur de chiffrement — mais elle restait invisible tant que l'étude se limitait à l'infrastructure et au chiffrement. Coverage, Concentration et Fragmentation, elles, confirment sur l'ensemble du corpus la lecture déjà établie dans l'article précédent.</p>
+
+  <p data-fr="Cette lecture ne parle plus seulement de documentation technique, un sujet qu'un comité de direction perçoit d'abord comme un coût : elle parle de continuité d'activité et de risque financier chiffré, sur un périmètre qu'aucun analyste n'aurait eu le temps de couvrir seul."
+     data-en="This reading is no longer just about technical documentation, a subject a board first perceives as a cost: it is about business continuity and quantified financial risk, across a scope no single analyst would have had time to cover alone."
+     >Cette lecture ne parle plus seulement de documentation technique, un sujet qu'un comité de direction perçoit d'abord comme un coût : elle parle de continuité d'activité et de risque financier chiffré, sur un périmètre qu'aucun analyste n'aurait eu le temps de couvrir seul.</p>
+
+  <h2 data-fr="De la cartographie ponctuelle à la cartographie vivante" data-en="From a one-off map to a living map">De la cartographie ponctuelle à la cartographie vivante</h2>
+
+  <p data-fr="Pendant longtemps, cartographier les connaissances critiques d'une organisation relevait d'un exercice ponctuel — un audit, une mission de conseil, un projet de transformation. À peine terminée, la cartographie commençait déjà à vieillir : une arrivée, un départ, une réorganisation, et les dépendances qu'elle décrivait avaient changé."
+     data-en="For a long time, mapping an organisation's critical knowledge was a one-off exercise — an audit, a consulting assignment, a transformation project. As soon as it was finished, the map was already starting to age: an arrival, a departure, a reorganisation, and the dependencies it described had changed."
+     >Pendant longtemps, cartographier les connaissances critiques d'une organisation relevait d'un exercice ponctuel — un audit, une mission de conseil, un projet de transformation. À peine terminée, la cartographie commençait déjà à vieillir : une arrivée, un départ, une réorganisation, et les dépendances qu'elle décrivait avaient changé.</p>
+
+  <p data-fr="La rupture apportée par l'IA n'est donc pas de produire une cartographie plus vite. Elle est de rendre sa mise à jour continue envisageable : une nouvelle source enrichit le modèle, une expertise est réévaluée, et les quatre dimensions se recalculent sur la représentation actualisée — sans attendre le prochain audit."
+     data-en="AI's real breakthrough, then, is not producing a map faster. It is making its continuous upkeep possible: a new source enriches the model, an expertise is reassessed, and the four dimensions are recalculated on the updated representation — without waiting for the next audit."
+     >La rupture apportée par l'IA n'est donc pas de produire une cartographie plus vite. Elle est de rendre sa mise à jour continue envisageable : une nouvelle source enrichit le modèle, une expertise est réévaluée, et les quatre dimensions se recalculent sur la représentation actualisée — sans attendre le prochain audit.</p>
+
+  <div class="highlight">
+    <span data-fr="La connaissance est un patrimoine. Comme tout patrimoine, elle doit être cartographiée, mesurée et gouvernée."
+          data-en="Knowledge is an asset. Like any asset, it must be mapped, measured and governed."
+          >La connaissance est un patrimoine. Comme tout patrimoine, elle doit être cartographiée, mesurée et gouvernée.</span>
+  </div>
+
+  <p data-fr="Un problème demeure, que l'IA ne résout pas à elle seule — et c'est précisément lui qui impose l'étape suivante. Une personne peut maîtriser plusieurs connaissances ; une connaissance peut être nécessaire à plusieurs activités ; une activité peut dépendre de plusieurs actifs, et un actif d'un autre actif. Plus l'organisation grandit, plus ces relations comptent autant que les objets eux-mêmes. Un tableau, aussi bien construit soit-il, ne les tient pas ensemble : il lui faut un <u><b>graphe</u></b>."
+     data-en="One problem remains that AI alone does not solve — and it is precisely this problem that forces the next step. A person can master several knowledge items; a knowledge item can be required by several activities; an activity can depend on several assets, and an asset on another asset. The larger the organisation, the more these relationships matter as much as the objects themselves. A table, however well built, cannot hold them together: it needs a <u><b>graph</u></b>."
+     >Un problème demeure, que l'IA ne résout pas à elle seule — et c'est précisément lui qui impose l'étape suivante. Une personne peut maîtriser plusieurs connaissances ; une connaissance peut être nécessaire à plusieurs activités ; une activité peut dépendre de plusieurs actifs, et un actif d'un autre actif. Plus l'organisation grandit, plus ces relations comptent autant que les objets eux-mêmes. Un tableau, aussi bien construit soit-il, ne les tient pas ensemble : il lui faut un <u><b>graphe</u></b>.</p>
+
+  <div class="next-article">
+    <p class="eyebrow" style="margin:0 0 0.5rem" data-fr="Prochain article" data-en="Next article">Prochain article</p>
+    <p data-fr="<strong>Article 6 — Pourquoi un graphe plutôt qu'Excel ?</strong> : les limites des matrices traditionnelles face à la complexité des dépendances de connaissances."
+       data-en="<strong>Article 6 — Why a graph rather than Excel?</strong>: the limits of traditional matrices when facing the complexity of knowledge dependencies."
+       ><strong>Article 6 — Pourquoi un graphe plutôt qu'Excel ?</strong> : les limites des matrices traditionnelles face à la complexité des dépendances de connaissances.</p>
+    <!--<a href="article-6-long.html" data-fr="Lire l'Article 6 →" data-en="Read Article 6 →">Lire l'Article 6 →</a>-->
+  </div>
+
+  <footer>
+    <span data-fr="Pierre Pistenon — Business Analyst Senior"
+          data-en="Pierre Pistenon — Senior Business Analyst"
+          >Pierre Pistenon — Business Analyst Senior</span>
+    <a href="article-4-long.html"
+       data-fr="← Article précédent"
+       data-en="← Previous article"
+       >← Article précédent</a>
+  </footer>
+
+</div>
+
+<script>
+  function applyLang(lang) {
+    document.documentElement.lang = lang;
+    document.querySelectorAll('.lang-btn').forEach(function(b) {
+      b.classList.toggle('active', b.dataset.lang === lang);
+    });
+    document.querySelectorAll('[data-fr]').forEach(function(el) {
+      var val = el.getAttribute('data-' + lang);
+      if (!val) return;
+      var frVal = el.getAttribute('data-fr') || '';
+      var enVal = el.getAttribute('data-en') || '';
+      if (frVal.indexOf('<') !== -1 || enVal.indexOf('<') !== -1) {
+        el.innerHTML = val;
+      } else {
+        el.textContent = val;
+      }
+    });
+  }
+
+  function setLang(lang) {
+    localStorage.setItem('lang', lang);
+    applyLang(lang);
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    var saved = localStorage.getItem('lang') || 'fr';
+    applyLang(saved);
+  });
+</script>
+</body>
 </html>

@@ -13,6 +13,7 @@
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Annexe de l'Article 4 — comment est calculée la Concentration : criticité des actifs, score individuel, coefficient de Gini, courbe de Lorenz. Série Bus Factor.">
 
 <title>Comment est calculée la Concentration ? — Pierre Pistenon</title>
 
@@ -34,190 +35,63 @@ src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
 
 <style>
 
-*,*::before,*::after{
-box-sizing:border-box;
-margin:0;
-padding:0;
-}
+*,*::before,*::after{ box-sizing:border-box; margin:0; padding:0; }
 
 :root{
-
---bg:#0D1117;
---bg2:#161B22;
---border:#30363D;
-
---text:#E6EDF3;
---muted:#8B949E;
-
---accent:#4FC3F7;
---green:#3FB950;
---orange:#D29922;
---red:#F85149;
-
+  --bg:#0D1117;
+  --bg2:#161B22;
+  --border:#30363D;
+  --text:#E6EDF3;
+  --muted:#8B949E;
+  --accent:#4FC3F7;
+  --green:#3FB950;
+  --orange:#D29922;
+  --red:#F85149;
 }
 
-body{
+body{ background:var(--bg); color:var(--text); font-family:Inter,sans-serif; font-size:16px; line-height:1.75; }
 
-background:var(--bg);
-color:var(--text);
+.wrap{ max-width:760px; margin:auto; padding:40px 30px 80px; }
 
-font-family:Inter,sans-serif;
-font-size:16px;
-line-height:1.75;
+h1{ font-size:2rem; font-weight:600; margin-bottom:12px; }
 
-}
+h2{ font-size:1.35rem; margin-top:50px; margin-bottom:18px; color:var(--accent); }
 
-.wrap{
+h3{ font-size:1.1rem; margin-top:32px; margin-bottom:12px; }
 
-max-width:760px;
-margin:auto;
-padding:40px 30px 80px;
+p{ margin-bottom:18px; color:var(--muted); }
 
-}
+strong{ color:var(--text); }
 
-h1{
+ul{ margin:0 0 18px 1.3rem; color:var(--muted); }
 
-font-size:2rem;
-font-weight:600;
+table{ width:100%; border-collapse:collapse; margin:25px 0; }
 
-margin-bottom:12px;
+th{ background:var(--bg2); color:var(--accent); padding:12px; border:1px solid var(--border); }
 
-}
+td{ padding:12px; border:1px solid var(--border); }
 
-h2{
+blockquote{ border-left:4px solid var(--accent); padding-left:20px; margin:25px 0; font-style:italic; color:var(--text); }
 
-font-size:1.35rem;
+.highlight{ background:rgba(79,195,247,.08); border-left:4px solid var(--accent); padding:18px; margin:30px 0; border-radius:6px; }
 
-margin-top:50px;
-margin-bottom:18px;
+.formula{ background:var(--bg2); padding:18px; border-radius:6px; margin:25px 0; font-family:JetBrains Mono,monospace; overflow-x:auto; }
 
-color:var(--accent);
+.note{ background:#111827; border:1px solid var(--border); padding:18px; border-radius:6px; margin:30px 0; }
 
-}
+.note a, p a{ color:var(--accent); }
 
-h3{
+svg{ max-width:100%; height:auto; }
 
-font-size:1.1rem;
-
-margin-top:32px;
-margin-bottom:12px;
-
-}
-
-p{
-
-margin-bottom:18px;
-color:var(--muted);
-
-}
-
-strong{
-
-color:var(--text);
-
-}
-
-table{
-
-width:100%;
-border-collapse:collapse;
-
-margin:25px 0;
-
-}
-
-th{
-
-background:var(--bg2);
-
-color:var(--accent);
-
-padding:12px;
-
-border:1px solid var(--border);
-
-}
-
-td{
-
-padding:12px;
-
-border:1px solid var(--border);
-
-}
-
-blockquote{
-
-border-left:4px solid var(--accent);
-
-padding-left:20px;
-
-margin:25px 0;
-
-font-style:italic;
-
-color:var(--text);
-
-}
-
-.highlight{
-
-background:rgba(79,195,247,.08);
-
-border-left:4px solid var(--accent);
-
-padding:18px;
-
-margin:30px 0;
-
-border-radius:6px;
-
-}
-
-.formula{
-
-background:var(--bg2);
-
-padding:18px;
-
-border-radius:6px;
-
-margin:25px 0;
-
-font-family:JetBrains Mono,monospace;
-
-overflow-x:auto;
-
-}
-
-.note{
-
-background:#111827;
-
-border:1px solid var(--border);
-
-padding:18px;
-
-border-radius:6px;
-
-margin:30px 0;
-
-}
-
-svg{
-
-max-width:100%;
-
-height:auto;
-
-}
-
+/* Bascule de langue : blocs propres à une langue (formules, textes de figures) */
+html[lang="en"] .lang-fr{ display:none !important; }
+html[lang="fr"] .lang-en{ display:none !important; }
 
 nav {
   position: sticky; top: 0; z-index: 100;
   background: rgba(13,17,23,0.92); backdrop-filter: blur(8px);
   border-bottom: 1px solid var(--border);
-  display: flex; align-items: center;
+  display: flex; align-items: center; justify-content: space-between;
   padding: 0 1.5rem; height: 52px;
 }
 .nav-back {
@@ -225,6 +99,14 @@ nav {
   color: var(--accent); text-decoration: none;
   font-family: 'JetBrains Mono', monospace; font-size: 0.82rem;
 }
+.lang-toggle { display: flex; gap: 4px; }
+.lang-btn {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.75rem;
+  background: transparent; border: 1px solid var(--border);
+  color: var(--muted); padding: 0.2rem 0.55rem; border-radius: 4px;
+  cursor: pointer; transition: all 0.15s;
+}
+.lang-btn.active { background: var(--accent); color: var(--bg); font-weight: 500; border-color: var(--accent); }
 
 </style>
 
@@ -233,1551 +115,705 @@ nav {
 <body>
 
 <nav>
-  <a href="article-4-long.html" class="nav-back">&#8592; Retour à l'article 4</a>
+  <a href="article-4-long.html" class="nav-back"
+     data-fr="← Retour à l'article 4"
+     data-en="← Back to Article 4">← Retour à l'article 4</a>
+  <div class="lang-toggle">
+    <button class="lang-btn active" data-lang="fr" onclick="setLang('fr')">FR</button>
+    <button class="lang-btn"        data-lang="en" onclick="setLang('en')">EN</button>
+  </div>
 </nav>
-
 
 <div class="wrap">
 
-<h1>Comment est calculée la Concentration ?</h1>
+<h1 data-fr="Comment est calculée la Concentration ?"
+    data-en="How is Concentration calculated?">Comment est calculée la Concentration ?</h1>
 
-<p style="font-size:1.05rem;">
-Du <strong>Bus Factor</strong> à la mesure de la
-<strong>répartition du savoir critique</strong>.
-</p>
+<p style="font-size:1.05rem;"
+   data-fr="Du <strong>Bus Factor</strong> à la mesure de la <strong>répartition du savoir critique</strong>."
+   data-en="From the <strong>Bus Factor</strong> to measuring the <strong>distribution of critical knowledge</strong>.">Du <strong>Bus Factor</strong> à la mesure de la <strong>répartition du savoir critique</strong>.</p>
 
 <div class="highlight">
 
-<p>
+<p data-fr="Le <strong>Bus Factor</strong> répond à une question locale :"
+   data-en="The <strong>Bus Factor</strong> answers a local question:">Le <strong>Bus Factor</strong> répond à une question locale :</p>
 
-Le <strong>Bus Factor</strong> répond à une question locale :
+<blockquote data-fr="Que se passe-t-il si je perds les experts d'un composant donné ?"
+            data-en="What happens if I lose the experts on a given component?">Que se passe-t-il si je perds les experts d'un composant donné ?</blockquote>
 
-</p>
+<p data-fr="La <strong>Concentration</strong> répond à une question beaucoup plus globale :"
+   data-en="<strong>Concentration</strong> answers a much broader question:">La <strong>Concentration</strong> répond à une question beaucoup plus globale :</p>
 
-<blockquote>
-
-Que se passe-t-il si je perds les experts
-d'un composant donné ?
-
-</blockquote>
-
-<p>
-
-La <strong>Concentration</strong> répond à une
-question beaucoup plus globale :
-
-</p>
-
-<blockquote>
-
-Le savoir critique est-il réparti
-dans toute l'équipe,
-ou repose-t-il essentiellement
-sur deux ou trois personnes ?
-
-</blockquote>
+<blockquote data-fr="Le savoir critique est-il réparti dans toute l'équipe, ou repose-t-il essentiellement sur deux ou trois personnes ?"
+            data-en="Is critical knowledge spread across the whole team, or does it rest mainly on two or three people?">Le savoir critique est-il réparti dans toute l'équipe, ou repose-t-il essentiellement sur deux ou trois personnes ?</blockquote>
 
 </div>
 
-<p>
+<p data-fr="Deux équipes peuvent présenter exactement le même Bus Factor moyen tout en étant très différentes. Dans la première, les connaissances critiques sont réparties entre de nombreux collaborateurs. Dans la seconde, quelques personnes concentrent l'essentiel du savoir stratégique. Le rôle de la métrique de <strong>Concentration</strong> est précisément de détecter cette situation."
+   data-en="Two teams can show exactly the same average Bus Factor and still be very different. In the first, critical knowledge is spread across many colleagues. In the second, a few people hold most of the strategic knowledge. The role of the <strong>Concentration</strong> metric is precisely to detect this situation.">Deux équipes peuvent présenter exactement le même Bus Factor moyen tout en étant très différentes. Dans la première, les connaissances critiques sont réparties entre de nombreux collaborateurs. Dans la seconde, quelques personnes concentrent l'essentiel du savoir stratégique. Le rôle de la métrique de <strong>Concentration</strong> est précisément de détecter cette situation.</p>
 
-Deux équipes peuvent présenter exactement
-le même Bus Factor moyen tout en étant
-très différentes.
+<h2 data-fr="Le principe général" data-en="The general principle">Le principe général</h2>
 
-Dans la première,
-les connaissances critiques sont réparties
-entre de nombreux collaborateurs.
+<p data-fr="La Concentration ne compte pas le nombre de connaissances détenues. Elle mesure la manière dont le <strong>savoir critique</strong> est réparti dans l'organisation. Le calcul suit toujours la même chaîne."
+   data-en="Concentration does not count how many knowledge items people hold. It measures how <strong>critical knowledge</strong> is distributed across the organisation. The calculation always follows the same chain.">La Concentration ne compte pas le nombre de connaissances détenues. Elle mesure la manière dont le <strong>savoir critique</strong> est réparti dans l'organisation. Le calcul suit toujours la même chaîne.</p>
 
-Dans la seconde,
-quelques personnes concentrent
-l'essentiel du savoir stratégique.
+<div class="formula"
+     data-fr="Connaissances<br>↓<br>Criticité<br>↓<br>Score individuel<br>↓<br>Distribution des scores<br>↓<br>Courbe de Lorenz<br>↓<br>Coefficient de Gini<br>↓<br>Interprétation"
+     data-en="Knowledge items<br>↓<br>Criticality<br>↓<br>Individual score<br>↓<br>Distribution of scores<br>↓<br>Lorenz curve<br>↓<br>Gini coefficient<br>↓<br>Interpretation">Connaissances<br>↓<br>Criticité<br>↓<br>Score individuel<br>↓<br>Distribution des scores<br>↓<br>Courbe de Lorenz<br>↓<br>Coefficient de Gini<br>↓<br>Interprétation</div>
 
-Le rôle de la métrique de
-<strong>Concentration</strong>
-est précisément de détecter cette situation.
+<p data-fr="Chaque étape s'appuie sur la précédente. Le coefficient de Gini n'est donc pas calculé directement à partir des personnes, mais à partir de la répartition du savoir critique qu'elles portent."
+   data-en="Each step builds on the previous one. The Gini coefficient is therefore not calculated directly from the people, but from the distribution of the critical knowledge they carry.">Chaque étape s'appuie sur la précédente. Le coefficient de Gini n'est donc pas calculé directement à partir des personnes, mais à partir de la répartition du savoir critique qu'elles portent.</p>
 
-</p>
+<h2 data-fr="Étape 1 — Évaluer la criticité des actifs" data-en="Step 1 — Assess the criticality of assets">Étape 1 — Évaluer la criticité des actifs</h2>
 
-<h2>Le principe général</h2>
-
-<p>
-
-La Concentration ne compte pas
-le nombre de connaissances détenues.
-
-Elle mesure la manière
-dont le
-<strong>savoir critique</strong>
-est réparti dans l'organisation.
-
-Le calcul suit toujours la même chaîne.
-
-</p>
-
-<div class="formula">
-
-Connaissances
-
-<br>↓
-
-<br>Criticité
-
-<br>↓
-
-<br>Score individuel
-
-<br>↓
-
-<br>Distribution des scores
-
-<br>↓
-
-<br>Courbe de Lorenz
-
-<br>↓
-
-<br>Coefficient de Gini
-
-<br>↓
-
-<br>Interprétation
-
-</div>
-
-<p>
-
-Chaque étape s'appuie sur la précédente.
-
-Le coefficient de Gini n'est donc
-pas calculé directement à partir
-des personnes,
-mais à partir de la répartition
-du savoir critique
-qu'elles portent.
-
-</p>
-
-<h2>Étape 1 — Évaluer la criticité des actifs</h2>
-
-<p>
-
-Toutes les connaissances
-n'ont pas la même importance.
-
-Connaître une procédure administrative
-n'a pas le même impact
-que maîtriser
-le moteur cryptographique
-d'une application.
-
-Avant toute mesure,
-chaque actif
-(composant logiciel,
-processus métier,
-base de données,
-infrastructure...)
-reçoit donc une
-<strong>note de criticité</strong>.
-
-</p>
+<p data-fr="Toutes les connaissances n'ont pas la même importance. Connaître une procédure administrative n'a pas le même impact que maîtriser le moteur cryptographique d'une application. Avant toute mesure, chaque actif (composant logiciel, base de données, infrastructure...) reçoit donc un <strong>coefficient de criticité</strong>, de 1 à 4."
+   data-en="Not all knowledge carries the same weight. Knowing an administrative procedure does not have the same impact as mastering an application's cryptographic engine. Before any measurement, each asset (software component, database, infrastructure...) is therefore given a <strong>criticality coefficient</strong>, from 1 to 4.">Toutes les connaissances n'ont pas la même importance. Connaître une procédure administrative n'a pas le même impact que maîtriser le moteur cryptographique d'une application. Avant toute mesure, chaque actif (composant logiciel, base de données, infrastructure...) reçoit donc un <strong>coefficient de criticité</strong>, de 1 à 4.</p>
 
 <table>
-
 <tr>
-
-<th>Criticité</th>
-
-<th>Interprétation</th>
-
+<th data-fr="Coefficient" data-en="Coefficient">Coefficient</th>
+<th data-fr="Niveau" data-en="Level">Niveau</th>
+<th data-fr="Interprétation" data-en="Interpretation">Interprétation</th>
 </tr>
-
 <tr>
-
 <td>1</td>
-
-<td>Faible impact métier</td>
-
+<td data-fr="Faible" data-en="Low">Faible</td>
+<td data-fr="Faible impact métier" data-en="Low business impact">Faible impact métier</td>
 </tr>
-
 <tr>
-
 <td>2</td>
-
-<td>Impact limité</td>
-
+<td data-fr="Moyenne" data-en="Medium">Moyenne</td>
+<td data-fr="Impact limité" data-en="Limited impact">Impact limité</td>
 </tr>
-
 <tr>
-
 <td>3</td>
-
-<td>Important</td>
-
+<td data-fr="Haute" data-en="High">Haute</td>
+<td data-fr="Impact important" data-en="Significant impact">Impact important</td>
 </tr>
-
 <tr>
-
 <td>4</td>
-
-<td>Très important</td>
-
+<td data-fr="Très haute" data-en="Very high">Très haute</td>
+<td data-fr="Critique pour l'activité" data-en="Critical to the business">Critique pour l'activité</td>
 </tr>
-
-<tr>
-
-<td>5</td>
-
-<td>Critique pour l'activité</td>
-
-</tr>
-
 </table>
 
-<p>
-
-Cette criticité peut être déterminée
-à partir de plusieurs critères :
-
-</p>
+<p data-fr="Cette criticité peut être déterminée à partir de plusieurs critères :"
+   data-en="This criticality can be determined from several criteria:">Cette criticité peut être déterminée à partir de plusieurs critères :</p>
 
 <ul>
-
-<li>impact financier ;</li>
-
-<li>impact opérationnel ;</li>
-
-<li>impact réglementaire ;</li>
-
-<li>impact cybersécurité ;</li>
-
-<li>impact réputationnel.</li>
-
+<li data-fr="impact financier ;" data-en="financial impact;">impact financier ;</li>
+<li data-fr="impact opérationnel ;" data-en="operational impact;">impact opérationnel ;</li>
+<li data-fr="impact réglementaire ;" data-en="regulatory impact;">impact réglementaire ;</li>
+<li data-fr="impact cybersécurité ;" data-en="cybersecurity impact;">impact cybersécurité ;</li>
+<li data-fr="impact réputationnel." data-en="reputational impact.">impact réputationnel.</li>
 </ul>
-<h2>Étape 2 — Associer chaque connaissance à sa criticité</h2>
 
-<p>
-
-Une fois la criticité des actifs définie,
-chaque connaissance est rattachée
-à l'actif auquel elle se rapporte.
-
-Elle hérite ainsi de sa criticité.
-
-Autrement dit, une connaissance portant
-sur un composant critique contribue
-davantage au score global qu'une connaissance
-concernant un actif secondaire.
-
-</p>
-
-<div class="highlight">
-
-<strong>Principe</strong><br><br>
-
-Criticité d'une connaissance
-=
-Criticité de l'actif
-qu'elle permet de concevoir,
-d'exploiter,
-de maintenir
-ou de faire évoluer.
-
+<div class="note">
+<p data-fr="Ce coefficient sert uniquement à pondérer le savoir critique dans le calcul de la Concentration. Il est distinct de la note de criticité de 1 à 5 utilisée dans le score de risque de l'<a href='article-2-long.html'>Article 2</a> : les deux échelles ne servent pas le même calcul et ne se convertissent pas l'une dans l'autre."
+   data-en="This coefficient is used only to weight critical knowledge in the Concentration calculation. It is distinct from the 1-to-5 criticality rating used in the risk score of <a href='article-2-long.html'>Article 2</a>: the two scales serve different calculations and do not convert into one another." style="margin-bottom:0;">Ce coefficient sert uniquement à pondérer le savoir critique dans le calcul de la Concentration. Il est distinct de la note de criticité de 1 à 5 utilisée dans le score de risque de l'<a href='article-2-long.html'>Article 2</a> : les deux échelles ne servent pas le même calcul et ne se convertissent pas l'une dans l'autre.</p>
 </div>
 
-<p>
+<h2 data-fr="Étape 2 — Associer chaque connaissance à sa criticité" data-en="Step 2 — Link each knowledge item to its criticality">Étape 2 — Associer chaque connaissance à sa criticité</h2>
 
-Dans cette première version du modèle,
-la criticité est portée par l'actif.
+<p data-fr="Une fois la criticité des actifs définie, chaque connaissance est rattachée à l'actif auquel elle se rapporte. Elle hérite ainsi de sa criticité. Autrement dit, une connaissance portant sur un composant critique contribue davantage au score global qu'une connaissance concernant un actif secondaire."
+   data-en="Once asset criticality has been set, each knowledge item is attached to the asset it relates to. It thereby inherits that asset's criticality. In other words, knowledge about a critical component contributes more to the overall score than knowledge about a secondary asset.">Une fois la criticité des actifs définie, chaque connaissance est rattachée à l'actif auquel elle se rapporte. Elle hérite ainsi de sa criticité. Autrement dit, une connaissance portant sur un composant critique contribue davantage au score global qu'une connaissance concernant un actif secondaire.</p>
 
-Toutes les connaissances rattachées
-à cet actif héritent donc de la même valeur.
+<div class="highlight"
+     data-fr="<strong>Principe</strong><br><br>Criticité d'une connaissance = criticité de l'actif qu'elle permet de concevoir, d'exploiter, de maintenir ou de faire évoluer."
+     data-en="<strong>Principle</strong><br><br>Criticality of a knowledge item = criticality of the asset it makes it possible to design, operate, maintain or evolve."><strong>Principe</strong><br><br>Criticité d'une connaissance = criticité de l'actif qu'elle permet de concevoir, d'exploiter, de maintenir ou de faire évoluer.</div>
 
-Cette approche présente deux avantages :
-
-</p>
+<p data-fr="Dans cette première version du modèle, la criticité est portée par l'actif. Toutes les connaissances rattachées à cet actif héritent donc de la même valeur. Cette approche présente deux avantages :"
+   data-en="In this first version of the model, criticality is carried by the asset. All knowledge items attached to that asset therefore inherit the same value. This approach has two advantages:">Dans cette première version du modèle, la criticité est portée par l'actif. Toutes les connaissances rattachées à cet actif héritent donc de la même valeur. Cette approche présente deux avantages :</p>
 
 <ul>
-
-<li>elle est simple à mettre en œuvre ;</li>
-
-<li>elle garantit une cohérence d'évaluation entre les connaissances d'un même domaine.</li>
-
+<li data-fr="elle est simple à mettre en œuvre ;" data-en="it is simple to implement;">elle est simple à mettre en œuvre ;</li>
+<li data-fr="elle garantit une cohérence d'évaluation entre les connaissances d'un même domaine." data-en="it ensures consistent assessment across knowledge items in the same domain.">elle garantit une cohérence d'évaluation entre les connaissances d'un même domaine.</li>
 </ul>
 
-<p>
+<p data-fr="Des modèles plus avancés pourront ensuite attribuer une criticité propre à certaines connaissances lorsqu'elles présentent un enjeu particulier, mais cette distinction n'est pas indispensable pour calculer la Concentration."
+   data-en="More advanced models may later assign a specific criticality to certain knowledge items when they carry a particular stake, but this distinction is not needed to calculate Concentration.">Des modèles plus avancés pourront ensuite attribuer une criticité propre à certaines connaissances lorsqu'elles présentent un enjeu particulier, mais cette distinction n'est pas indispensable pour calculer la Concentration.</p>
 
-Des modèles plus avancés pourront ensuite
-attribuer une criticité propre à certaines connaissances
-lorsqu'elles présentent un enjeu particulier,
-mais cette distinction n'est pas indispensable
-pour calculer la Concentration.
-
-</p>
-
-<h3>Exemple</h3>
+<h3 data-fr="Exemple" data-en="Example">Exemple</h3>
 
 <table>
-
 <tr>
-<th>Connaissance</th>
-<th>Actif concerné</th>
-<th>Criticité de l'actif</th>
-<th>Criticité retenue</th>
+<th data-fr="Connaissance" data-en="Knowledge item">Connaissance</th>
+<th data-fr="Actif concerné" data-en="Asset concerned">Actif concerné</th>
+<th data-fr="Criticité de l'actif" data-en="Asset criticality">Criticité de l'actif</th>
+<th data-fr="Criticité retenue" data-en="Criticality applied">Criticité retenue</th>
 </tr>
-
 <tr>
-<td>Algorithmes de chiffrement</td>
-<td>Engine</td>
+<td data-fr="Algorithmes de chiffrement" data-en="Encryption algorithms">Algorithmes de chiffrement</td>
+<td>NexaCrypt Engine</td>
 <td>4</td>
 <td><strong>4</strong></td>
 </tr>
-
 <tr>
-<td>Rotation des clés</td>
-<td>Engine</td>
+<td data-fr="Rotation des clés" data-en="Key rotation">Rotation des clés</td>
+<td>NexaCrypt Engine</td>
 <td>4</td>
 <td><strong>4</strong></td>
 </tr>
-
 <tr>
-<td>Administration systèmes</td>
-<td>Serveurs</td>
+<td data-fr="Administration systèmes" data-en="Systems administration">Administration systèmes</td>
+<td data-fr="Serveurs Infrastructure" data-en="Server Infrastructure">Serveurs Infrastructure</td>
 <td>3</td>
 <td><strong>3</strong></td>
 </tr>
-
 <tr>
-<td>Scripts de récupération RAID</td>
-<td>Infrastructure RAID</td>
+<td data-fr="Récupération RAID" data-en="RAID recovery">Récupération RAID</td>
+<td data-fr="Scripts de récupération RAID" data-en="RAID recovery scripts">Scripts de récupération RAID</td>
 <td>3</td>
 <td><strong>3</strong></td>
 </tr>
-
 <tr>
-<td>Règles métier historiques</td>
-<td>Référentiel métier</td>
+<td data-fr="Règles métier historiques" data-en="Historical business rules">Règles métier historiques</td>
+<td data-fr="Référentiel métier" data-en="Business rules repository">Référentiel métier</td>
 <td>2</td>
 <td><strong>2</strong></td>
 </tr>
-
 </table>
 
 <div class="note">
-
-<strong>À retenir</strong>
-
-<p style="margin-top:12px;">
-
-La Concentration ne cherche pas à compter
-combien de connaissances possède une personne.
-
-Elle cherche à mesurer
-<strong>quelle quantité de savoir critique</strong>
-elle porte.
-
-Deux collaborateurs possédant chacun
-cinq connaissances peuvent ainsi avoir
-des contributions très différentes
-si ces connaissances concernent
-des actifs de criticité différente.
-
-</p>
-
-</div>
-<h2>Étape 3 — Calculer le score individuel</h2>
-
-<p>
-
-À ce stade, chaque connaissance possède une criticité.
-
-Il reste maintenant à déterminer
-<strong>quelle quantité de savoir critique
-porte chaque personne</strong>.
-
-Pour cela, NexaCrypt additionne la criticité
-des connaissances effectivement maîtrisées
-par chaque collaborateur.
-
-Le résultat est appelé
-<strong>score individuel de savoir critique</strong>.
-
-</p>
-
-<div class="highlight">
-
-Le score individuel correspond à la somme
-des criticités des connaissances
-maîtrisées à un niveau suffisant.
-
+<strong data-fr="À retenir" data-en="Key point">À retenir</strong>
+<p style="margin-top:12px;"
+   data-fr="La Concentration ne cherche pas à compter combien de connaissances possède une personne. Elle cherche à mesurer <strong>quelle quantité de savoir critique</strong> elle porte. Deux collaborateurs possédant chacun cinq connaissances peuvent ainsi avoir des contributions très différentes si ces connaissances concernent des actifs de criticité différente."
+   data-en="Concentration does not try to count how many knowledge items a person holds. It tries to measure <strong>how much critical knowledge</strong> they carry. Two colleagues who each hold five knowledge items can therefore make very different contributions if those items relate to assets of different criticality.">La Concentration ne cherche pas à compter combien de connaissances possède une personne. Elle cherche à mesurer <strong>quelle quantité de savoir critique</strong> elle porte. Deux collaborateurs possédant chacun cinq connaissances peuvent ainsi avoir des contributions très différentes si ces connaissances concernent des actifs de criticité différente.</p>
 </div>
 
-<p>
+<h2 data-fr="Étape 3 — Calculer le score individuel" data-en="Step 3 — Calculate the individual score">Étape 3 — Calculer le score individuel</h2>
 
-Une connaissance n'est prise en compte
-que si la personne possède un niveau
-de maîtrise lui permettant
-d'intervenir de manière autonome.
+<p data-fr="À ce stade, chaque connaissance possède une criticité. Il reste maintenant à déterminer <strong>quelle quantité de savoir critique porte chaque personne</strong>. Pour cela, NexaCrypt additionne la criticité des connaissances effectivement maîtrisées par chaque collaborateur. Le résultat est appelé <strong>score individuel de savoir critique</strong>."
+   data-en="At this stage, each knowledge item has a criticality. What remains is to determine <strong>how much critical knowledge each person carries</strong>. To do so, NexaCrypt adds up the criticality of the knowledge items each colleague actually masters. The result is called the <strong>individual critical-knowledge score</strong>.">À ce stade, chaque connaissance possède une criticité. Il reste maintenant à déterminer <strong>quelle quantité de savoir critique porte chaque personne</strong>. Pour cela, NexaCrypt additionne la criticité des connaissances effectivement maîtrisées par chaque collaborateur. Le résultat est appelé <strong>score individuel de savoir critique</strong>.</p>
 
-L'objectif est d'éviter
-de surestimer artificiellement
-la résilience de l'équipe
-en comptabilisant des collaborateurs
-qui nécessitent encore
-un accompagnement important.
+<div class="highlight"
+     data-fr="Le score individuel correspond à la somme des criticités des connaissances maîtrisées à un niveau suffisant."
+     data-en="The individual score is the sum of the criticalities of the knowledge items mastered at a sufficient level.">Le score individuel correspond à la somme des criticités des connaissances maîtrisées à un niveau suffisant.</div>
 
-</p>
+<p data-fr="Une connaissance n'est prise en compte que si la personne possède un niveau de maîtrise lui permettant d'intervenir de manière autonome. L'objectif est d'éviter de surestimer artificiellement la résilience de l'équipe en comptabilisant des collaborateurs qui nécessitent encore un accompagnement important."
+   data-en="A knowledge item only counts if the person's level of mastery allows them to act autonomously. The aim is to avoid artificially overstating the team's resilience by counting colleagues who still need substantial support.">Une connaissance n'est prise en compte que si la personne possède un niveau de maîtrise lui permettant d'intervenir de manière autonome. L'objectif est d'éviter de surestimer artificiellement la résilience de l'équipe en comptabilisant des collaborateurs qui nécessitent encore un accompagnement important.</p>
 
-<h3>Exemple</h3>
+<h3 data-fr="Exemple" data-en="Example">Exemple</h3>
 
 <table>
-
 <tr>
-<th>Personne</th>
-<th>Connaissances maîtrisées</th>
-<th>Calcul</th>
-<th>Score</th>
+<th data-fr="Personne" data-en="Person">Personne</th>
+<th data-fr="Connaissances maîtrisées" data-en="Knowledge items mastered">Connaissances maîtrisées</th>
+<th data-fr="Calcul" data-en="Calculation">Calcul</th>
+<th data-fr="Score" data-en="Score">Score</th>
 </tr>
-
 <tr>
 <td>Alice</td>
-<td>
-Algorithmes de chiffrement<br>
-Rotation des clés
-</td>
+<td data-fr="Algorithmes de chiffrement<br>Rotation des clés" data-en="Encryption algorithms<br>Key rotation">Algorithmes de chiffrement<br>Rotation des clés</td>
 <td>4 + 4</td>
 <td><strong>8</strong></td>
 </tr>
-
 <tr>
 <td>Bob</td>
-<td>
-Administration systèmes
-</td>
+<td data-fr="Administration systèmes" data-en="Systems administration">Administration systèmes</td>
 <td>3</td>
 <td><strong>3</strong></td>
 </tr>
-
 <tr>
 <td>Dave</td>
-<td>
-Scripts de récupération RAID
-</td>
+<td data-fr="Récupération RAID" data-en="RAID recovery">Récupération RAID</td>
 <td>3</td>
 <td><strong>3</strong></td>
 </tr>
-
 <tr>
 <td>Grace</td>
-<td>
-Règles métier historiques
-</td>
+<td data-fr="Règles métier historiques" data-en="Historical business rules">Règles métier historiques</td>
 <td>2</td>
 <td><strong>2</strong></td>
 </tr>
-
 <tr>
 <td>Marc</td>
-<td>
-Connaissances débutantes sur Engine
-</td>
-<td>Sous le seuil de comptage</td>
+<td data-fr="Connaissances débutantes sur NexaCrypt Engine" data-en="Beginner-level knowledge of NexaCrypt Engine">Connaissances débutantes sur NexaCrypt Engine</td>
+<td data-fr="Sous le seuil de comptage" data-en="Below the counting threshold">Sous le seuil de comptage</td>
 <td><strong>0</strong></td>
 </tr>
-
 </table>
 
-<p>
-
-On obtient ainsi les scores individuels suivants :
-
-</p>
+<p data-fr="On obtient ainsi les scores individuels suivants :"
+   data-en="This gives the following individual scores:">On obtient ainsi les scores individuels suivants :</p>
 
 <table>
-
 <tr>
-<th>Personne</th>
-<th>Score individuel</th>
+<th data-fr="Personne" data-en="Person">Personne</th>
+<th data-fr="Score individuel" data-en="Individual score">Score individuel</th>
 </tr>
-
-<tr>
-<td>Alice</td>
-<td><strong>8</strong></td>
-</tr>
-
-<tr>
-<td>Bob</td>
-<td><strong>3</strong></td>
-</tr>
-
-<tr>
-<td>Dave</td>
-<td><strong>3</strong></td>
-</tr>
-
-<tr>
-<td>Grace</td>
-<td><strong>2</strong></td>
-</tr>
-
-<tr>
-<td>Marc</td>
-<td><strong>0</strong></td>
-</tr>
-
+<tr><td>Alice</td><td><strong>8</strong></td></tr>
+<tr><td>Bob</td><td><strong>3</strong></td></tr>
+<tr><td>Dave</td><td><strong>3</strong></td></tr>
+<tr><td>Grace</td><td><strong>2</strong></td></tr>
+<tr><td>Marc</td><td><strong>0</strong></td></tr>
 </table>
 
 <div class="note">
-
-<strong>Pourquoi Marc obtient-il un score nul&nbsp;?</strong>
-
-<p style="margin-top:12px;">
-
-Marc possède quelques connaissances
-sur le composant <em>Engine</em>,
-mais son niveau de maîtrise
-reste inférieur au seuil retenu.
-
-Il peut participer,
-observer ou être accompagné,
-mais il ne peut pas encore
-assurer seul les activités critiques.
-
-Le comptabiliser comme expert
-donnerait une vision artificiellement optimiste
-de la répartition des connaissances.
-
-</p>
-
+<strong data-fr="Pourquoi Marc obtient-il un score nul&nbsp;?" data-en="Why does Marc score zero?">Pourquoi Marc obtient-il un score nul&nbsp;?</strong>
+<p style="margin-top:12px;"
+   data-fr="Marc possède quelques connaissances sur <em>NexaCrypt Engine</em>, mais son niveau de maîtrise reste inférieur au seuil retenu. Il peut participer, observer ou être accompagné, mais il ne peut pas encore assurer seul les activités critiques. Le comptabiliser comme expert donnerait une vision artificiellement optimiste de la répartition des connaissances."
+   data-en="Marc has some knowledge of <em>NexaCrypt Engine</em>, but his level of mastery remains below the threshold. He can take part, observe or be supported, but he cannot yet handle critical activities on his own. Counting him as an expert would give an artificially optimistic picture of how knowledge is distributed.">Marc possède quelques connaissances sur <em>NexaCrypt Engine</em>, mais son niveau de maîtrise reste inférieur au seuil retenu. Il peut participer, observer ou être accompagné, mais il ne peut pas encore assurer seul les activités critiques. Le comptabiliser comme expert donnerait une vision artificiellement optimiste de la répartition des connaissances.</p>
 </div>
 
-<p>
+<p data-fr="À l'issue de cette étape, chaque membre de l'équipe est représenté par un unique score. Ces scores constituent les données d'entrée du calcul de la Concentration. L'étape suivante ne s'intéresse plus aux personnes elles-mêmes, mais à la manière dont ces scores sont répartis dans l'équipe."
+   data-en="At the end of this step, each team member is represented by a single score. These scores are the input data for the Concentration calculation. The next step is no longer about the people themselves, but about how these scores are distributed across the team.">À l'issue de cette étape, chaque membre de l'équipe est représenté par un unique score. Ces scores constituent les données d'entrée du calcul de la Concentration. L'étape suivante ne s'intéresse plus aux personnes elles-mêmes, mais à la manière dont ces scores sont répartis dans l'équipe.</p>
 
-À l'issue de cette étape,
-chaque membre de l'équipe
-est représenté par un unique score.
-
-Ces scores constituent les données d'entrée
-du calcul de la Concentration.
-
-L'étape suivante ne s'intéresse plus
-aux personnes elles-mêmes,
-mais à la manière dont ces scores
-sont répartis dans l'équipe.
-
-</p>
-
-<h3>Criticité des actifs</h3>
+<h3 data-fr="Criticité des actifs" data-en="Criticality of assets">Criticité des actifs</h3>
 
 <table>
-
 <tr>
-<th>Actif</th>
-<th>Description</th>
-<th>Criticité</th>
+<th data-fr="Actif" data-en="Asset">Actif</th>
+<th data-fr="Description" data-en="Description">Description</th>
+<th data-fr="Criticité" data-en="Criticality">Criticité</th>
 </tr>
-
 <tr>
-<td>Engine</td>
-<td>Moteur de chiffrement</td>
+<td>NexaCrypt Engine</td>
+<td data-fr="Moteur de chiffrement de la plateforme NexaTrace" data-en="Encryption engine of the NexaTrace platform">Moteur de chiffrement de la plateforme NexaTrace</td>
 <td><strong>4</strong></td>
 </tr>
-
 <tr>
-<td>Serveurs</td>
-<td>Administration des serveurs</td>
+<td data-fr="Serveurs Infrastructure" data-en="Server Infrastructure">Serveurs Infrastructure</td>
+<td data-fr="Serveurs de production et de secours hébergeant les composants critiques" data-en="Production and standby servers hosting the critical components">Serveurs de production et de secours hébergeant les composants critiques</td>
 <td><strong>3</strong></td>
 </tr>
-
 <tr>
-<td>Infrastructure RAID</td>
-<td>Procédures de récupération RAID</td>
+<td data-fr="Scripts de récupération RAID" data-en="RAID recovery scripts">Scripts de récupération RAID</td>
+<td data-fr="Scripts utilisés pour récupérer un RAID instable ou reconstruire des volumes" data-en="Scripts used to recover an unstable RAID or rebuild volumes">Scripts utilisés pour récupérer un RAID instable ou reconstruire des volumes</td>
 <td><strong>3</strong></td>
 </tr>
-
 <tr>
-<td>Référentiel métier</td>
-<td>Règles métier historiques</td>
+<td data-fr="Référentiel métier" data-en="Business rules repository">Référentiel métier</td>
+<td data-fr="Règles métier et exceptions négociées avec les clients historiques" data-en="Business rules and exceptions negotiated with long-standing clients">Règles métier et exceptions négociées avec les clients historiques</td>
 <td><strong>2</strong></td>
 </tr>
-
 </table>
-<h3>Connaissances identifiées</h3>
+
+<h3 data-fr="Connaissances identifiées" data-en="Knowledge items identified">Connaissances identifiées</h3>
 
 <table>
-
 <tr>
-<th>Connaissance</th>
-<th>Actif associé</th>
-<th>Criticité</th>
+<th data-fr="Connaissance" data-en="Knowledge item">Connaissance</th>
+<th data-fr="Actif associé" data-en="Associated asset">Actif associé</th>
+<th data-fr="Criticité" data-en="Criticality">Criticité</th>
 </tr>
-
 <tr>
-<td>Algorithmes de chiffrement</td>
-<td>Engine</td>
+<td data-fr="Algorithmes de chiffrement" data-en="Encryption algorithms">Algorithmes de chiffrement</td>
+<td>NexaCrypt Engine</td>
 <td>4</td>
 </tr>
-
 <tr>
-<td>Rotation des clés</td>
-<td>Engine</td>
+<td data-fr="Rotation des clés" data-en="Key rotation">Rotation des clés</td>
+<td>NexaCrypt Engine</td>
 <td>4</td>
 </tr>
-
 <tr>
-<td>Administration systèmes</td>
-<td>Serveurs</td>
+<td data-fr="Administration systèmes" data-en="Systems administration">Administration systèmes</td>
+<td data-fr="Serveurs Infrastructure" data-en="Server Infrastructure">Serveurs Infrastructure</td>
 <td>3</td>
 </tr>
-
 <tr>
-<td>Scripts de récupération RAID</td>
-<td>Infrastructure RAID</td>
+<td data-fr="Récupération RAID" data-en="RAID recovery">Récupération RAID</td>
+<td data-fr="Scripts de récupération RAID" data-en="RAID recovery scripts">Scripts de récupération RAID</td>
 <td>3</td>
 </tr>
-
 <tr>
-<td>Règles métier historiques</td>
-<td>Référentiel métier</td>
+<td data-fr="Règles métier historiques" data-en="Historical business rules">Règles métier historiques</td>
+<td data-fr="Référentiel métier" data-en="Business rules repository">Référentiel métier</td>
 <td>2</td>
 </tr>
-
 </table>
-<h3>Calcul du score individuel</h3>
+
+<h3 data-fr="Calcul du score individuel" data-en="Individual score calculation">Calcul du score individuel</h3>
 
 <table>
-
 <tr>
-<th>Personne</th>
-<th>Connaissances comptabilisées</th>
-<th>Calcul</th>
-<th>Score</th>
+<th data-fr="Personne" data-en="Person">Personne</th>
+<th data-fr="Connaissances comptabilisées" data-en="Knowledge items counted">Connaissances comptabilisées</th>
+<th data-fr="Calcul" data-en="Calculation">Calcul</th>
+<th data-fr="Score" data-en="Score">Score</th>
 </tr>
-
 <tr>
-
 <td>Alice</td>
-
-<td>
-
-• Algorithmes de chiffrement (4)<br>
-
-• Rotation des clés (4)
-
-</td>
-
-<td>
-
-4 + 4
-
-</td>
-
-<td>
-
-<strong>8</strong>
-
-</td>
-
+<td data-fr="• Algorithmes de chiffrement (4)<br>• Rotation des clés (4)" data-en="• Encryption algorithms (4)<br>• Key rotation (4)">• Algorithmes de chiffrement (4)<br>• Rotation des clés (4)</td>
+<td>4 + 4</td>
+<td><strong>8</strong></td>
 </tr>
-
 <tr>
-
 <td>Bob</td>
-
-<td>
-
-• Administration systèmes (3)
-
-</td>
-
-<td>
-
-3
-
-</td>
-
-<td>
-
-<strong>3</strong>
-
-</td>
-
+<td data-fr="• Administration systèmes (3)" data-en="• Systems administration (3)">• Administration systèmes (3)</td>
+<td>3</td>
+<td><strong>3</strong></td>
 </tr>
-
 <tr>
-
 <td>Dave</td>
-
-<td>
-
-• Scripts de récupération RAID (3)
-
-</td>
-
-<td>
-
-3
-
-</td>
-
-<td>
-
-<strong>3</strong>
-
-</td>
-
+<td data-fr="• Récupération RAID (3)" data-en="• RAID recovery (3)">• Récupération RAID (3)</td>
+<td>3</td>
+<td><strong>3</strong></td>
 </tr>
-
 <tr>
-
 <td>Grace</td>
-
-<td>
-
-• Règles métier historiques (2)
-
-</td>
-
-<td>
-
-2
-
-</td>
-
-<td>
-
-<strong>2</strong>
-
-</td>
-
+<td data-fr="• Règles métier historiques (2)" data-en="• Historical business rules (2)">• Règles métier historiques (2)</td>
+<td>2</td>
+<td><strong>2</strong></td>
 </tr>
-
 <tr>
-
 <td>Marc</td>
-
-<td>
-
-• Connaissances débutantes sur Engine
-
-</td>
-
-<td>
-
-Sous le seuil de comptage
-
-</td>
-
-<td>
-
-<strong>0</strong>
-
-</td>
-
+<td data-fr="• Connaissances débutantes sur NexaCrypt Engine" data-en="• Beginner-level knowledge of NexaCrypt Engine">• Connaissances débutantes sur NexaCrypt Engine</td>
+<td data-fr="Sous le seuil de comptage" data-en="Below the counting threshold">Sous le seuil de comptage</td>
+<td><strong>0</strong></td>
 </tr>
-
 </table>
-<h3>Distribution des scores</h3>
+
+<h3 data-fr="Distribution des scores" data-en="Distribution of scores">Distribution des scores</h3>
 
 <table>
-
 <tr>
-
-<th>Rang</th>
-
-<th>Personne</th>
-
-<th>Score individuel</th>
-
+<th data-fr="Rang" data-en="Rank">Rang</th>
+<th data-fr="Personne" data-en="Person">Personne</th>
+<th data-fr="Score individuel" data-en="Individual score">Score individuel</th>
 </tr>
-
+<tr><td>1</td><td>Marc</td><td>0</td></tr>
+<tr><td>2</td><td>Grace</td><td>2</td></tr>
+<tr><td>3</td><td>Bob</td><td>3</td></tr>
+<tr><td>4</td><td>Dave</td><td>3</td></tr>
+<tr><td>5</td><td>Alice</td><td>8</td></tr>
 <tr>
-
-<td>1</td>
-
-<td>Marc</td>
-
-<td>0</td>
-
-</tr>
-
-<tr>
-
-<td>2</td>
-
-<td>Grace</td>
-
-<td>2</td>
-
-</tr>
-
-<tr>
-
-<td>3</td>
-
-<td>Bob</td>
-
-<td>3</td>
-
-</tr>
-
-<tr>
-
-<td>4</td>
-
-<td>Dave</td>
-
-<td>3</td>
-
-</tr>
-
-<tr>
-
-<td>5</td>
-
-<td>Alice</td>
-
-<td>8</td>
-
-</tr>
-
-<tr>
-
-<th colspan="2">Total</th>
-
+<th colspan="2" data-fr="Total" data-en="Total">Total</th>
 <th>16</th>
-
 </tr>
-
 <tr>
-
-<th colspan="2">Moyenne</th>
-
-<th>3,2</th>
-
+<th colspan="2" data-fr="Moyenne" data-en="Mean">Moyenne</th>
+<th data-fr="3,2" data-en="3.2">3,2</th>
 </tr>
-
 </table>
-<h2>Étape 4 — Calculer le coefficient de Gini</h2>
 
-<p>
+<h2 data-fr="Étape 4 — Calculer le coefficient de Gini" data-en="Step 4 — Calculate the Gini coefficient">Étape 4 — Calculer le coefficient de Gini</h2>
 
-À ce stade, chaque membre de l'équipe est représenté
-par un unique <strong>score individuel de savoir critique</strong>.
+<p data-fr="À ce stade, chaque membre de l'équipe est représenté par un unique <strong>score individuel de savoir critique</strong>. La question devient alors :"
+   data-en="At this stage, each team member is represented by a single <strong>individual critical-knowledge score</strong>. The question then becomes:">À ce stade, chaque membre de l'équipe est représenté par un unique <strong>score individuel de savoir critique</strong>. La question devient alors :</p>
 
-La question devient alors :
+<blockquote data-fr="Le savoir critique est-il réparti équitablement entre tous les membres de l'équipe, ou est-il concentré entre les mains de quelques personnes ?"
+            data-en="Is critical knowledge distributed evenly across all team members, or is it concentrated in the hands of a few people?">Le savoir critique est-il réparti équitablement entre tous les membres de l'équipe, ou est-il concentré entre les mains de quelques personnes ?</blockquote>
 
-</p>
+<p data-fr="Pour répondre à cette question, NexaCrypt utilise le <strong>coefficient de Gini</strong>, largement employé en économie pour mesurer les inégalités de revenus. Appliqué aux connaissances, il mesure l'inégalité de la répartition du savoir critique."
+   data-en="To answer this question, NexaCrypt uses the <strong>Gini coefficient</strong>, widely used in economics to measure income inequality. Applied to knowledge, it measures how unequally critical knowledge is distributed.">Pour répondre à cette question, NexaCrypt utilise le <strong>coefficient de Gini</strong>, largement employé en économie pour mesurer les inégalités de revenus. Appliqué aux connaissances, il mesure l'inégalité de la répartition du savoir critique.</p>
 
-<blockquote>
-
-Le savoir critique est-il réparti équitablement
-entre tous les membres de l'équipe,
-ou est-il concentré entre les mains
-de quelques personnes ?
-
-</blockquote>
-
-<p>
-
-Pour répondre à cette question,
-NexaCrypt utilise le
-<strong>coefficient de Gini</strong>,
-largement employé en économie
-pour mesurer les inégalités de revenus.
-
-Appliqué aux connaissances,
-il mesure l'inégalité
-de la répartition du savoir critique.
-
-</p>
-
-<h3>La formule générale</h3>
+<h3 data-fr="La formule générale" data-en="The general formula">La formule générale</h3>
 
 <div class="formula">
 
 $$
-
 G=
 \frac{\sum_{i=1}^{n}\sum_{j=1}^{n}|x_i-x_j|}
 {2n^2\mu}
-
 $$
 
 </div>
 
 <table>
-
 <tr>
-<th>Symbole</th>
-<th>Signification</th>
+<th data-fr="Symbole" data-en="Symbol">Symbole</th>
+<th data-fr="Signification" data-en="Meaning">Signification</th>
 </tr>
-
 <tr>
 <td><strong>x<sub>i</sub></strong></td>
-<td>Score individuel de la personne <em>i</em></td>
+<td data-fr="Score individuel de la personne <em>i</em>" data-en="Individual score of person <em>i</em>">Score individuel de la personne <em>i</em></td>
 </tr>
-
 <tr>
 <td><strong>n</strong></td>
-<td>Nombre total de personnes</td>
+<td data-fr="Nombre total de personnes" data-en="Total number of people">Nombre total de personnes</td>
 </tr>
-
 <tr>
 <td><strong>μ</strong></td>
-<td>Score moyen de l'équipe</td>
+<td data-fr="Score moyen de l'équipe" data-en="Mean score of the team">Score moyen de l'équipe</td>
 </tr>
-
 <tr>
 <td><strong>Σ |xi − xj|</strong></td>
-<td>Somme des écarts absolus entre toutes les paires de personnes</td>
+<td data-fr="Somme des écarts absolus entre toutes les paires de personnes" data-en="Sum of the absolute differences between all pairs of people">Somme des écarts absolus entre toutes les paires de personnes</td>
 </tr>
-
 </table>
 
-<h3>Données de départ</h3>
+<h3 data-fr="Données de départ" data-en="Starting data">Données de départ</h3>
 
 <table>
-
 <tr>
-
-<th>Personne</th>
-
-<th>Score</th>
-
+<th data-fr="Personne" data-en="Person">Personne</th>
+<th data-fr="Score" data-en="Score">Score</th>
 </tr>
-
 <tr><td>Marc</td><td>0</td></tr>
-
 <tr><td>Grace</td><td>2</td></tr>
-
 <tr><td>Bob</td><td>3</td></tr>
-
 <tr><td>Dave</td><td>3</td></tr>
-
 <tr><td>Alice</td><td>8</td></tr>
-
 </table>
 
-<p>
+<p data-fr="Les scores sont toujours triés par ordre croissant."
+   data-en="Scores are always sorted in ascending order.">Les scores sont toujours triés par ordre croissant.</p>
 
-Les scores sont toujours triés
-par ordre croissant.
+<h3 data-fr="1. Calcul de la moyenne" data-en="1. Calculating the mean">1. Calcul de la moyenne</h3>
 
-</p>
-
-<h3>1. Calcul de la moyenne</h3>
-
-<div class="formula">
-
+<div class="formula lang-fr">
 Score total = 0 + 2 + 3 + 3 + 8 = 16
-
 <br><br>
-
 Moyenne :
-
 $$
-
-\mu=\frac{16}{5}=3,2
-
+\mu=\frac{16}{5}=3{,}2
 $$
-
 </div>
 
-<h3>2. Calcul des écarts entre toutes les personnes</h3>
+<div class="formula lang-en">
+Total score = 0 + 2 + 3 + 3 + 8 = 16
+<br><br>
+Mean:
+$$
+\mu=\frac{16}{5}=3.2
+$$
+</div>
 
-<p>
+<h3 data-fr="2. Calcul des écarts entre toutes les personnes" data-en="2. Calculating the differences between all people">2. Calcul des écarts entre toutes les personnes</h3>
 
-Le coefficient de Gini compare
-chaque personne avec toutes les autres.
-
-Pour chaque paire,
-on calcule la différence absolue
-entre leurs scores.
-
-</p>
+<p data-fr="Le coefficient de Gini compare chaque personne avec toutes les autres. Pour chaque paire, on calcule la différence absolue entre leurs scores."
+   data-en="The Gini coefficient compares each person with every other person. For each pair, the absolute difference between their scores is calculated.">Le coefficient de Gini compare chaque personne avec toutes les autres. Pour chaque paire, on calcule la différence absolue entre leurs scores.</p>
 
 <table>
-
-<tr>
-
-<th></th>
-
-<th>0</th>
-
-<th>2</th>
-
-<th>3</th>
-
-<th>3</th>
-
-<th>8</th>
-
-</tr>
-
-<tr>
-
-<th>0</th>
-
-<td>0</td>
-
-<td>2</td>
-
-<td>3</td>
-
-<td>3</td>
-
-<td>8</td>
-
-</tr>
-
-<tr>
-
-<th>2</th>
-
-<td>2</td>
-
-<td>0</td>
-
-<td>1</td>
-
-<td>1</td>
-
-<td>6</td>
-
-</tr>
-
-<tr>
-
-<th>3</th>
-
-<td>3</td>
-
-<td>1</td>
-
-<td>0</td>
-
-<td>0</td>
-
-<td>5</td>
-
-</tr>
-
-<tr>
-
-<th>3</th>
-
-<td>3</td>
-
-<td>1</td>
-
-<td>0</td>
-
-<td>0</td>
-
-<td>5</td>
-
-</tr>
-
-<tr>
-
-<th>8</th>
-
-<td>8</td>
-
-<td>6</td>
-
-<td>5</td>
-
-<td>5</td>
-
-<td>0</td>
-
-</tr>
-
+<tr><th></th><th>0</th><th>2</th><th>3</th><th>3</th><th>8</th></tr>
+<tr><th>0</th><td>0</td><td>2</td><td>3</td><td>3</td><td>8</td></tr>
+<tr><th>2</th><td>2</td><td>0</td><td>1</td><td>1</td><td>6</td></tr>
+<tr><th>3</th><td>3</td><td>1</td><td>0</td><td>0</td><td>5</td></tr>
+<tr><th>3</th><td>3</td><td>1</td><td>0</td><td>0</td><td>5</td></tr>
+<tr><th>8</th><td>8</td><td>6</td><td>5</td><td>5</td><td>0</td></tr>
 </table>
 
-<p>
-
-En additionnant toutes ces différences,
-on obtient :
-
-</p>
+<p data-fr="En additionnant toutes ces différences, on obtient :"
+   data-en="Adding up all these differences gives:">En additionnant toutes ces différences, on obtient :</p>
 
 <div class="formula">
 
 $$
-
 \sum |x_i-x_j| = 68
-
 $$
 
 </div>
 
-<h3>3. Application de la formule</h3>
+<h3 data-fr="3. Application de la formule" data-en="3. Applying the formula">3. Application de la formule</h3>
 
-<div class="formula">
-
+<div class="formula lang-fr">
 $$
-
-G=
-\frac{68}
-{2\times5^2\times3,2}
-
+G=\frac{68}{2\times5^2\times3{,}2}
 $$
-
 <br>
-
 $$
-
-G=
-\frac{68}{160}
-
-=0,425
-
+G=\frac{68}{160}=0{,}425
 $$
+</div>
 
+<div class="formula lang-en">
+$$
+G=\frac{68}{2\times5^2\times3.2}
+$$
+<br>
+$$
+G=\frac{68}{160}=0.425
+$$
 </div>
 
 <div class="highlight">
-
-<strong>Résultat :</strong>
-
-<p style="margin-top:12px;">
-
-La Concentration de cette équipe est de
-
-<strong>0,425</strong>.
-
-Le savoir critique est donc
-<strong>significativement concentré</strong>.
-
-</p>
-
+<strong data-fr="Résultat :" data-en="Result:">Résultat :</strong>
+<p style="margin-top:12px;"
+   data-fr="La Concentration de cette équipe est de <strong>0,425</strong>. Le savoir critique est donc <strong>significativement concentré</strong>."
+   data-en="This team's Concentration is <strong>0.425</strong>. Critical knowledge is therefore <strong>significantly concentrated</strong>.">La Concentration de cette équipe est de <strong>0,425</strong>. Le savoir critique est donc <strong>significativement concentré</strong>.</p>
 </div>
 
-<h2>Comment interpréter le résultat ?</h2>
+<h2 data-fr="Comment interpréter le résultat ?" data-en="How to interpret the result">Comment interpréter le résultat ?</h2>
 
-<p>
-
-Le coefficient de Gini est toujours compris
-entre <strong>0</strong> et <strong>1</strong>.
-
-Plus il est élevé,
-plus la connaissance est concentrée
-sur un petit nombre de personnes.
-
-</p>
+<p data-fr="Le coefficient de Gini est toujours compris entre <strong>0</strong> et <strong>1</strong>. Plus il est élevé, plus la connaissance est concentrée sur un petit nombre de personnes."
+   data-en="The Gini coefficient always lies between <strong>0</strong> and <strong>1</strong>. The higher it is, the more knowledge is concentrated on a small number of people.">Le coefficient de Gini est toujours compris entre <strong>0</strong> et <strong>1</strong>. Plus il est élevé, plus la connaissance est concentrée sur un petit nombre de personnes.</p>
 
 <table>
-
 <tr>
-
-<th>Valeur</th>
-
-<th>Interprétation</th>
-
+<th data-fr="Valeur" data-en="Value">Valeur</th>
+<th data-fr="Interprétation" data-en="Interpretation">Interprétation</th>
 </tr>
-
 <tr>
-
 <td>0</td>
-
-<td>Répartition parfaitement équilibrée.</td>
-
+<td data-fr="Répartition parfaitement équilibrée." data-en="Perfectly balanced distribution.">Répartition parfaitement équilibrée.</td>
 </tr>
-
 <tr>
-
-<td>0,10 à 0,20</td>
-
-<td>Répartition très homogène.</td>
-
+<td data-fr="0,10 à 0,20" data-en="0.10 to 0.20">0,10 à 0,20</td>
+<td data-fr="Répartition très homogène." data-en="Very even distribution.">Répartition très homogène.</td>
 </tr>
-
 <tr>
-
-<td>0,20 à 0,35</td>
-
-<td>Légère concentration.</td>
-
+<td data-fr="0,20 à 0,35" data-en="0.20 to 0.35">0,20 à 0,35</td>
+<td data-fr="Légère concentration." data-en="Slight concentration.">Légère concentration.</td>
 </tr>
-
 <tr>
-
-<td><strong>0,35 à 0,50</strong></td>
-
-<td><strong>Concentration significative.</strong></td>
-
+<td data-fr="<strong>0,35 à 0,50</strong>" data-en="<strong>0.35 to 0.50</strong>"><strong>0,35 à 0,50</strong></td>
+<td data-fr="<strong>Concentration significative.</strong>" data-en="<strong>Significant concentration.</strong>"><strong>Concentration significative.</strong></td>
 </tr>
-
 <tr>
-
-<td>0,50 à 0,70</td>
-
-<td>Forte concentration.</td>
-
+<td data-fr="0,50 à 0,70" data-en="0.50 to 0.70">0,50 à 0,70</td>
+<td data-fr="Forte concentration." data-en="Strong concentration.">Forte concentration.</td>
 </tr>
-
 <tr>
-
-<td>0,70 à 1</td>
-
-<td>Concentration extrême : quelques personnes portent presque tout le savoir critique.</td>
-
+<td data-fr="0,70 à 1" data-en="0.70 to 1">0,70 à 1</td>
+<td data-fr="Concentration extrême : quelques personnes portent presque tout le savoir critique." data-en="Extreme concentration: a few people carry almost all the critical knowledge.">Concentration extrême : quelques personnes portent presque tout le savoir critique.</td>
 </tr>
-
 </table>
 
 <div class="note">
-
-<strong>Important</strong>
-
-<p style="margin-top:12px;">
-
-Ces seuils constituent des
-<strong>repères d'interprétation</strong>
-proposés pour la gouvernance des connaissances.
-
-Ils ne correspondent pas à une norme internationale,
-mais permettent de comparer les équipes,
-de suivre leur évolution
-et de détecter les situations
-où la connaissance devient excessivement concentrée.
-
-</p>
-
+<strong data-fr="Important" data-en="Important">Important</strong>
+<p style="margin-top:12px;"
+   data-fr="Ces seuils constituent des <strong>repères d'interprétation</strong> proposés pour la gouvernance des connaissances. Ils ne correspondent pas à une norme internationale, mais permettent de comparer les équipes, de suivre leur évolution et de détecter les situations où la connaissance devient excessivement concentrée."
+   data-en="These thresholds are <strong>interpretation benchmarks</strong> proposed for knowledge governance. They do not correspond to an international standard, but they make it possible to compare teams, track how they evolve and detect situations where knowledge becomes excessively concentrated.">Ces seuils constituent des <strong>repères d'interprétation</strong> proposés pour la gouvernance des connaissances. Ils ne correspondent pas à une norme internationale, mais permettent de comparer les équipes, de suivre leur évolution et de détecter les situations où la connaissance devient excessivement concentrée.</p>
 </div>
 
+<h2 data-fr="Visualiser la Concentration : la courbe de Lorenz" data-en="Visualising Concentration: the Lorenz curve">Visualiser la Concentration : la courbe de Lorenz</h2>
 
-
-<h2>Visualiser la Concentration : la courbe de Lorenz</h2>
-
-<p>
-
-Le coefficient de Gini est la traduction numérique
-d'une représentation graphique appelée
-<strong>courbe de Lorenz</strong>.
-
-Cette courbe compare :
-
-</p>
+<p data-fr="Le coefficient de Gini est la traduction numérique d'une représentation graphique appelée <strong>courbe de Lorenz</strong>. Cette courbe compare :"
+   data-en="The Gini coefficient is the numerical translation of a graphical representation called the <strong>Lorenz curve</strong>. This curve compares:">Le coefficient de Gini est la traduction numérique d'une représentation graphique appelée <strong>courbe de Lorenz</strong>. Cette courbe compare :</p>
 
 <ul>
-
-<li>la répartition réelle du savoir critique ;</li>
-
-<li>une répartition parfaitement équilibrée.</li>
-
+<li data-fr="la répartition réelle du savoir critique ;" data-en="the actual distribution of critical knowledge;">la répartition réelle du savoir critique ;</li>
+<li data-fr="une répartition parfaitement équilibrée." data-en="a perfectly even distribution.">une répartition parfaitement équilibrée.</li>
 </ul>
 
-<p>
+<p data-fr="Plus la courbe s'éloigne de la diagonale, plus le savoir est concentré entre les mains d'un petit nombre de collaborateurs. Le coefficient de Gini mesure précisément cet écart."
+   data-en="The further the curve moves away from the diagonal, the more knowledge is concentrated in the hands of a small number of colleagues. The Gini coefficient measures exactly this gap.">Plus la courbe s'éloigne de la diagonale, plus le savoir est concentré entre les mains d'un petit nombre de collaborateurs. Le coefficient de Gini mesure précisément cet écart.</p>
 
-Plus la courbe s'éloigne de la diagonale,
-plus le savoir est concentré
-entre les mains d'un petit nombre
-de collaborateurs.
-
-Le coefficient de Gini mesure précisément
-cet écart.
-
-</p>
-
-<h3>Exemple 1 — Répartition parfaitement équilibrée (Gini = 0)</h3>
+<h3 data-fr="Exemple 1 — Répartition parfaitement équilibrée (Gini = 0)" data-en="Example 1 — Perfectly even distribution (Gini = 0)">Exemple 1 — Répartition parfaitement équilibrée (Gini = 0)</h3>
 
 <svg width="520" height="420" viewBox="0 0 520 420">
 
-<line x1="60" y1="360" x2="460" y2="360"
-stroke="#666" stroke-width="2"/>
+<line x1="60" y1="360" x2="460" y2="360" stroke="#666" stroke-width="2"/>
 
-<line x1="60" y1="360" x2="60" y2="40"
-stroke="#666" stroke-width="2"/>
+<line x1="60" y1="360" x2="60" y2="40" stroke="#666" stroke-width="2"/>
 
-<line x1="60" y1="360"
-x2="460" y2="40"
-stroke="#4FC3F7"
-stroke-width="3"
-stroke-dasharray="8 6"/>
+<line x1="60" y1="360" x2="460" y2="40" stroke="#4FC3F7" stroke-width="3" stroke-dasharray="8 6"/>
 
-<polyline
-fill="none"
-stroke="#3FB950"
-stroke-width="4"
-points="
-60,360
-460,40
-"/>
+<polyline fill="none" stroke="#3FB950" stroke-width="4" points="60,360 460,40"/>
 
-<text x="250" y="390"
-fill="#AAA"
-font-size="14">
-% cumulé des personnes
-</text>
+<text class="lang-fr" x="260" y="390" text-anchor="middle" fill="#AAA" font-size="14">% cumulé des personnes</text>
+<text class="lang-en" x="260" y="390" text-anchor="middle" fill="#AAA" font-size="14">Cumulative % of people</text>
 
-<text
-transform="rotate(-90 18 210)"
-x="18"
-y="210"
-fill="#AAA"
-font-size="14">
-% cumulé du savoir critique
-</text>
+<text class="lang-fr" transform="rotate(-90 18 200)" x="18" y="200" text-anchor="middle" fill="#AAA" font-size="14">% cumulé du savoir critique</text>
+<text class="lang-en" transform="rotate(-90 18 200)" x="18" y="200" text-anchor="middle" fill="#AAA" font-size="14">Cumulative % of critical knowledge</text>
 
 </svg>
 
-<p>
-
-Lorsque chacun porte exactement
-la même quantité de savoir critique,
-la courbe de Lorenz se confond
-avec la diagonale.
-
-Le coefficient de Gini est nul.
-
-</p>
+<p data-fr="Lorsque chacun porte exactement la même quantité de savoir critique, la courbe de Lorenz se confond avec la diagonale. Le coefficient de Gini est nul."
+   data-en="When everyone carries exactly the same amount of critical knowledge, the Lorenz curve coincides with the diagonal. The Gini coefficient is zero.">Lorsque chacun porte exactement la même quantité de savoir critique, la courbe de Lorenz se confond avec la diagonale. Le coefficient de Gini est nul.</p>
 
 <hr>
 
-<h3>Exemple 2 — Cas NexaCrypt (Gini = 0,425)</h3>
+<h3 data-fr="Exemple 2 — Cas NexaCrypt (Gini = 0,425)" data-en="Example 2 — The NexaCrypt case (Gini = 0.425)">Exemple 2 — Cas NexaCrypt (Gini = 0,425)</h3>
 
 <svg width="520" height="420" viewBox="0 0 520 420">
 
-<line x1="60" y1="360" x2="460" y2="360"
-stroke="#666" stroke-width="2"/>
+<line x1="60" y1="360" x2="460" y2="360" stroke="#666" stroke-width="2"/>
 
-<line x1="60" y1="360" x2="60" y2="40"
-stroke="#666" stroke-width="2"/>
+<line x1="60" y1="360" x2="60" y2="40" stroke="#666" stroke-width="2"/>
 
-<line
-x1="60"
-y1="360"
-x2="460"
-y2="40"
-stroke="#4FC3F7"
-stroke-width="3"
-stroke-dasharray="8 6"/>
+<!-- Aire A : entre la diagonale (égalité parfaite) et la courbe de Lorenz -->
+<polygon fill="rgba(79,195,247,.15)" points="60,360 140,360 220,320 300,260 380,200 460,40"/>
 
-<polygon
+<line x1="60" y1="360" x2="460" y2="40" stroke="#4FC3F7" stroke-width="3" stroke-dasharray="8 6"/>
 
-fill="rgba(79,195,247,.15)"
-
-points="
-
-60,360
-
-140,360
-
-220,320
-
-300,260
-
-380,200
-
-460,40
-
-460,360
-
-60,360
-
-"/>
-
-<polyline
-
-fill="none"
-
-stroke="#3FB950"
-
-stroke-width="4"
-
-points="
-
-60,360
-
-140,360
-
-220,320
-
-300,260
-
-380,200
-
-460,40
-
-"/>
+<polyline fill="none" stroke="#3FB950" stroke-width="4" points="60,360 140,360 220,320 300,260 380,200 460,40"/>
 
 <circle cx="60" cy="360" r="4" fill="#FFF"/>
-
 <circle cx="140" cy="360" r="4" fill="#FFF"/>
-
 <circle cx="220" cy="320" r="4" fill="#FFF"/>
-
 <circle cx="300" cy="260" r="4" fill="#FFF"/>
-
 <circle cx="380" cy="200" r="4" fill="#FFF"/>
-
 <circle cx="460" cy="40" r="4" fill="#FFF"/>
 
-<text
-x="180"
-y="110"
-fill="#4FC3F7"
-font-size="16">
-
-Surface = Gini
-
-</text>
+<text x="318" y="204" fill="#4FC3F7" font-size="20" font-weight="600">A</text>
 
 </svg>
 
-<p>
+<p data-fr="La courbe reste relativement proche de la diagonale, mais s'en écarte suffisamment pour montrer que le savoir critique est déjà concentré. Dans cet exemple, Alice porte à elle seule la moitié du savoir critique."
+   data-en="The curve stays relatively close to the diagonal, but moves far enough away from it to show that critical knowledge is already concentrated. In this example, Alice alone carries half of the critical knowledge.">La courbe reste relativement proche de la diagonale, mais s'en écarte suffisamment pour montrer que le savoir critique est déjà concentré. Dans cet exemple, Alice porte à elle seule la moitié du savoir critique.</p>
 
-La courbe reste relativement proche
-de la diagonale,
-mais s'en écarte suffisamment
-pour montrer que le savoir critique
-est déjà concentré.
+<p data-fr="L'aire colorée <strong>A</strong>, entre la diagonale et la courbe, mesure l'écart à l'égalité parfaite. Le coefficient de Gini est le rapport entre cette aire et l'aire totale sous la diagonale : ici 0,2125 ÷ 0,5. Le coefficient obtenu est :"
+   data-en="The shaded area <strong>A</strong>, between the diagonal and the curve, measures the gap from perfect equality. The Gini coefficient is the ratio of this area to the whole area under the diagonal: here 0.2125 ÷ 0.5. The coefficient obtained is:">L'aire colorée <strong>A</strong>, entre la diagonale et la courbe, mesure l'écart à l'égalité parfaite. Le coefficient de Gini est le rapport entre cette aire et l'aire totale sous la diagonale : ici 0,2125 ÷ 0,5. Le coefficient obtenu est :</p>
 
-Dans cet exemple,
-Alice porte à elle seule
-la moitié du savoir critique.
-
-Le coefficient obtenu est :
-
-</p>
-
-<div class="formula">
-
+<div class="formula lang-fr">
 $$
-
-G=0,425
-
+G=0{,}425
 $$
+</div>
 
+<div class="formula lang-en">
+$$
+G=0.425
+$$
 </div>
 
 <hr>
 
-<h3>Exemple 3 — Concentration extrême (Gini ≈ 0,80)</h3>
+<h3 data-fr="Exemple 3 — Concentration extrême (Gini = 0,8)" data-en="Example 3 — Extreme concentration (Gini = 0.8)">Exemple 3 — Concentration extrême (Gini = 0,8)</h3>
 
 <svg width="520" height="420" viewBox="0 0 520 420">
 
-<line x1="60" y1="360" x2="460" y2="360"
-stroke="#666" stroke-width="2"/>
+<line x1="60" y1="360" x2="460" y2="360" stroke="#666" stroke-width="2"/>
 
-<line x1="60" y1="360" x2="60" y2="40"
-stroke="#666" stroke-width="2"/>
+<line x1="60" y1="360" x2="60" y2="40" stroke="#666" stroke-width="2"/>
 
-<line
+<!-- Aire entre la diagonale et la courbe de Lorenz -->
+<polygon fill="rgba(248,81,73,.15)" points="60,360 380,360 460,40"/>
 
-x1="60"
+<line x1="60" y1="360" x2="460" y2="40" stroke="#4FC3F7" stroke-width="3" stroke-dasharray="8 6"/>
 
-y1="360"
+<polyline fill="none" stroke="#F85149" stroke-width="4" points="60,360 380,360 460,40"/>
 
-x2="460"
-
-y2="40"
-
-stroke="#4FC3F7"
-
-stroke-width="3"
-
-stroke-dasharray="8 6"/>
-
-<polygon
-
-fill="rgba(248,81,73,.15)"
-
-points="
-
-60,360
-
-380,360
-
-460,40
-
-460,360
-
-60,360
-
-"/>
-
-<polyline
-
-fill="none"
-
-stroke="#F85149"
-
-stroke-width="4"
-
-points="
-
-60,360
-
-380,360
-
-460,40
-
-"/>
-
-<text
-
-x="140"
-
-y="120"
-
-fill="#F85149"
-
-font-size="16">
-
-Concentration extrême
-
-</text>
+<text class="lang-fr" x="140" y="120" fill="#F85149" font-size="16">Concentration extrême</text>
+<text class="lang-en" x="140" y="120" fill="#F85149" font-size="16">Extreme concentration</text>
 
 </svg>
 
-<p>
-
-Dans cette situation,
-une seule personne possède presque
-tout le savoir critique.
-
-La perte de cet expert
-entraînerait une rupture majeure
-de la capacité opérationnelle.
-
-Le coefficient de Gini
-devient alors très élevé
-(proche de 1).
-
-</p>
+<p data-fr="Dans cette situation, une seule personne porte tout le savoir critique. La perte de cet expert entraînerait une rupture majeure de la capacité opérationnelle. Le coefficient de Gini atteint alors 0,8 : c'est la valeur maximale pour une équipe de cinq personnes. Pour n personnes, le Gini ne peut pas dépasser (n − 1)/n ; il ne s'approche de 1 que dans les grandes équipes."
+   data-en="In this situation, a single person carries all the critical knowledge. Losing this expert would cause a major break in operational capability. The Gini coefficient then reaches 0.8: the maximum possible value for a team of five. For n people, the Gini cannot exceed (n − 1)/n; it only approaches 1 in large teams.">Dans cette situation, une seule personne porte tout le savoir critique. La perte de cet expert entraînerait une rupture majeure de la capacité opérationnelle. Le coefficient de Gini atteint alors 0,8 : c'est la valeur maximale pour une équipe de cinq personnes. Pour n personnes, le Gini ne peut pas dépasser (n − 1)/n ; il ne s'approche de 1 que dans les grandes équipes.</p>
 
 <div class="highlight">
-
-<strong>À retenir</strong>
-
-<p style="margin-top:15px;">
-
-Le coefficient de Gini ne mesure pas
-la quantité de connaissances.
-
-Il mesure une
-<strong>propriété émergente</strong>
-de leur répartition.
-
-Deux équipes peuvent posséder
-exactement le même nombre
-de connaissances
-et présenter des coefficients de Gini
-très différents.
-
-La Concentration caractérise donc
-la structure du patrimoine
-de connaissances,
-et non son volume.
-
-</p>
+<strong data-fr="À retenir" data-en="Key point">À retenir</strong>
+<p style="margin-top:15px;"
+   data-fr="Le coefficient de Gini ne mesure pas la quantité de connaissances. Il mesure une <strong>propriété émergente</strong> de leur répartition. Deux équipes peuvent posséder exactement le même nombre de connaissances et présenter des coefficients de Gini très différents. La Concentration caractérise donc la structure du patrimoine de connaissances, et non son volume."
+   data-en="The Gini coefficient does not measure the quantity of knowledge. It measures an <strong>emergent property</strong> of how it is distributed. Two teams can hold exactly the same number of knowledge items and show very different Gini coefficients. Concentration therefore characterises the structure of the knowledge estate, not its volume.">Le coefficient de Gini ne mesure pas la quantité de connaissances. Il mesure une <strong>propriété émergente</strong> de leur répartition. Deux équipes peuvent posséder exactement le même nombre de connaissances et présenter des coefficients de Gini très différents. La Concentration caractérise donc la structure du patrimoine de connaissances, et non son volume.</p>
+</div>
 
 </div>
+
+<script>
+  function applyLang(lang) {
+    document.documentElement.lang = lang;
+    document.querySelectorAll('.lang-btn').forEach(function(b) {
+      b.classList.toggle('active', b.dataset.lang === lang);
+    });
+    document.querySelectorAll('[data-fr]').forEach(function(el) {
+      var val = el.getAttribute('data-' + lang);
+      if (!val) return;
+      var frVal = el.getAttribute('data-fr') || '';
+      var enVal = el.getAttribute('data-en') || '';
+      if (frVal.indexOf('<') !== -1 || enVal.indexOf('<') !== -1) {
+        el.innerHTML = val;
+      } else {
+        el.textContent = val;
+      }
+    });
+  }
+
+  function setLang(lang) {
+    try { localStorage.setItem('lang', lang); } catch (e) {}
+    applyLang(lang);
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    var saved = 'fr';
+    try { saved = localStorage.getItem('lang') || 'fr'; } catch (e) {}
+    applyLang(saved);
+  });
+</script>
 
 </body>
 </html>

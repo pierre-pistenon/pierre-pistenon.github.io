@@ -1007,9 +1007,9 @@
               </p>
 
           <p class="article-title"
-            data-fr="𝗣𝗼𝘂𝗿𝗾𝘂𝗼𝗶 𝘂𝗻 𝗴𝗿𝗮𝗽𝗵𝗲 𝗽𝗹𝘂𝘁ô𝘁 𝗾𝘂'𝗘𝘅𝗰𝗲𝗹 ?"
-            data-en="Why a graph instead of Excel?">
-            𝗣𝗼𝘂𝗿𝗾𝘂𝗼𝗶 𝘂𝗻 𝗴𝗿𝗮𝗽𝗵𝗲 𝗽𝗹𝘂𝘁ô𝘁 𝗾𝘂'𝗘𝘅𝗰𝗲𝗹 ?
+            data-fr="Pourquoi un graphe plutôt qu&#x27;Excel ?"
+            data-en="Why a graph rather than Excel?">
+            Pourquoi un graphe plutôt qu'Excel ?
           </p>
         </div>
 
@@ -1017,11 +1017,11 @@
       </summary>
 
       <div class="article-body">
-        <p data-fr="Une matrice Compétences × Personnes fonctionne pour une petite équipe. Au-delà, elle devient illisible et ne représente jamais les dépendances indirectes — comme un actif qui dépend lui-même d'un autre actif." data-en="A Skills × People matrix works for a small team. Beyond that, it becomes illegible and never represents indirect dependencies — such as an asset that itself depends on another asset.">
-          Une matrice Compétences × Personnes fonctionne pour une petite équipe. Au-delà, elle devient illisible et ne représente jamais les dépendances indirectes — comme un actif qui dépend lui-même d'un autre actif.
+        <p class="" data-fr="« Si le serveur tombe demain, combien de temps faudra-t-il pour repartir, et de qui aura-t-on besoin ? » C&#x27;est une question pour qui pilote la résilience, et elle se pose &lt;u&gt;avant&lt;/u&gt; l&#x27;incident. Une matrice Compétences × Personnes suffit à une petite équipe pour calculer un Bus Factor ; mais la matrice que l&#x27;on construit habituellement range chaque compétence sur sa propre ligne, sans montrer que plusieurs d&#x27;entre elles appartiennent au même processus. C&#x27;est précisément ce lien invisible entre les étapes d&#x27;une même reprise qui a transformé une panne de disque en six heures d&#x27;indisponibilité." data-en="&#x27;If the server goes down tomorrow, how long will it take to get back up, and who will we need?&#x27; It is a question for whoever is responsible for resilience, and it is asked &lt;u&gt;before&lt;/u&gt; the incident. A Skills × People matrix is enough for a small team to calculate a Bus Factor; but the matrix people usually build puts each skill on its own row, without showing that several of them belong to the same process. It was precisely that invisible link between the steps of a single recovery that turned a disk failure into six hours of downtime.">
+          « Si le serveur tombe demain, combien de temps faudra-t-il pour repartir, et de qui aura-t-on besoin ? » C'est une question pour qui pilote la résilience, et elle se pose <u>avant</u> l'incident. Une matrice Compétences × Personnes suffit à une petite équipe pour calculer un Bus Factor ; mais la matrice que l'on construit habituellement range chaque compétence sur sa propre ligne, sans montrer que plusieurs d'entre elles appartiennent au même processus. C'est précisément ce lien invisible entre les étapes d'une même reprise qui a transformé une panne de disque en six heures d'indisponibilité.
         </p>
-        <div class="highlight" data-fr="La vraie question n'est pas « que se passe-t-il si Alice part ? » mais « que se passe-t-il si Alice part ET que le serveur qui héberge son travail tombe la même semaine ? ». Un graphe répond à la seconde en une requête ; un tableur n'y répond pas du tout." data-en="The real question is not 'what happens if Alice leaves?' but 'what happens if Alice leaves AND the server hosting her work fails the same week?'. A graph answers the second in one query; a spreadsheet does not answer it at all.">
-          La vraie question n'est pas « que se passe-t-il si Alice part ? » mais « que se passe-t-il si Alice part ET que le serveur qui héberge son travail tombe la même semaine ? ». Un graphe répond à la seconde en une requête ; un tableur n'y répond pas du tout.
+        <div class="highlight" data-fr="Excel est excellent pour l&#x27;analyse locale et la simplicité. Il devient rapidement inadapté dès que l&#x27;on veut comprendre la structure globale et les chaînes de dépendances." data-en="Excel is excellent for local analysis and simplicity. It quickly becomes unsuited to understanding the overall structure and dependency chains.">
+          Excel est excellent pour l'analyse locale et la simplicité. Il devient rapidement inadapté dès que l'on veut comprendre la structure globale et les chaînes de dépendances.
         </div>
         
         <div class="article-links">
@@ -1416,16 +1416,6 @@
     document.addEventListener('DOMContentLoaded', function() {
       var saved = localStorage.getItem('lang');
       if (saved) setLang(saved);
-    });
-    document.querySelectorAll('[data-fr]').forEach(el => {
-      const txt = el.getAttribute(`data-${lang}`);
-      if (!txt) return;
-      // Si le contenu original contient des balises (em, strong, span), on préserve le HTML
-      if (el.tagName === 'H1' || txt.includes('<')) {
-        el.innerHTML = txt;
-      } else {
-        el.textContent = txt;
-      }
     });
   
 

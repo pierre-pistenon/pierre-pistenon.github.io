@@ -1,44 +1,681 @@
-    <details class="article-card">
-      <summary class="article-summary">
-        <div class="article-summary-left">
-          <p class="article-label"
-            data-fr="Série Bus Factor — Article 7"
-            data-en="Bus Factor Series — Article 7">
-            Série Bus Factor — Article 7
-          </p>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-EFS661MDV9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-EFS661MDV9');
+  </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Article 7 — L'ontologie au service de la résilience des connaissances. Structurer durablement la connaissance métier grâce à un modèle conceptuel explicite.">
+  <title>L'ontologie au service de la résilience des connaissances — Pierre Pistenon</title>
+  <!-- Open Graph — aperçu LinkedIn / Slack / Facebook -->
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="L'ontologie au service de la résilience des connaissances">
+  <meta property="og:description" content="Structurer durablement la connaissance métier grâce à un modèle conceptuel explicite. Article 7 de la série Bus Factor.">
+  <meta property="og:url" content="https://pierre-pistenon.github.io/article-7-long.html">
+  <meta property="og:image" content="https://pierre-pistenon.github.io/assets/og-cover.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:site_name" content="Pierre Pistenon">
+  <meta property="og:locale" content="fr_FR">
 
-          <p class="article-title"
-            data-fr="L'ontologie au service de la résilience des connaissances"
-            data-en="Ontology in the service of knowledge resilience">
-            L'ontologie au service de la résilience des connaissances
-          </p>
-        </div>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0D1117; --bg2: #161B22; --border: #30363D;
+      --text: #E6EDF3; --muted: #8B949E; --accent: #4FC3F7;
+    }
+    body {
+      background: var(--bg); color: var(--text);
+      font-family: 'Inter', sans-serif; font-size: 16px; line-height: 1.75;
+      -webkit-font-smoothing: antialiased;
+    }
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(13,17,23,0.92); backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 1.5rem; height: 52px;
+    }
+    .nav-back {
+      display: inline-flex; align-items: center; gap: 6px;
+      color: var(--accent); text-decoration: none;
+      font-family: 'JetBrains Mono', monospace; font-size: 0.82rem;
+    }
+    .lang-toggle { display: flex; gap: 4px; }
+    .lang-btn {
+      font-family: 'JetBrains Mono', monospace; font-size: 0.75rem;
+      background: transparent; border: 1px solid var(--border);
+      color: var(--muted); padding: 0.2rem 0.55rem; border-radius: 4px;
+      cursor: pointer; transition: all 0.15s;
+    }
+    .lang-btn.active { background: var(--accent); color: var(--bg); font-weight: 500; border-color: var(--accent); }
+    .wrap { max-width: 700px; margin: 0 auto; padding: 52px 1.5rem 100px; }
+    .eyebrow {
+      font-family: 'JetBrains Mono', monospace; font-size: 0.78rem;
+      color: var(--accent); letter-spacing: 0.08em; text-transform: uppercase;
+      margin: 2.5rem 0 0.75rem;
+    }
+    h1 {
+      font-size: clamp(1.6rem, 4vw, 2.3rem); font-weight: 600;
+      line-height: 1.25; margin-bottom: 1rem; letter-spacing: -0.01em;
+    }
+    .article-sub { color: var(--muted); font-size: 0.95rem; margin-bottom: 1.8rem; }
+    .disclaimer {
+      background: var(--bg2); border-left: 2px solid var(--accent);
+      padding: 1rem 1.25rem; font-size: 0.86rem; color: var(--muted);
+      font-style: italic; margin-bottom: 2.5rem; border-radius: 0 6px 6px 0;
+    }
+    h2 { font-size: 1.15rem; font-weight: 600; margin-top: 2.5rem; margin-bottom: 0.9rem; color: var(--text); }
+    h3 { font-size: 0.98rem; font-weight: 600; margin-top: 1.8rem; margin-bottom: 0.6rem; color: var(--accent); font-family: 'JetBrains Mono', monospace; }
+    p { color: var(--muted); margin-bottom: 1.1rem; font-size: 0.95rem; }
+    strong { color: var(--text); font-weight: 600; }
+    ul { margin: 1rem 0 1.1rem 1.3rem; }
+    li { color: var(--muted); margin-bottom: 0.5rem; font-size: 0.95rem; }
+    li::marker { color: var(--accent); }
+    table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.85rem; }
+    th, td { border: 1px solid var(--border); padding: 0.6rem 0.8rem; text-align: left; }
+    th { background: var(--bg2); color: var(--text); font-weight: 600; }
+    td { color: var(--muted); }
+    .highlight {
+      background: rgba(79,195,247,0.05); border-left: 2px solid var(--accent);
+      padding: 1rem 1.25rem; margin: 1.5rem 0; font-style: italic;
+      color: var(--muted); border-radius: 0 6px 6px 0;
+    }
+    .next-article {
+      margin-top: 3rem; padding: 1.5rem; background: var(--bg2);
+      border: 1px solid var(--border); border-radius: 8px;
+    }
+    .next-article a { color: var(--accent); text-decoration: none; font-size: 0.9rem; font-family: 'JetBrains Mono', monospace; }
+    footer {
+      margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--border);
+      font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; color: var(--muted);
+      display: flex; justify-content: space-between; flex-wrap: wrap; gap: 1rem;
+    }
+    footer a { color: var(--accent); text-decoration: none; }
 
-        <span class="article-arrow">›</span>
-      </summary>
+    /* ---- Article 7 : figure des sept briques ---- */
+    .fig { margin: 1.6rem 0 1.4rem; }
+    .fig-scroll { overflow-x: auto; }
+    .fig svg { display: block; width: 100%; min-width: 560px; height: auto; }
+    .fig figcaption { color: var(--muted); font-size: 0.82rem; font-style: italic; margin-top: 0.6rem; }
+    .next-article p:last-child { margin-bottom: 0; }
+    /* ---- Article 7 : fenêtres de calcul ---- */
+    .scroll { overflow-x: auto; }
+    .f-corps th, .f-corps td { padding: 0.55rem 0.75rem; vertical-align: top; }
+    dialog#fenetre { color-scheme: dark; }
+    dialog#fenetre .f-onglets {
+      position: static; z-index: auto; height: auto; padding: 0;
+      background: none; -webkit-backdrop-filter: none; backdrop-filter: none;
+      border-bottom: 0; justify-content: flex-start;
+    }
+    /* Figure cliquable */
+    .brique { cursor: pointer; outline: none; }
+    .brique rect { fill: #161B22; stroke: #56606D; stroke-width: 1.2; transition: stroke 0.15s, fill 0.15s; }
+    .brique text { fill: #E6EDF3; font-family: 'Inter', Helvetica, Arial, sans-serif; font-size: 13px; font-weight: 600; text-anchor: middle; pointer-events: none; }
+    .brique circle { fill: #4FC3F7; pointer-events: none; }
+    .brique:hover rect, .brique:focus-visible rect { stroke: #4FC3F7; stroke-width: 2; fill: #1B2635; }
+    .brique.vue rect { fill: #182430; }
 
-      <div class="article-body">
-        <p
-          data-fr="Les articles précédents ont établi quatre indicateurs pour lire la résilience des connaissances : le Bus Factor, la Coverage, la Concentration et la Fragmentation. Nous les avons calculés sur NexaCrypt, d'abord manuellement, puis automatiquement dans une cartographie tenue dans un graphe. Pour que ces chiffres nourrissent une décision d'entreprise, un graphe ne suffit pas. Il faut encore que chaque indicateur ait une unique définition partagée, que l'origine de chaque information puisse être tracée, que les alertes obéissent à des règles formellement définies et uniformément appliquées, et qu'une action de résilience puisse être éprouvée avant d'être engagée. C'est ce qu'apporte une ontologie."
-          data-en="The previous articles established four indicators for reading knowledge resilience: the Bus Factor, Coverage, Concentration and Fragmentation. We calculated them on NexaCrypt, first by hand, then automatically, in a mapping held in a graph. For these figures to feed into a business decision, a graph is not enough. Each indicator must also have a single shared definition, the origin of each piece of information must be traceable, alerts must follow formally defined and uniformly applied rules, and it must be possible to test a resilience action before committing to it. That is what an ontology provides.">
-          Les articles précédents ont établi quatre indicateurs pour lire la résilience des connaissances : le Bus Factor, la Coverage, la Concentration et la Fragmentation. Nous les avons calculés sur NexaCrypt, d'abord manuellement, puis automatiquement dans une cartographie tenue dans un graphe. Pour que ces chiffres nourrissent une décision d'entreprise, un graphe ne suffit pas. Il faut encore que chaque indicateur ait une unique définition partagée, que l'origine de chaque information puisse être tracée, que les alertes obéissent à des règles formellement définies et uniformément appliquées, et qu'une action de résilience puisse être éprouvée avant d'être engagée. C'est ce qu'apporte une ontologie.
-        </p>
+    /* Liens vers les calculs, dans le texte */
+    button.calc {
+      font: inherit; font-size: 0.8em; line-height: 1.4;
+      color: var(--accent); background: transparent;
+      border: 1px dashed rgba(79,195,247,0.55); border-radius: 999px;
+      padding: 0 0.55em; margin-left: 0.15em; cursor: pointer; white-space: nowrap;
+      font-family: 'JetBrains Mono', ui-monospace, Menlo, monospace;
+    }
+    button.calc::before { content: "↗ "; }
+    button.calc:hover, button.calc:focus-visible { background: rgba(79,195,247,0.12); border-style: solid; outline: none; }
 
-        <div
-          class="highlight"
-          data-fr="L'ontologie ne remplace pas le jugement humain. Elle le rend plus explicite, plus traçable et plus reproductible."
-          data-en="The ontology does not replace human judgement. It makes it more explicit, more traceable and more reproducible.">
-          L'ontologie ne remplace pas le jugement humain. Elle le rend plus explicite, plus traçable et plus reproductible.
-        </div>
+    /* Fenêtre */
+    html.fenetre-ouverte { overflow: hidden; }
+    dialog#fenetre {
+      width: min(800px, calc(100% - 24px)); max-width: none;
+      max-height: min(86vh, 920px); padding: 0; margin: auto;
+      background: var(--bg2); color: var(--text);
+      border: 1px solid var(--border); border-radius: 10px;
+      box-shadow: 0 24px 60px rgba(0,0,0,0.55);
+    }
+    dialog#fenetre[open] { display: flex; flex-direction: column; }
+    dialog#fenetre::backdrop { background: rgba(1,4,9,0.72); }
+    .f-tete {
+      display: flex; align-items: center; gap: 0.5rem;
+      padding: 0.6rem 0.6rem 0.6rem 0.9rem; border-bottom: 1px solid var(--border);
+    }
+    .f-onglets { display: flex; flex-wrap: wrap; gap: 0.3rem; flex: 1; }
+    .f-onglets button {
+      font-family: 'Inter', Helvetica, Arial, sans-serif; font-size: 0.76rem; white-space: nowrap;
+      color: var(--muted); background: transparent; border: 1px solid var(--border);
+      border-radius: 999px; padding: 0.2rem 0.6rem; cursor: pointer;
+    }
+    .f-onglets button span { font-family: 'JetBrains Mono', ui-monospace, Menlo, monospace; font-size: 0.7rem; margin-right: 0.35rem; opacity: 0.8; }
+    .f-onglets button:hover, .f-onglets button:focus-visible { color: var(--text); border-color: var(--accent); outline: none; }
+    .f-onglets button[aria-current="true"] { color: #0D1117; background: var(--accent); border-color: var(--accent); font-weight: 600; }
+    .f-fermer {
+      flex: none; width: 2rem; height: 2rem; border-radius: 6px; cursor: pointer;
+      background: transparent; color: var(--muted); border: 1px solid var(--border); font-size: 1.2rem; line-height: 1;
+    }
+    .f-fermer:hover, .f-fermer:focus-visible { color: var(--text); border-color: var(--accent); outline: none; }
+    .f-corps { overflow-y: auto; padding: 1.1rem 1.4rem 1.2rem; flex: 1; outline: none; }
+    .f-corps.entre { animation: entree 0.18s ease-out; }
+    @keyframes entree { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+    .f-corps .w-brique {
+      font-family: 'JetBrains Mono', ui-monospace, Menlo, monospace; font-size: 0.74rem; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--accent); margin-bottom: 0.3rem;
+    }
+    .f-corps h2 { margin-top: 0; font-size: 1.12rem; }
+    .f-corps h2:focus { outline: none; }
+    .f-corps p, .f-corps li { font-size: 0.9rem; }
+    .f-corps ol, .f-corps ul { margin: 0.6rem 0 1rem 1.3rem; }
+    .f-corps table { font-size: 0.82rem; margin: 0.8rem 0 1.1rem; }
+    .f-corps caption { caption-side: top; text-align: left; color: var(--text); font-size: 0.82rem; font-weight: 600; padding-bottom: 0.4rem; }
+    .f-corps td.num { font-family: 'JetBrains Mono', ui-monospace, Menlo, monospace; font-variant-numeric: tabular-nums; color: var(--text); white-space: nowrap; }
+    .f-corps tr.res td { color: var(--text); font-weight: 600; background: rgba(79,195,247,0.06); }
+    .w-calc {
+      font-family: 'JetBrains Mono', ui-monospace, Menlo, monospace; font-size: 0.8rem !important; color: var(--text);
+      background: #0D1117; border: 1px solid var(--border); border-radius: 6px; padding: 0.7rem 0.9rem;
+    }
+    .w-sim {
+      border-left: 2px solid #D29922; background: rgba(210,153,34,0.07);
+      padding: 0.6rem 0.9rem; border-radius: 0 6px 6px 0; margin-bottom: 1.1rem;
+    }
+    p.w-sim, .w-sim p, .w-sim li { color: #E3C27A; }
+    .w-sim p:last-child, .w-sim ul:last-child { margin-bottom: 0; }
+    .w-regle { border-top: 1px dashed var(--border); padding-top: 0.8rem; font-size: 0.84rem !important; }
+    .w-voir { font-size: 0.84rem !important; margin-bottom: 0; }
+    .w-etapes li { margin-bottom: 0.6rem; }
+    .f-pied {
+      display: flex; align-items: center; justify-content: space-between; gap: 0.5rem;
+      padding: 0.6rem 0.9rem; border-top: 1px solid var(--border);
+    }
+    .f-pied button {
+      font-family: 'Inter', Helvetica, Arial, sans-serif; font-size: 0.8rem; cursor: pointer;
+      color: var(--text); background: transparent; border: 1px solid var(--border); border-radius: 6px; padding: 0.3rem 0.7rem;
+    }
+    .f-pied button:hover, .f-pied button:focus-visible { border-color: var(--accent); outline: none; }
+    .f-pied button:disabled { opacity: 0.35; cursor: default; }
+    .f-aide { font-family: 'JetBrains Mono', ui-monospace, Menlo, monospace; font-size: 0.7rem; color: var(--muted); }
 
-        <div class="article-links">
-          <a
-            href="article-7-long.html"
-            class="article-link article-link-right"
-            data-fr="Version longue →"
-            data-en="Long version →">
-            Version longue →
-          </a>
-        </div>
-      </div>
-    </details>
+    @media (max-width: 560px) {
+      dialog#fenetre { width: 100%; max-height: 90vh; margin: auto 0 0; border-radius: 12px 12px 0 0; }
+      .f-corps { padding: 1rem 1rem 1.1rem; }
+      .f-aide { display: none; }
+      .f-onglets { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: thin; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .f-corps.entre { animation: none; }
+      .brique rect { transition: none; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html#articles" class="nav-back" data-fr="← Retour au site" data-en="← Back to site">← Retour au site</a>
+  <div class="lang-toggle">
+    <button class="lang-btn active" data-lang="fr" onclick="setLang('fr')">FR</button>
+    <button class="lang-btn" data-lang="en" onclick="setLang('en')">EN</button>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <p class="eyebrow" data-fr="Série Bus Factor — Article 7" data-en="Bus Factor Series — Article 7">Série Bus Factor — Article 7</p>
+
+  <h1 data-fr="L'ontologie au service de la résilience des connaissances" data-en="Ontology in the service of knowledge resilience">L'ontologie au service de la résilience des connaissances</h1>
+
+  <p class="article-sub" data-fr="Structurer durablement la connaissance métier grâce à un modèle conceptuel explicite" data-en="Durably structuring business knowledge through an explicit conceptual model">Structurer durablement la connaissance métier grâce à un modèle conceptuel explicite</p>
+
+  <div class="disclaimer">
+    <span data-fr="Ce qui suit s'appuie sur le cas pédagogique NexaCrypt et sur l'approche développée dans les articles précédents. Le modèle y est présenté de façon simplifiée ; le détail de chaque calcul s'ouvre d'un clic." data-en="The following builds on the NexaCrypt teaching case and on the approach developed in the previous articles. The model is presented here in simplified form; the detail of each calculation opens with a click.">Ce qui suit s'appuie sur le cas pédagogique NexaCrypt et sur l'approche développée dans les articles précédents. Le modèle y est présenté de façon simplifiée ; le détail de chaque calcul s'ouvre d'un clic.</span>
+  </div>
+
+  <p data-fr="Les articles précédents ont établi quatre indicateurs pour lire la résilience des connaissances : le Bus Factor, la Coverage, la Concentration et la Fragmentation. Nous les avons calculés sur NexaCrypt, d'abord manuellement, puis automatiquement dans une cartographie tenue dans un graphe." data-en="The previous articles established four indicators for reading knowledge resilience: the Bus Factor, Coverage, Concentration and Fragmentation. We calculated them on NexaCrypt, first by hand, then automatically, in a mapping held in a graph.">Les articles précédents ont établi quatre indicateurs pour lire la résilience des connaissances : le Bus Factor, la Coverage, la Concentration et la Fragmentation. Nous les avons calculés sur NexaCrypt, d'abord manuellement, puis automatiquement dans une cartographie tenue dans un graphe.</p>
+
+  <p data-fr="Pour que ces chiffres nourrissent une décision d'entreprise, un graphe ne suffit pas. Il faut encore que chaque indicateur ait une unique définition partagée, que l'origine de chaque information puisse être tracée, que les alertes obéissent à des règles formellement définies et uniformément appliquées, et qu'une action de résilience puisse être éprouvée avant d'être engagée. C'est ce qu'apporte une ontologie." data-en="For these figures to feed into a business decision, a graph is not enough. Each indicator must also have a single shared definition, the origin of each piece of information must be traceable, alerts must follow formally defined and uniformly applied rules, and it must be possible to test a resilience action before committing to it. That is what an ontology provides.">Pour que ces chiffres nourrissent une décision d'entreprise, un graphe ne suffit pas. Il faut encore que chaque indicateur ait une unique définition partagée, que l'origine de chaque information puisse être tracée, que les alertes obéissent à des règles formellement définies et uniformément appliquées, et qu'une action de résilience puisse être éprouvée avant d'être engagée. C'est ce qu'apporte une ontologie.</p>
+
+  <h2 data-fr="Pourquoi une ontologie" data-en="Why an ontology">Pourquoi une ontologie</h2>
+
+  <p data-fr="Toute gouvernance repose sur un modèle partagé. Une organisation gouverne ses applications parce qu'elle dispose d'une architecture documentée ; elle gouverne ses données parce qu'elle dispose d'un schéma, d'un dictionnaire, d'un référentiel. Ces modèles n'ont d'ailleurs pas besoin de venir d'une norme : les codes qu'une entreprise attribue à ses propres divisions ne répondent à aucune norme ISO, et ils se gouvernent très bien. Pour ses connaissances, l'entreprise n'a rien de tel : l'ISO 30401 encadre la façon de gérer un système de connaissances, mais ne dit pas quels sont les éléments de connaissance d'une organisation, ni comment ils se relient." data-en="All governance rests on a shared model. An organisation governs its applications because it has a documented architecture; it governs its data because it has a schema, a data dictionary, a reference repository. These models need not even come from a standard: the codes a company assigns to its own divisions follow no ISO standard, and they are governed perfectly well. For its knowledge, the company has nothing of the kind: ISO 30401 sets the framework for how a knowledge management system is run, but it does not say what an organisation's knowledge elements are, or how they relate to one another.">Toute gouvernance repose sur un modèle partagé. Une organisation gouverne ses applications parce qu'elle dispose d'une architecture documentée ; elle gouverne ses données parce qu'elle dispose d'un schéma, d'un dictionnaire, d'un référentiel. Ces modèles n'ont d'ailleurs pas besoin de venir d'une norme : les codes qu'une entreprise attribue à ses propres divisions ne répondent à aucune norme ISO, et ils se gouvernent très bien. Pour ses connaissances, l'entreprise n'a rien de tel : l'ISO 30401 encadre la façon de gérer un système de connaissances, mais ne dit pas quels sont les éléments de connaissance d'une organisation, ni comment ils se relient.</p>
+
+  <p data-fr="Une ontologie est ce modèle et elle fixe trois choses : les types d'éléments qui composent son patrimoine de connaissances (une personne, une connaissance, une activité, un actif…), les relations permises entre eux (une personne détient une connaissance, une connaissance est nécessaire à une activité, etc.), et les règles qui en tirent des conclusions." data-en="An ontology is that model, and it sets out three things: the types of elements that make up the company's knowledge estate (a person, a knowledge item, an activity, an asset…), the relationships allowed between them (a person holds a knowledge item, a knowledge item is required for an activity, etc.), and the rules that draw conclusions from them.">Une ontologie est ce modèle et elle fixe trois choses : les types d'éléments qui composent son patrimoine de connaissances (une personne, une connaissance, une activité, un actif…), les relations permises entre eux (une personne détient une connaissance, une connaissance est nécessaire à une activité, etc.), et les règles qui en tirent des conclusions.</p>
+
+  <p data-fr="Ce dernier point la distingue d'un dictionnaire de données. Rien, dans une cartographie de NexaCrypt, n'indiquerait directement que NexaCrypt Engine dépend d'Alice. La cartographie enregistrerait qu'Alice est experte en algorithmes de chiffrement, et que cette connaissance sert NexaCrypt Engine mais elle ne permettrait pas d'en inférer quoi que ce soit. Dans l'ontologie, la dépendance se déduit de ce chemin, parce que le modèle définit ce qu'il signifie." data-en="This last point is what distinguishes it from a data dictionary. Nothing in a mapping of NexaCrypt would state directly that NexaCrypt Engine depends on Alice. The mapping would record that Alice is an expert in encryption algorithms, and that this knowledge serves NexaCrypt Engine, but it would not allow anything to be inferred from that. In the ontology, the dependency is deduced from this path, because the model defines what that path means.">Ce dernier point la distingue d'un dictionnaire de données. Rien, dans une cartographie de NexaCrypt, n'indiquerait directement que NexaCrypt Engine dépend d'Alice. La cartographie enregistrerait qu'Alice est experte en algorithmes de chiffrement, et que cette connaissance sert NexaCrypt Engine mais elle ne permettrait pas d'en inférer quoi que ce soit. Dans l'ontologie, la dépendance se déduit de ce chemin, parce que le modèle définit ce qu'il signifie.</p>
+
+  <h2 data-fr="Le modèle en sept briques" data-en="The model in seven building blocks">Le modèle en sept briques</h2>
+
+  <p data-fr="Pour une lecture simplifiée, le modèle se résume en sept briques. Chacune regroupe les types d'éléments voisins dans le modèle complet, et la figure montre les relations qui les relient." data-en="For a simplified reading, the model can be summed up in seven building blocks. Each block groups together element types that are neighbours in the full model, and the figure shows the relationships that connect them.">Pour une lecture simplifiée, le modèle se résume en sept briques. Chacune regroupe les types d'éléments voisins dans le modèle complet, et la figure montre les relations qui les relient.</p>
+
+  <figure class="fig">
+    <div class="fig-scroll">
+      <svg viewBox="0 0 700 350" role="group" aria-label="Les sept briques du modèle et leurs relations. Chaque brique est un bouton qui ouvre le calcul correspondant." data-aria-fr="Les sept briques du modèle et leurs relations. Chaque brique est un bouton qui ouvre le calcul correspondant." data-aria-en="The seven building blocks of the model and their relationships. Each block is a button that opens the corresponding calculation.">
+        <defs>
+          <marker id="fl-m" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+            <path d="M0,0 L10,5 L0,10 z" fill="#8B949E"/>
+          </marker>
+          <marker id="fl-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+            <path d="M0,0 L10,5 L0,10 z" fill="#4FC3F7"/>
+          </marker>
+        </defs>
+        <g stroke="#8B949E" stroke-width="1.4" fill="none">
+          <line x1="312" y1="172" x2="386" y2="172" marker-end="url(#fl-m)"/>
+          <line x1="502" y1="172" x2="576" y2="172" marker-end="url(#fl-m)"/>
+          <line x1="635" y1="288" x2="635" y2="198" marker-end="url(#fl-m)"/>
+          <line x1="472" y1="312" x2="576" y2="312" marker-end="url(#fl-m)"/>
+          <line x1="305" y1="288" x2="305" y2="198" marker-end="url(#fl-m)"/>
+        </g>
+        <g stroke="#4FC3F7" stroke-width="1.8" fill="none">
+          <line x1="122" y1="172" x2="196" y2="172" marker-end="url(#fl-a)"/>
+          <line x1="160" y1="82" x2="160" y2="166" marker-end="url(#fl-a)"/>
+        </g>
+        <g fill="#8B949E" font-family="Inter, Helvetica, Arial, sans-serif" font-size="11.5">
+          <text x="350" y="142" text-anchor="middle" data-fr="nécessaires à" data-en="required for">nécessaires à</text>
+          <text x="540" y="142" text-anchor="middle" data-fr="utilisent" data-en="use">utilisent</text>
+          <text x="641" y="248" data-fr="menacent" data-en="threaten">menacent</text>
+          <text x="524" y="302" text-anchor="middle" data-fr="visent à réduire" data-en="aim to reduce">visent à réduire</text>
+          <text x="298" y="248" text-anchor="end" data-fr="s'appuient sur" data-en="rely on">s'appuient sur</text>
+        </g>
+        <g fill="#4FC3F7" font-family="Inter, Helvetica, Arial, sans-serif" font-size="11.5">
+          <text x="167" y="128" data-fr="confirment" data-en="confirms">confirment</text>
+          <text x="160" y="214" text-anchor="middle" data-fr="détiennent, à un niveau de maîtrise" data-en="hold, at a level of mastery">détiennent, à un niveau de maîtrise</text>
+        </g>
+        <g class="brique" data-f="preuves" role="button" tabindex="0" aria-label="Preuves : ouvrir le détail" data-aria-fr="Preuves : ouvrir le détail" data-aria-en="Evidence: open the details">
+          <rect x="105" y="36" width="110" height="44" rx="6"/><text x="160" y="63" data-fr="Preuves" data-en="Evidence">Preuves</text><circle cx="207" cy="44" r="3.5"/>
+        </g>
+        <g class="brique" data-f="personnes" role="button" tabindex="0" aria-label="Personnes : ouvrir le calcul" data-aria-fr="Personnes : ouvrir le calcul" data-aria-en="People: open the calculation">
+          <rect x="10" y="150" width="110" height="44" rx="6"/><text x="65" y="177" data-fr="Personnes" data-en="People">Personnes</text><circle cx="112" cy="158" r="3.5"/>
+        </g>
+        <g class="brique" data-f="connaissances" role="button" tabindex="0" aria-label="Connaissances : ouvrir le calcul" data-aria-fr="Connaissances : ouvrir le calcul" data-aria-en="Knowledge: open the calculation">
+          <rect x="200" y="150" width="110" height="44" rx="6"/><text x="255" y="177" data-fr="Connaissances" data-en="Knowledge">Connaissances</text><circle cx="302" cy="158" r="3.5"/>
+        </g>
+        <g class="brique" data-f="activites" role="button" tabindex="0" aria-label="Activités : ouvrir le calcul" data-aria-fr="Activités : ouvrir le calcul" data-aria-en="Activities: open the calculation">
+          <rect x="390" y="150" width="110" height="44" rx="6"/><text x="445" y="177" data-fr="Activités" data-en="Activities">Activités</text><circle cx="492" cy="158" r="3.5"/>
+        </g>
+        <g class="brique" data-f="actifs" role="button" tabindex="0" aria-label="Actifs : ouvrir le calcul" data-aria-fr="Actifs : ouvrir le calcul" data-aria-en="Assets: open the calculation">
+          <rect x="580" y="150" width="110" height="44" rx="6"/><text x="635" y="177" data-fr="Actifs" data-en="Assets">Actifs</text><circle cx="682" cy="158" r="3.5"/>
+        </g>
+        <g class="brique" data-f="actions" role="button" tabindex="0" aria-label="Actions et décisions : ouvrir la simulation" data-aria-fr="Actions et décisions : ouvrir la simulation" data-aria-en="Actions and decisions: open the simulation">
+          <rect x="290" y="290" width="180" height="44" rx="6"/><text x="380" y="317" data-fr="Actions et décisions" data-en="Actions and decisions">Actions et décisions</text><circle cx="462" cy="298" r="3.5"/>
+        </g>
+        <g class="brique" data-f="risques" role="button" tabindex="0" aria-label="Risques : ouvrir le détail" data-aria-fr="Risques : ouvrir le détail" data-aria-en="Risks: open the details">
+          <rect x="580" y="290" width="110" height="44" rx="6"/><text x="635" y="317" data-fr="Risques" data-en="Risks">Risques</text><circle cx="682" cy="298" r="3.5"/>
+        </g>
+      </svg>
+    </div>
+    <figcaption data-fr="Les sept briques et leurs relations. Cliquez sur une brique pour ouvrir le calcul qu'elle permet, sur les chiffres de NexaCrypt." data-en="The seven building blocks and their relationships. Click a block to open the calculation it makes possible, using NexaCrypt's figures.">Les sept briques et leurs relations. Cliquez sur une brique pour ouvrir le calcul qu'elle permet, sur les chiffres de NexaCrypt.</figcaption>
+  </figure>
+
+  <ul>
+    <li data-fr="<strong>Personnes</strong> : les collaborateurs, en poste ou partis, et les équipes qu'ils forment." data-en="<strong>People</strong>: employees, current or departed, and the teams they form."><strong>Personnes</strong> : les collaborateurs, en poste ou partis, et les équipes qu'ils forment.</li>
+    <li data-fr="<strong>Connaissances</strong> : ce qu'il faut savoir pour effectuer le travail, indépendamment de qui détient cette connaissance, avec la part qui en est documentée." data-en="<strong>Knowledge</strong>: what one needs to know to do the work, independently of who holds that knowledge, with the share of it that is documented."><strong>Connaissances</strong> : ce qu'il faut savoir pour effectuer le travail, indépendamment de qui détient cette connaissance, avec la part qui en est documentée.</li>
+    <li data-fr="<strong>Activités</strong> : les tâches réellement effectuées ; les processus qu'elles composent ; les procédures qui documentent l'une ou l'autre." data-en="<strong>Activities</strong>: the tasks actually performed; the processes they make up; the procedures that document one or the other."><strong>Activités</strong> : les tâches réellement effectuées ; les processus qu'elles composent ; les procédures qui documentent l'une ou l'autre.</li>
+    <li data-fr="<strong>Actifs</strong> : ce sur quoi le travail s'exerce (un logiciel, une infrastructure, un référentiel), avec sa criticité ; ce sont les composants des articles précédents." data-en="<strong>Assets</strong>: what the work is performed on (a piece of software, an infrastructure, a repository), with its criticality; these are what the previous articles called components."><strong>Actifs</strong> : ce sur quoi le travail s'exerce (un logiciel, une infrastructure, un référentiel), avec sa criticité ; ce sont les composants des articles précédents.</li>
+    <li data-fr="<strong>Preuves</strong> : l'origine de chaque information, un entretien, un document, un ticket." data-en="<strong>Evidence</strong>: the origin of each piece of information (an interview, a document, a ticket)."><strong>Preuves</strong> : l'origine de chaque information, un entretien, un document, un ticket.</li>
+    <li data-fr="<strong>Risques</strong> : les faiblesses que les règles du modèle constatent, et ce qu'elles font peser sur les actifs." data-en="<strong>Risks</strong>: the weaknesses established by the model's rules, and the threat they pose to the assets."><strong>Risques</strong> : les faiblesses que les règles du modèle constatent, et ce qu'elles font peser sur les actifs.</li>
+    <li data-fr="<strong>Actions et décisions</strong> : ce que l'entreprise engage pour réduire un risque, et ce qui a justifié ce choix." data-en="<strong>Actions and decisions</strong>: what the company undertakes to reduce a risk, and what justified that choice."><strong>Actions et décisions</strong> : ce que l'entreprise engage pour réduire un risque, et ce qui a justifié ce choix.</li>
+  </ul>
+
+  <p data-fr="L'une des principales relations du modèle est celle qui relie une personne à une connaissance : le modèle y stocke une évaluation, qu'il appelle une Expertise : telle personne détient telle connaissance, à tel niveau de maîtrise, à telle date. Il distingue trois niveaux de maîtrise, définis par l'autonomie :" data-en="One of the model's main relationships is the one linking a person to a knowledge item: on it, the model stores an assessment, which it calls an Expertise: a given person holds a given knowledge item, at a given level of mastery, on a given date. It distinguishes three levels of mastery, defined by autonomy:">L'une des principales relations du modèle est celle qui relie une personne à une connaissance : le modèle y stocke une évaluation, qu'il appelle une Expertise : telle personne détient telle connaissance, à tel niveau de maîtrise, à telle date. Il distingue trois niveaux de maîtrise, définis par l'autonomie :</p>
+  <ul>
+    <li data-fr="<strong>Partiel</strong> : la personne participe aux tâches et peut être accompagnée, mais n'assure pas seule une activité critique ;" data-en="<strong>Partial</strong>: the person takes part in the tasks and can be supported, but does not handle a critical activity on their own;"><strong>Partiel</strong> : la personne participe aux tâches et peut être accompagnée, mais n'assure pas seule une activité critique ;</li>
+    <li data-fr="<strong>Intermédiaire</strong> : elle intervient seule sur les situations courantes, y compris en astreinte ;" data-en="<strong>Intermediate</strong>: they intervene alone in routine situations, including when on call;"><strong>Intermédiaire</strong> : elle intervient seule sur les situations courantes, y compris en astreinte ;</li>
+    <li data-fr="<strong>Expert</strong> : elle intervient seule, y compris sur les cas rares ou dégradés." data-en="<strong>Expert</strong>: they intervene alone, including in rare cases or degraded conditions."><strong>Expert</strong> : elle intervient seule, y compris sur les cas rares ou dégradés.</li>
+  </ul>
+  <p data-fr="Seuls les niveaux Intermédiaire et Expert comptent dans le Bus Factor, la Concentration et la Fragmentation : c'est le seuil de comptage. Et c'est sur l'Expertise, non sur la connaissance en général, que portent les preuves : ce qui se prouve, c'est qu'une personne donnée détient une connaissance, à un niveau donné et à une date donnée." data-en="Only the Intermediate and Expert levels count towards the Bus Factor, Concentration and Fragmentation: this is the counting threshold. And it is the Expertise, not knowledge in general, that evidence bears on: what can be proven is that a given person holds a knowledge item, at a given level and on a given date.">Seuls les niveaux Intermédiaire et Expert comptent dans le Bus Factor, la Concentration et la Fragmentation : c'est le seuil de comptage. Et c'est sur l'Expertise, non sur la connaissance en général, que portent les preuves : ce qui se prouve, c'est qu'une personne donnée détient une connaissance, à un niveau donné et à une date donnée.</p>
+
+  <h2 data-fr="Une définition unique pour chaque indicateur" data-en="A single definition for each indicator">Une définition unique pour chaque indicateur</h2>
+
+  <p data-fr="Chaque indicateur est défini une seule fois dans le modèle, avec ce sur quoi il se calcule. Deux analystes qui interrogent la même ontologie obtiennent donc le même résultat." data-en="Each indicator is defined only once in the model, together with what it is calculated on. Two analysts querying the same ontology therefore obtain the same result.">Chaque indicateur est défini une seule fois dans le modèle, avec ce sur quoi il se calcule. Deux analystes qui interrogent la même ontologie obtiennent donc le même résultat.</p>
+  <ul>
+    <li data-fr="Le <strong>Bus Factor</strong> d'un actif est le plus petit nombre de personnes autonomes, au niveau Intermédiaire ou Expert, sur l'une des connaissances qui lui sont nécessaires. Pour NexaCrypt Engine, il vaut 1. <button class=&quot;calc&quot; data-f=&quot;actifs&quot;>le calcul</button>" data-en="The <strong>Bus Factor</strong> of an asset is the smallest number of autonomous people, at Intermediate or Expert level, on any one of the knowledge items it requires. For NexaCrypt Engine, it is 1. <button class=&quot;calc&quot; data-f=&quot;actifs&quot;>the calculation</button>">Le <strong>Bus Factor</strong> d'un actif est le plus petit nombre de personnes autonomes, au niveau Intermédiaire ou Expert, sur l'une des connaissances qui lui sont nécessaires. Pour NexaCrypt Engine, il vaut 1. <button class="calc" data-f="actifs">le calcul</button></li>
+    <li data-fr="La <strong>Coverage</strong> d'un actif est la part moyenne documentée des connaissances qui lui sont nécessaires : 30 % pour NexaCrypt Engine. <button class=&quot;calc&quot; data-f=&quot;connaissances&quot;>le calcul</button>" data-en="The <strong>Coverage</strong> of an asset is the average documented share of the knowledge items it requires: 30% for NexaCrypt Engine. <button class=&quot;calc&quot; data-f=&quot;connaissances&quot;>the calculation</button>">La <strong>Coverage</strong> d'un actif est la part moyenne documentée des connaissances qui lui sont nécessaires : 30 % pour NexaCrypt Engine. <button class="calc" data-f="connaissances">le calcul</button></li>
+    <li data-fr="La <strong>Concentration</strong> mesure si le savoir critique d'un groupe est réparti entre ses membres ou porté par seulement quelques-uns. Elle n'a de sens que sur un groupe désigné : chez NexaCrypt, les cinq personnes qui détiennent une connaissance nécessaire à l'un des quatre actifs étudiés. Marc fait partie du groupe, et bien qu'il ne soit pas encore autonome, il est compté dans le groupe, avec un score nul. Sur ces cinq personnes, la Concentration vaut 0,425. <button class=&quot;calc&quot; data-f=&quot;personnes&quot;>le calcul</button>" data-en="<strong>Concentration</strong> measures whether a group's critical knowledge is spread across its members or carried by only a few. It only makes sense for a designated group: at NexaCrypt, the five people who hold a knowledge item required by one of the four assets studied. Marc belongs to the group, and although he is not yet autonomous, he is counted in the group, with a score of zero. Across these five people, Concentration is 0.425. <button class=&quot;calc&quot; data-f=&quot;personnes&quot;>the calculation</button>">La <strong>Concentration</strong> mesure si le savoir critique d'un groupe est réparti entre ses membres ou porté par seulement quelques-uns. Elle n'a de sens que sur un groupe désigné : chez NexaCrypt, les cinq personnes qui détiennent une connaissance nécessaire à l'un des quatre actifs étudiés. Marc fait partie du groupe, et bien qu'il ne soit pas encore autonome, il est compté dans le groupe, avec un score nul. Sur ces cinq personnes, la Concentration vaut 0,425. <button class="calc" data-f="personnes">le calcul</button></li>
+    <li data-fr="La <strong>Fragmentation</strong> d'un processus est le plus petit nombre de personnes qu'il faut réunir pour couvrir toutes les étapes du processus : quatre, pour la reprise du 15 janvier. <button class=&quot;calc&quot; data-f=&quot;activites&quot;>le calcul</button>" data-en="The <strong>Fragmentation</strong> of a process is the smallest number of people who must be brought together to cover all the steps of the process: four, for the 15 January recovery. <button class=&quot;calc&quot; data-f=&quot;activites&quot;>the calculation</button>">La <strong>Fragmentation</strong> d'un processus est le plus petit nombre de personnes qu'il faut réunir pour couvrir toutes les étapes du processus : quatre, pour la reprise du 15 janvier. <button class="calc" data-f="activites">le calcul</button></li>
+  </ul>
+  <p data-fr="Quand une information manque, le modèle ne suppose rien : il répond « non calculable », en nommant ce qui manque." data-en="When a piece of information is missing, the model assumes nothing: it answers 'not computable', naming what is missing.">Quand une information manque, le modèle ne suppose rien : il répond « non calculable », en nommant ce qui manque.</p>
+
+  <h2 data-fr="Une origine pour chaque information" data-en="An origin for each piece of information">Une origine pour chaque information</h2>
+
+  <p data-fr="Une ontologie se nourrit d'entretiens, de documents, de tickets. Le modèle ne laisse entrer une information que sous la forme d'un fait validé : un énoncé précis (telle personne détient telle connaissance, à tel niveau), rattaché à sa source et à un extrait qui le prouve, puis accepté par une personne identifiée, à une date donnée. Tant qu'il n'est pas validé, un fait n'entre dans aucun calcul." data-en="An ontology feeds on interviews, documents, tickets. The model lets information in only in the form of a validated fact: a precise statement (a given person holds a given knowledge item, at a given level), linked to its source and to an excerpt that proves it, then accepted by an identified person on a given date. Until it is validated, a fact enters no calculation.">Une ontologie se nourrit d'entretiens, de documents, de tickets. Le modèle ne laisse entrer une information que sous la forme d'un fait validé : un énoncé précis (telle personne détient telle connaissance, à tel niveau), rattaché à sa source et à un extrait qui le prouve, puis accepté par une personne identifiée, à une date donnée. Tant qu'il n'est pas validé, un fait n'entre dans aucun calcul.</p>
+
+  <p data-fr="Tout ce qu'un fait validé inscrit dans l'ontologie porte l'identifiant de ce fait. Si le fait se révèle faux et qu'il est rejeté, tout ce qu'il avait inscrit — repéré grâce à cet identifiant — est retiré ; les indicateurs se recalculent aussitôt. <button class=&quot;calc&quot; data-f=&quot;preuves&quot;>un fait, de sa source à son retrait</button>" data-en="Everything a validated fact writes into the ontology carries that fact's identifier. If the fact turns out to be false and is rejected, everything it had written, traced through that identifier, is removed; the indicators are recalculated at once. <button class=&quot;calc&quot; data-f=&quot;preuves&quot;>a fact, from its source to its removal</button>">Tout ce qu'un fait validé inscrit dans l'ontologie porte l'identifiant de ce fait. Si le fait se révèle faux et qu'il est rejeté, tout ce qu'il avait inscrit — repéré grâce à cet identifiant — est retiré ; les indicateurs se recalculent aussitôt. <button class="calc" data-f="preuves">un fait, de sa source à son retrait</button></p>
+
+  <h2 data-fr="Des alertes écrites comme des règles" data-en="Alerts written as rules">Des alertes écrites comme des règles</h2>
+
+  <p data-fr="Certaines règles du modèle ne se contentent pas de calculer. Quand une condition est remplie, elles inscrivent dans l'ontologie un élément daté qui la signale, par exemple un facteur de vulnérabilité, rattaché à l'actif concerné. Trois conditions créent un tel facteur :" data-en="Some of the model's rules do more than calculate. When a condition is met, they write into the ontology a dated element that flags it, for example a vulnerability factor, attached to the asset concerned. Three conditions create such a factor:">Certaines règles du modèle ne se contentent pas de calculer. Quand une condition est remplie, elles inscrivent dans l'ontologie un élément daté qui la signale, par exemple un facteur de vulnérabilité, rattaché à l'actif concerné. Trois conditions créent un tel facteur :</p>
+  <ul>
+    <li data-fr="un Bus Factor de 1 : un point de défaillance unique ;" data-en="a Bus Factor of 1: a single point of failure;">un Bus Factor de 1 : un point de défaillance unique ;</li>
+    <li data-fr="un Bus Factor de 0 : une connaissance nécessaire n'a plus aucun porteur autonome ;" data-en="a Bus Factor of 0: a required knowledge item no longer has any autonomous holder;">un Bus Factor de 0 : une connaissance nécessaire n'a plus aucun porteur autonome ;</li>
+    <li data-fr="une dette documentaire, c'est-à-dire une connaissance documentée à moins de 40 %, nécessaire à un actif de criticité haute ou très haute." data-en="documentation debt, that is, a knowledge item less than 40% documented, required by an asset of high or very high criticality.">une dette documentaire, c'est-à-dire une connaissance documentée à moins de 40 %, nécessaire à un actif de criticité haute ou très haute.</li>
+  </ul>
+  <p data-fr="Un actif de criticité haute ou très haute qui porte l'un de ces facteurs reçoit aussi un risque critique, créé de la même façon. Quand la condition disparaît, le facteur ou le risque est levé, et la date de modification tracée; rien n'est effacé, et l'historique montre quand la situation a changé. <button class=&quot;calc&quot; data-f=&quot;risques&quot;>ce que le modèle signale sur NexaCrypt Engine</button>" data-en="An asset of high or very high criticality that carries one of these factors also receives a critical risk, created in the same way. When the condition disappears, the factor or risk is lifted and the date of the change is recorded; nothing is erased, and the history shows when the situation changed. <button class=&quot;calc&quot; data-f=&quot;risques&quot;>what the model flags on NexaCrypt Engine</button>">Un actif de criticité haute ou très haute qui porte l'un de ces facteurs reçoit aussi un risque critique, créé de la même façon. Quand la condition disparaît, le facteur ou le risque est levé, et la date de modification tracée; rien n'est effacé, et l'historique montre quand la situation a changé. <button class="calc" data-f="risques">ce que le modèle signale sur NexaCrypt Engine</button></p>
+
+  <p data-fr="Les valeurs de ces règles (un Bus Factor de 1, une documentation sous 40 %, une criticité haute) sont des seuils de tolérance. Ils ne mesurent rien : ils décident de ce qui déclenche une alerte. Relever le seuil de documentation à 50 % créerait des alertes nouvelles, sans changer la Coverage d'aucune connaissance. Ces seuils relèvent donc d'un choix de l'entreprise : elle fixe ce qu'elle refuse de tolérer, par exemple qu'un actif critique dépende d'une seule personne, et valide les valeurs que lui proposent ceux qui font vivre le modèle." data-en="The values in these rules (a Bus Factor of 1, documentation below 40%, high criticality) are tolerance thresholds. They measure nothing: they decide what triggers an alert. Raising the documentation threshold to 50% would create new alerts, without changing the Coverage of any knowledge item. These thresholds are therefore a company choice: the company sets what it refuses to tolerate, for example a critical asset depending on a single person, and validates the values proposed to it by those who maintain the model.">Les valeurs de ces règles (un Bus Factor de 1, une documentation sous 40 %, une criticité haute) sont des seuils de tolérance. Ils ne mesurent rien : ils décident de ce qui déclenche une alerte. Relever le seuil de documentation à 50 % créerait des alertes nouvelles, sans changer la Coverage d'aucune connaissance. Ces seuils relèvent donc d'un choix de l'entreprise : elle fixe ce qu'elle refuse de tolérer, par exemple qu'un actif critique dépende d'une seule personne, et valide les valeurs que lui proposent ceux qui font vivre le modèle.</p>
+
+  <h2 data-fr="Éprouver une action avant de l'engager" data-en="Testing an action before committing to it">Éprouver une action avant de l'engager</h2>
+
+  <p data-fr="Une action de résilience, qu'il s'agisse de former une personne, de documenter une procédure ou de supprimer une dépendance, est elle aussi un élément du modèle. Elle entre dans l'ontologie comme le reste, par un fait validé tiré d'un plan d'action : son échéance, son responsable, son coût s'il est connu, et ce qu'elle doit changer, ses effets prévus. Un effet prévu s'écrit dans les mêmes termes qu'un fait (telle personne atteindra tel niveau sur telle connaissance), mais il décrit une intention, pas un état." data-en="A resilience action, whether training a person, documenting a procedure or removing a dependency, is also an element of the model. It enters the ontology like everything else, through a validated fact drawn from an action plan: its deadline, its owner, its cost if known, and what it is meant to change, its planned effects. A planned effect is written in the same terms as a fact (a given person will reach a given level on a given knowledge item), but it describes an intention, not a state.">Une action de résilience, qu'il s'agisse de former une personne, de documenter une procédure ou de supprimer une dépendance, est elle aussi un élément du modèle. Elle entre dans l'ontologie comme le reste, par un fait validé tiré d'un plan d'action : son échéance, son responsable, son coût s'il est connu, et ce qu'elle doit changer, ses effets prévus. Un effet prévu s'écrit dans les mêmes termes qu'un fait (telle personne atteindra tel niveau sur telle connaissance), mais il décrit une intention, pas un état.</p>
+
+  <p data-fr="Avant qu'une décision soit prise, le modèle applique ces effets prévus à une copie de l'ontologie, recalcule les indicateurs et les alertes sur cette copie, et présente l'écart avec la situation réelle. L'ontologie elle-même n'est pas modifiée. Le même mécanisme simule le départ d'une personne : retirée de la copie, elle laisse voir ce qui dépendait d'elle. <button class=&quot;calc&quot; data-f=&quot;actions&quot;>une formation simulée</button>" data-en="Before a decision is made, the model applies these planned effects to a copy of the ontology, recalculates the indicators and alerts on that copy, and shows the difference from the actual situation. The ontology itself is not modified. The same mechanism simulates a person's departure: removing them from the copy reveals what depended on them. <button class=&quot;calc&quot; data-f=&quot;actions&quot;>a simulated training action</button>">Avant qu'une décision soit prise, le modèle applique ces effets prévus à une copie de l'ontologie, recalcule les indicateurs et les alertes sur cette copie, et présente l'écart avec la situation réelle. L'ontologie elle-même n'est pas modifiée. Le même mécanisme simule le départ d'une personne : retirée de la copie, elle laisse voir ce qui dépendait d'elle. <button class="calc" data-f="actions">une formation simulée</button></p>
+
+  <p data-fr="Le résultat n'est pas toujours celui qui était attendu. Former un remplaçant corrige un Bus Factor, mais ne réduit la Fragmentation d'un processus que si la personne formée intervient déjà sur une autre étape de ce processus : elle couvre alors deux étapes, et il faut réunir une personne de moins. <button class=&quot;calc&quot; data-f=&quot;activites&quot;>le calcul</button> De même, une formation qui lève un point de défaillance unique laisse le risque critique en place tant que la dette documentaire demeure." data-en="The result is not always the one expected. Training a backup fixes a Bus Factor, but reduces the Fragmentation of a process only if the person trained is already involved in another step of that process: they then cover two steps, and one fewer person needs to be brought in. <button class=&quot;calc&quot; data-f=&quot;activites&quot;>the calculation</button> Likewise, training that lifts a single point of failure leaves the critical risk in place for as long as the documentation debt remains.">Le résultat n'est pas toujours celui qui était attendu. Former un remplaçant corrige un Bus Factor, mais ne réduit la Fragmentation d'un processus que si la personne formée intervient déjà sur une autre étape de ce processus : elle couvre alors deux étapes, et il faut réunir une personne de moins. <button class="calc" data-f="activites">le calcul</button> De même, une formation qui lève un point de défaillance unique laisse le risque critique en place tant que la dette documentaire demeure.</p>
+
+  <p data-fr="Une fois l'action décidée, le modèle garde une copie datée de ce qui a justifié le choix : l'effet annoncé, le coût retenu. Les indicateurs se recalculent sans cesse ; sans cette copie, la justification s'effacerait. Grâce à cette copie, l'effet réel, établi plus tard par de nouveaux faits validés, se compare à l'effet annoncé. Avec le temps, c'est souvent cette justification-là qui s'efface en premier : d'une formation d'un collaborateur par exemple, il pourrait ne rester, quelque temps après, que le fait qu'une décision a été prise et non ce qu'elle visait, ni pourquoi elle suffisait." data-en="Once the action is decided, the model keeps a dated copy of what justified the choice: the stated effect, the agreed cost. The indicators are constantly recalculated; without this copy, the justification would disappear. Thanks to this copy, the actual effect, established later by new validated facts, is compared with the stated effect. Over time, it is often this justification that disappears first: with an employee's training, for example, all that might remain some time later is the fact that a decision was taken, not what it was aimed at, nor why it was enough.">Une fois l'action décidée, le modèle garde une copie datée de ce qui a justifié le choix : l'effet annoncé, le coût retenu. Les indicateurs se recalculent sans cesse ; sans cette copie, la justification s'effacerait. Grâce à cette copie, l'effet réel, établi plus tard par de nouveaux faits validés, se compare à l'effet annoncé. Avec le temps, c'est souvent cette justification-là qui s'efface en premier : d'une formation d'un collaborateur par exemple, il pourrait ne rester, quelque temps après, que le fait qu'une décision a été prise et non ce qu'elle visait, ni pourquoi elle suffisait.</p>
+
+  <h2 data-fr="Ce que le modèle ne fait pas" data-en="What the model does not do">Ce que le modèle ne fait pas</h2>
+
+  <p data-fr="Il ne décide pas : les seuils et les choix restent à l'entreprise. Il ne devine pas : une information qu'aucune source ne donne reste inconnue, et affichée comme telle. Il dit de qui un actif ou un processus a besoin; il ne dit pas dans quel ordre ni en combien de temps." data-en="It does not decide: thresholds and choices remain with the company. It does not guess: information that no source provides remains unknown, and is displayed as such. It says who an asset or a process needs; it does not say in what order, or how quickly.">Il ne décide pas : les seuils et les choix restent à l'entreprise. Il ne devine pas : une information qu'aucune source ne donne reste inconnue, et affichée comme telle. Il dit de qui un actif ou un processus a besoin; il ne dit pas dans quel ordre ni en combien de temps.</p>
+
+  <div class="highlight">
+    <span data-fr="L'ontologie ne remplace pas le jugement humain. Elle le rend plus explicite, plus traçable et plus reproductible." data-en="The ontology does not replace human judgement. It makes it more explicit, more traceable and more reproducible.">L'ontologie ne remplace pas le jugement humain. Elle le rend plus explicite, plus traçable et plus reproductible.</span>
+  </div>
+
+  <h2>Conclusion</h2>
+
+  <p data-fr="Une ontologie transforme le diagnostic du Bus Factor et des trois dimensions qui l'accompagnent, en outil de gouvernance. Elle rattache les faiblesses à des risques, ces risques à des actions et à des décisions, et ces décisions aux connaissances sur lesquelles elles reposaient. C'est cette continuité qui permet de réduire un risque dans la durée, plutôt que de constater une fragilité de plus." data-en="An ontology turns the diagnosis of the Bus Factor, and of the three dimensions that accompany it, into a governance tool. It links weaknesses to risks, those risks to actions and decisions, and those decisions to the knowledge they rested on. It is this continuity that makes it possible to reduce a risk over time, rather than merely recording one more weak spot.">Une ontologie transforme le diagnostic du Bus Factor et des trois dimensions qui l'accompagnent, en outil de gouvernance. Elle rattache les faiblesses à des risques, ces risques à des actions et à des décisions, et ces décisions aux connaissances sur lesquelles elles reposaient. C'est cette continuité qui permet de réduire un risque dans la durée, plutôt que de constater une fragilité de plus.</p>
+
+  <p data-fr="Toute discipline mature finit par produire son propre langage. La cybersécurité a ses référentiels, la qualité ses normes, la gouvernance des données ses modèles. La résilience des connaissances a besoin du sien ; cette ontologie en est une première proposition." data-en="Every mature discipline ends up producing its own language. Cybersecurity has its frameworks, quality its standards, data governance its models. Knowledge resilience needs its own; this ontology is a first proposal for it.">Toute discipline mature finit par produire son propre langage. La cybersécurité a ses référentiels, la qualité ses normes, la gouvernance des données ses modèles. La résilience des connaissances a besoin du sien ; cette ontologie en est une première proposition.</p>
+
+  <div class="highlight">
+    <span data-fr="La connaissance est un patrimoine. Comme tout patrimoine, elle doit être cartographiée, mesurée et gouvernée." data-en="Knowledge is an asset. Like any asset, it must be mapped, measured and governed.">La connaissance est un patrimoine. Comme tout patrimoine, elle doit être cartographiée, mesurée et gouvernée.</span>
+  </div>
+
+  <div class="next-article">
+    <p class="eyebrow" style="margin:0 0 0.5rem" data-fr="Article suivant" data-en="Next article">Article suivant</p>
+    <p data-fr="<strong>Article 8</strong> : Alimenter l'ontologie avec l'IA, sans perdre la main" data-en="<strong>Article 8</strong>: Feeding the ontology with AI, without losing control"><strong>Article 8</strong> : Alimenter l'ontologie avec l'IA, sans perdre la main</p>
+  </div>
+
+  <footer>
+    <span data-fr="Pierre Pistenon — Business Analyst Senior" data-en="Pierre Pistenon — Senior Business Analyst">Pierre Pistenon — Business Analyst Senior</span>
+    <a href="article-6-long.html" data-fr="← Article précédent" data-en="← Previous article">← Article précédent</a>
+  </footer>
+
+</div>
+
+<dialog id="fenetre" aria-labelledby="f-titre">
+  <div class="f-tete">
+    <nav class="f-onglets" aria-label="Les sept briques" data-aria-fr="Les sept briques" data-aria-en="The seven building blocks">
+      <button type="button" data-f="actifs" data-fr="<span>1</span>Actifs" data-en="<span>1</span>Assets"><span>1</span>Actifs</button>
+      <button type="button" data-f="connaissances" data-fr="<span>2</span>Connaissances" data-en="<span>2</span>Knowledge"><span>2</span>Connaissances</button>
+      <button type="button" data-f="personnes" data-fr="<span>3</span>Personnes" data-en="<span>3</span>People"><span>3</span>Personnes</button>
+      <button type="button" data-f="activites" data-fr="<span>4</span>Activités" data-en="<span>4</span>Activities"><span>4</span>Activités</button>
+      <button type="button" data-f="preuves" data-fr="<span>5</span>Preuves" data-en="<span>5</span>Evidence"><span>5</span>Preuves</button>
+      <button type="button" data-f="risques" data-fr="<span>6</span>Risques" data-en="<span>6</span>Risks"><span>6</span>Risques</button>
+      <button type="button" data-f="actions" data-fr="<span>7</span>Actions et décisions" data-en="<span>7</span>Actions and decisions"><span>7</span>Actions et décisions</button>
+    </nav>
+    <button type="button" class="f-fermer" aria-label="Fermer la fenêtre" data-aria-fr="Fermer la fenêtre" data-aria-en="Close the window">×</button>
+  </div>
+  <div class="f-corps" id="f-corps" tabindex="-1"></div>
+  <div class="f-pied">
+    <button type="button" class="f-prec" data-fr="← Précédent" data-en="← Previous">← Précédent</button>
+    <span class="f-aide" data-fr="Échap pour fermer" data-en="Esc to close">Échap pour fermer</span>
+    <button type="button" class="f-suiv" data-fr="Suivant →" data-en="Next →">Suivant →</button>
+  </div>
+</dialog>
+
+<template id="w-actifs">
+  <p class="w-brique" data-fr="Actifs" data-en="Assets">Actifs</p>
+  <h2 id="f-titre" data-fr="De qui dépend un actif : le Bus Factor" data-en="Who an asset depends on: the Bus Factor">De qui dépend un actif : le Bus Factor</h2>
+  <p data-fr="Un actif est ce sur quoi le travail s'exerce : un logiciel, une infrastructure, un référentiel. Chacun a une criticité, de 1 (faible) à 4 (très haute)." data-en="An asset is what the work is performed on: a piece of software, an infrastructure, a repository. Each has a criticality, from 1 (low) to 4 (very high).">Un actif est ce sur quoi le travail s'exerce : un logiciel, une infrastructure, un référentiel. Chacun a une criticité, de 1 (faible) à 4 (très haute).</p>
+  <p data-fr="Le Bus Factor d'un actif se calcule en deux temps : pour chaque connaissance nécessaire à l'actif, le nombre de personnes autonomes, c'est-à-dire au niveau Intermédiaire ou Expert ; puis le plus petit de ces nombres." data-en="The Bus Factor of an asset is calculated in two steps: for each knowledge item the asset requires, the number of autonomous people, that is, at Intermediate or Expert level; then the smallest of these numbers.">Le Bus Factor d'un actif se calcule en deux temps : pour chaque connaissance nécessaire à l'actif, le nombre de personnes autonomes, c'est-à-dire au niveau Intermédiaire ou Expert ; puis le plus petit de ces nombres.</p>
+  <div class="scroll"><table>
+    <caption data-fr="NexaCrypt Engine, criticité 4 (très haute)" data-en="NexaCrypt Engine, criticality 4 (very high)">NexaCrypt Engine, criticité 4 (très haute)</caption>
+    <thead><tr><th data-fr="Connaissance nécessaire" data-en="Required knowledge">Connaissance nécessaire</th><th data-fr="Personnes autonomes" data-en="Autonomous people">Personnes autonomes</th><th data-fr="Nombre" data-en="Number">Nombre</th></tr></thead>
+    <tbody>
+      <tr><td data-fr="Algorithmes de chiffrement" data-en="Encryption algorithms">Algorithmes de chiffrement</td><td>Alice</td><td class="num">1</td></tr>
+      <tr><td data-fr="Rotation des clés" data-en="Key rotation">Rotation des clés</td><td>Alice</td><td class="num">1</td></tr>
+      <tr class="res"><td colspan="2" data-fr="Bus Factor : le plus petit des deux nombres" data-en="Bus Factor: the smaller of the two numbers">Bus Factor : le plus petit des deux nombres</td><td class="num">1</td></tr>
+    </tbody>
+  </table></div>
+  <p data-fr="Marc détient ces connaissances au niveau Partiel : il ne compte pas. Sur les deux autres actifs étudiés, le Bus Factor vaut aussi 1 : Bob pour les Serveurs Infrastructure, Dave pour les Scripts de récupération RAID." data-en="Marc holds these knowledge items at Partial level: he does not count. On the two other assets studied, the Bus Factor is also 1: Bob for Server Infrastructure, Dave for the RAID recovery scripts.">Marc détient ces connaissances au niveau Partiel : il ne compte pas. Sur les deux autres actifs étudiés, le Bus Factor vaut aussi 1 : Bob pour les Serveurs Infrastructure, Dave pour les Scripts de récupération RAID.</p>
+  <p class="w-sim" data-fr="<strong>Simulation.</strong> Si Alice partait, aucune des deux connaissances n'aurait plus de porteur autonome : le Bus Factor de l'Engine tomberait à 0. Le modèle le calcule sur une copie de l'ontologie, sans rien modifier." data-en="<strong>Simulation.</strong> If Alice left, neither of the two knowledge items would have an autonomous holder any longer: the Engine's Bus Factor would fall to 0. The model calculates this on a copy of the ontology, without modifying anything."><strong>Simulation.</strong> Si Alice partait, aucune des deux connaissances n'aurait plus de porteur autonome : le Bus Factor de l'Engine tomberait à 0. Le modèle le calcule sur une copie de l'ontologie, sans rien modifier.</p>
+  <p class="w-regle" data-fr="Un actif sans connaissance nécessaire déclarée a un Bus Factor « non calculable » : le modèle ne suppose rien." data-en="An asset with no declared required knowledge has a 'not computable' Bus Factor: the model assumes nothing.">Un actif sans connaissance nécessaire déclarée a un Bus Factor « non calculable » : le modèle ne suppose rien.</p>
+  <p class="w-voir" data-fr="Voir aussi : <button type=&quot;button&quot; class=&quot;calc&quot; data-f=&quot;risques&quot;>ce que ce Bus Factor de 1 déclenche</button>" data-en="See also: <button type=&quot;button&quot; class=&quot;calc&quot; data-f=&quot;risques&quot;>what this Bus Factor of 1 triggers</button>">Voir aussi : <button type="button" class="calc" data-f="risques">ce que ce Bus Factor de 1 déclenche</button></p>
+</template>
+
+<template id="w-connaissances">
+  <p class="w-brique" data-fr="Connaissances" data-en="Knowledge">Connaissances</p>
+  <h2 id="f-titre" data-fr="Ce qui est écrit : la Coverage" data-en="What is written down: Coverage">Ce qui est écrit : la Coverage</h2>
+  <p data-fr="Une connaissance est un savoir-faire identifié, pris indépendamment de qui le détient. Le modèle enregistre la part qui en est documentée." data-en="A knowledge item is an identified piece of know-how, considered independently of who holds it. The model records the share of it that is documented.">Une connaissance est un savoir-faire identifié, pris indépendamment de qui le détient. Le modèle enregistre la part qui en est documentée.</p>
+  <p data-fr="La Coverage d'un actif est la moyenne de ces parts sur les connaissances qui lui sont nécessaires, chacune comptée une seule fois." data-en="The Coverage of an asset is the average of these shares across the knowledge items it requires, each counted only once.">La Coverage d'un actif est la moyenne de ces parts sur les connaissances qui lui sont nécessaires, chacune comptée une seule fois.</p>
+  <div class="scroll"><table>
+    <thead><tr><th data-fr="Actif" data-en="Asset">Actif</th><th data-fr="Connaissances nécessaires (part documentée)" data-en="Required knowledge (documented share)">Connaissances nécessaires (part documentée)</th><th>Coverage</th></tr></thead>
+    <tbody>
+      <tr><td>NexaCrypt Engine</td><td data-fr="Algorithmes de chiffrement (20 %), Rotation des clés (40 %)" data-en="Encryption algorithms (20%), Key rotation (40%)">Algorithmes de chiffrement (20 %), Rotation des clés (40 %)</td><td class="num" data-fr="(20 + 40) / 2 = 30 %" data-en="(20 + 40) / 2 = 30%">(20 + 40) / 2 = 30 %</td></tr>
+      <tr><td data-fr="Serveurs Infrastructure" data-en="Server Infrastructure">Serveurs Infrastructure</td><td data-fr="Administration systèmes (50 %)" data-en="Systems administration (50%)">Administration systèmes (50 %)</td><td class="num" data-fr="50 %" data-en="50%">50 %</td></tr>
+      <tr><td data-fr="Scripts de récupération RAID" data-en="RAID recovery scripts">Scripts de récupération RAID</td><td data-fr="Récupération RAID (10 %)" data-en="RAID recovery (10%)">Récupération RAID (10 %)</td><td class="num" data-fr="10 %" data-en="10%">10 %</td></tr>
+    </tbody>
+  </table></div>
+  <p class="w-regle" data-fr="Si aucune source ne dit quelle part d'une connaissance est documentée, la Coverage de l'actif est « non calculable », et le modèle nomme la connaissance en cause." data-en="If no source says what share of a knowledge item is documented, the asset's Coverage is 'not computable', and the model names the knowledge item concerned.">Si aucune source ne dit quelle part d'une connaissance est documentée, la Coverage de l'actif est « non calculable », et le modèle nomme la connaissance en cause.</p>
+  <p class="w-voir" data-fr="Voir aussi : <button type=&quot;button&quot; class=&quot;calc&quot; data-f=&quot;risques&quot;>l'alerte de dette documentaire</button>" data-en="See also: <button type=&quot;button&quot; class=&quot;calc&quot; data-f=&quot;risques&quot;>the documentation debt alert</button>">Voir aussi : <button type="button" class="calc" data-f="risques">l'alerte de dette documentaire</button></p>
+</template>
+
+<template id="w-personnes">
+  <p class="w-brique" data-fr="Personnes" data-en="People">Personnes</p>
+  <h2 id="f-titre" data-fr="La Concentration : le savoir est-il réparti ?" data-en="Concentration: is knowledge spread out?">La Concentration : le savoir est-il réparti ?</h2>
+  <p data-fr="La Concentration mesure directement le groupe de personnes qui détient le savoir critique ; elle regarde si ce savoir est réparti entre les membres du groupe ou porté par seulement quelques-uns et se calcule en trois temps :" data-en="Concentration directly measures the group of people who hold the critical knowledge; it looks at whether that knowledge is spread across the members of the group or carried by only a few, and it is calculated in three steps:">La Concentration mesure directement le groupe de personnes qui détient le savoir critique ; elle regarde si ce savoir est réparti entre les membres du groupe ou porté par seulement quelques-uns et se calcule en trois temps :</p>
+  <ol>
+    <li data-fr="chaque connaissance prend la criticité de l'actif qu'elle sert : NexaCrypt Engine 4, Serveurs Infrastructure 3, Scripts de récupération RAID 3, Référentiel métier 2 ;" data-en="each knowledge item takes the criticality of the asset it serves: NexaCrypt Engine 4, Server Infrastructure 3, RAID recovery scripts 3, Business rules repository 2;">chaque connaissance prend la criticité de l'actif qu'elle sert : NexaCrypt Engine 4, Serveurs Infrastructure 3, Scripts de récupération RAID 3, Référentiel métier 2 ;</li>
+    <li data-fr="le score d'une personne est la somme des criticités des connaissances du périmètre qu'elle détient au moins au niveau Intermédiaire ;" data-en="a person's score is the sum of the criticalities of the in-scope knowledge items that they hold at Intermediate level or above;">le score d'une personne est la somme des criticités des connaissances du périmètre qu'elle détient au moins au niveau Intermédiaire ;</li>
+    <li data-fr="le coefficient de Gini mesure l'inégalité de ces scores, de 0 (égalité parfaite) à près de 1." data-en="the Gini coefficient measures the inequality of these scores, from 0 (perfect equality) to close to 1.">le coefficient de Gini mesure l'inégalité de ces scores, de 0 (égalité parfaite) à près de 1.</li>
+  </ol>
+  <div class="scroll"><table>
+    <thead><tr><th data-fr="Personne" data-en="Person">Personne</th><th data-fr="Connaissances comptées" data-en="Knowledge items counted">Connaissances comptées</th><th>Score</th></tr></thead>
+    <tbody>
+      <tr><td>Alice</td><td data-fr="Algorithmes de chiffrement, Rotation des clés" data-en="Encryption algorithms, Key rotation">Algorithmes de chiffrement, Rotation des clés</td><td class="num">4 + 4 = 8</td></tr>
+      <tr><td>Bob</td><td data-fr="Administration systèmes" data-en="Systems administration">Administration systèmes</td><td class="num">3</td></tr>
+      <tr><td>Dave</td><td data-fr="Récupération RAID" data-en="RAID recovery">Récupération RAID</td><td class="num">3</td></tr>
+      <tr><td>Grace</td><td data-fr="Exceptions métier historiques" data-en="Historical business exceptions">Exceptions métier historiques</td><td class="num">2</td></tr>
+      <tr><td>Marc</td><td data-fr="Aucune : niveau Partiel sur l'Engine" data-en="None: Partial level on the Engine">Aucune : niveau Partiel sur l'Engine</td><td class="num">0</td></tr>
+    </tbody>
+  </table></div>
+  <p class="w-calc" data-fr="Moyenne : 16 / 5 = 3,2. Somme des écarts entre toutes les paires de personnes : 68. Coefficient : 68 / (2 × 5² × 3,2) = 68 / 160 = 0,425." data-en="Mean: 16 / 5 = 3.2. Sum of the absolute differences over all pairs of people: 68. Coefficient: 68 / (2 × 5² × 3.2) = 68 / 160 = 0.425.">Moyenne : 16 / 5 = 3,2. Somme des écarts entre toutes les paires de personnes : 68. Coefficient : 68 / (2 × 5² × 3,2) = 68 / 160 = 0,425.</p>
+  <p data-fr="Entre 0,35 et 0,50, la concentration est dite significative. Marc compte dans le groupe, avec un score nul : sans lui, le groupe ne serait plus le même, ni le chiffre." data-en="Between 0.35 and 0.50, concentration is described as significant. Marc is counted in the group, with a score of zero: without him, the group would no longer be the same, and neither would the figure.">Entre 0,35 et 0,50, la concentration est dite significative. Marc compte dans le groupe, avec un score nul : sans lui, le groupe ne serait plus le même, ni le chiffre.</p>
+  <p class="w-voir" data-fr="Voir aussi : <button type=&quot;button&quot; class=&quot;calc&quot; data-f=&quot;actifs&quot;>le Bus Factor</button>" data-en="See also: <button type=&quot;button&quot; class=&quot;calc&quot; data-f=&quot;actifs&quot;>the Bus Factor</button>">Voir aussi : <button type="button" class="calc" data-f="actifs">le Bus Factor</button></p>
+</template>
+
+<template id="w-activites">
+  <p class="w-brique" data-fr="Activités" data-en="Activities">Activités</p>
+  <h2 id="f-titre" data-fr="Qui réunir : la Fragmentation" data-en="Whom to bring together: Fragmentation">Qui réunir : la Fragmentation</h2>
+  <p data-fr="Une activité est une tâche réellement effectuée ; un processus est un ensemble d'activités, ses étapes. Une personne couvre une étape si elle détient, au moins au niveau Intermédiaire, les connaissances que l'étape exige." data-en="An activity is a task actually performed; a process is a set of activities, its steps. A person covers a step if they hold, at Intermediate level or above, the knowledge the step requires.">Une activité est une tâche réellement effectuée ; un processus est un ensemble d'activités, ses étapes. Une personne couvre une étape si elle détient, au moins au niveau Intermédiaire, les connaissances que l'étape exige.</p>
+  <p data-fr="La Fragmentation d'un processus est la taille du plus petit groupe de personnes qui, ensemble, couvrent toutes ses étapes." data-en="The Fragmentation of a process is the size of the smallest group of people who, together, cover all of its steps.">La Fragmentation d'un processus est la taille du plus petit groupe de personnes qui, ensemble, couvrent toutes ses étapes.</p>
+  <div class="scroll"><table>
+    <caption data-fr="Reprise après l'incident du 15 janvier" data-en="Recovery after the 15 January incident">Reprise après l'incident du 15 janvier</caption>
+    <thead><tr><th data-fr="Étape" data-en="Step">Étape</th><th data-fr="Personne capable" data-en="Person able to do it">Personne capable</th></tr></thead>
+    <tbody>
+      <tr><td data-fr="Diagnostiquer la panne" data-en="Diagnose the failure">Diagnostiquer la panne</td><td>Bob</td></tr>
+      <tr><td data-fr="Restaurer via les scripts RAID" data-en="Restore via RAID scripts">Restaurer via les scripts RAID</td><td>Dave</td></tr>
+      <tr><td data-fr="Reconfigurer les clés de chiffrement" data-en="Reconfigure encryption keys">Reconfigurer les clés de chiffrement</td><td>Alice</td></tr>
+      <tr><td data-fr="Valider le retour à la normale avec les clients" data-en="Confirm return to normal with clients">Valider le retour à la normale avec les clients</td><td>Grace</td></tr>
+    </tbody>
+  </table></div>
+  <p class="w-calc" data-fr="Chaque étape n'a qu'une personne capable, et aucune n'en couvre deux : aucun groupe de trois ne couvre tout. Le plus petit groupe compte quatre personnes. Fragmentation : 4." data-en="Each step has only one person able to do it, and no one covers two: no group of three covers everything. The smallest group has four people. Fragmentation: 4.">Chaque étape n'a qu'une personne capable, et aucune n'en couvre deux : aucun groupe de trois ne couvre tout. Le plus petit groupe compte quatre personnes. Fragmentation : 4.</p>
+  <div class="w-sim">
+    <p data-fr="<strong>Deux formations simulées.</strong>" data-en="<strong>Two simulated training actions.</strong>"><strong>Deux formations simulées.</strong></p>
+    <ul>
+      <li data-fr="Un remplaçant de Dave est formé à la restauration. L'étape a désormais deux personnes capables, mais chaque étape en exige toujours une différente. Fragmentation : 4." data-en="A backup for Dave is trained in restoration. The step now has two people able to do it, but each step still requires a different person. Fragmentation: 4.">Un remplaçant de Dave est formé à la restauration. L'étape a désormais deux personnes capables, mais chaque étape en exige toujours une différente. Fragmentation : 4.</li>
+      <li data-fr="Bob, déjà nécessaire au diagnostic, est formé à la restauration. Bob, Alice et Grace couvrent alors les quatre étapes. Fragmentation : 3." data-en="Bob, already needed for the diagnosis, is trained in restoration. Bob, Alice and Grace then cover the four steps. Fragmentation: 3.">Bob, déjà nécessaire au diagnostic, est formé à la restauration. Bob, Alice et Grace couvrent alors les quatre étapes. Fragmentation : 3.</li>
+    </ul>
+  </div>
+  <p class="w-regle" data-fr="Le modèle cherche ce plus petit groupe exactement, en examinant les combinaisons de personnes. Si une étape n'a personne de capable, aucun groupe ne couvre tout : la Fragmentation est « non définie », et l'étape en cause est nommée. Le même calcul vaut pour une connaissance découpée en parties : combien de personnes faut-il réunir pour la reconstituer ?" data-en="The model finds this smallest group exactly, by examining combinations of people. If a step has no one able to do it, no group covers everything: Fragmentation is 'undefined', and the step concerned is named. The same calculation applies to a knowledge item split into parts: how many people must be brought together to reconstruct it?">Le modèle cherche ce plus petit groupe exactement, en examinant les combinaisons de personnes. Si une étape n'a personne de capable, aucun groupe ne couvre tout : la Fragmentation est « non définie », et l'étape en cause est nommée. Le même calcul vaut pour une connaissance découpée en parties : combien de personnes faut-il réunir pour la reconstituer ?</p>
+  <p class="w-voir" data-fr="Voir aussi : <button type=&quot;button&quot; class=&quot;calc&quot; data-f=&quot;actions&quot;>une action simulée</button>" data-en="See also: <button type=&quot;button&quot; class=&quot;calc&quot; data-f=&quot;actions&quot;>a simulated action</button>">Voir aussi : <button type="button" class="calc" data-f="actions">une action simulée</button></p>
+</template>
+
+<template id="w-preuves">
+  <p class="w-brique" data-fr="Preuves" data-en="Evidence">Preuves</p>
+  <h2 id="f-titre" data-fr="D'où vient une information : un fait, de sa source à son retrait" data-en="Where information comes from: a fact, from its source to its removal">D'où vient une information : un fait, de sa source à son retrait</h2>
+  <p data-fr="Le modèle ne laisse entrer une information que sous la forme d'un fait : un énoncé précis, rattaché à sa source et à un extrait qui le prouve. L'exemple qui suit est fictif, pas à pas : il illustre le mécanisme, il ne rapporte aucun fait publié sur NexaCrypt." data-en="The model lets information in only in the form of a fact: a precise statement, linked to its source and to an excerpt that proves it. The step-by-step example that follows is fictitious: it illustrates the mechanism; it does not report any published fact about NexaCrypt.">Le modèle ne laisse entrer une information que sous la forme d'un fait : un énoncé précis, rattaché à sa source et à un extrait qui le prouve. L'exemple qui suit est fictif, pas à pas : il illustre le mécanisme, il ne rapporte aucun fait publié sur NexaCrypt.</p>
+  <ol class="w-etapes">
+    <li data-fr="<strong>Source.</strong> Un entretien avec Bob, le 12 mai." data-en="<strong>Source.</strong> An interview with Bob, on 12 May."><strong>Source.</strong> Un entretien avec Bob, le 12 mai.</li>
+    <li data-fr="<strong>Preuve.</strong> L'extrait où Bob explique que Grace maîtrise désormais l'administration systèmes, y compris les cas difficiles." data-en="<strong>Evidence.</strong> The excerpt in which Bob explains that Grace now masters systems administration, including the difficult cases."><strong>Preuve.</strong> L'extrait où Bob explique que Grace maîtrise désormais l'administration systèmes, y compris les cas difficiles.</li>
+    <li data-fr="<strong>Fait proposé.</strong> Grace détient l'administration systèmes au niveau Expert. Statut : à valider. Le fait n'entre encore dans aucun calcul." data-en="<strong>Proposed fact.</strong> Grace holds systems administration at Expert level. Status: to be validated. The fact does not yet enter any calculation."><strong>Fait proposé.</strong> Grace détient l'administration systèmes au niveau Expert. Statut : à valider. Le fait n'entre encore dans aucun calcul.</li>
+    <li data-fr="<strong>Validation.</strong> Un analyste l'accepte le 15 mai ; son nom et la date sont enregistrés. Le fait inscrit alors l'évaluation de Grace sur cette connaissance, marquée de son identifiant. Le Bus Factor des Serveurs Infrastructure, qui ne dépend que de cette connaissance, passe de 1 à 2." data-en="<strong>Validation.</strong> An analyst accepts it on 15 May; their name and the date are recorded. The fact then writes Grace's assessment on this knowledge item, marked with the fact's identifier. The Bus Factor of Server Infrastructure, which depends only on this knowledge item, rises from 1 to 2."><strong>Validation.</strong> Un analyste l'accepte le 15 mai ; son nom et la date sont enregistrés. Le fait inscrit alors l'évaluation de Grace sur cette connaissance, marquée de son identifiant. Le Bus Factor des Serveurs Infrastructure, qui ne dépend que de cette connaissance, passe de 1 à 2.</li>
+    <li data-fr="<strong>Rejet.</strong> En septembre, il apparaît que l'entretien confondait deux personnes : Grace n'avait pas atteint ce niveau. Le fait est rejeté : tout ce qui porte son identifiant est retiré, ici l'évaluation de Grace, et les indicateurs se recalculent. Le Bus Factor des Serveurs Infrastructure redescend à 1." data-en="<strong>Rejection.</strong> In September, it emerges that the interview had confused two people: Grace had not reached that level. The fact is rejected: everything carrying its identifier is removed, here Grace's assessment, and the indicators are recalculated. The Bus Factor of Server Infrastructure drops back to 1."><strong>Rejet.</strong> En septembre, il apparaît que l'entretien confondait deux personnes : Grace n'avait pas atteint ce niveau. Le fait est rejeté : tout ce qui porte son identifiant est retiré, ici l'évaluation de Grace, et les indicateurs se recalculent. Le Bus Factor des Serveurs Infrastructure redescend à 1.</li>
+  </ol>
+  <p class="w-regle" data-fr="Ce retrait repose sur une seule règle : chaque élément inscrit dans l'ontologie porte l'identifiant du fait qui l'a inscrit. Une évaluation confirmée par deux sources indépendantes est dite corroborée ; si l'un des deux faits est rejeté, l'évaluation demeure, mais n'est plus corroborée." data-en="This removal rests on a single rule: every element written into the ontology carries the identifier of the fact that wrote it. An assessment confirmed by two independent sources is said to be corroborated; if one of the two facts is rejected, the assessment remains, but is no longer corroborated.">Ce retrait repose sur une seule règle : chaque élément inscrit dans l'ontologie porte l'identifiant du fait qui l'a inscrit. Une évaluation confirmée par deux sources indépendantes est dite corroborée ; si l'un des deux faits est rejeté, l'évaluation demeure, mais n'est plus corroborée.</p>
+</template>
+
+<template id="w-risques">
+  <p class="w-brique" data-fr="Risques" data-en="Risks">Risques</p>
+  <h2 id="f-titre" data-fr="Ce que le modèle signale sur NexaCrypt Engine" data-en="What the model flags on NexaCrypt Engine">Ce que le modèle signale sur NexaCrypt Engine</h2>
+  <p data-fr="Des règles lisent les indicateurs. Quand une condition est remplie, elles inscrivent dans l'ontologie un facteur de vulnérabilité, daté et rattaché à l'actif. Un actif de criticité haute ou très haute qui porte un tel facteur reçoit aussi un risque critique." data-en="Rules read the indicators. When a condition is met, they write into the ontology a vulnerability factor, dated and attached to the asset. An asset of high or very high criticality that carries such a factor also receives a critical risk.">Des règles lisent les indicateurs. Quand une condition est remplie, elles inscrivent dans l'ontologie un facteur de vulnérabilité, daté et rattaché à l'actif. Un actif de criticité haute ou très haute qui porte un tel facteur reçoit aussi un risque critique.</p>
+  <p data-fr="Données : Bus Factor 1 ; algorithmes de chiffrement documentés à 20 %, rotation des clés à 40 % ; criticité 4, très haute." data-en="Data: Bus Factor 1; encryption algorithms documented at 20%, key rotation at 40%; criticality 4, very high.">Données : Bus Factor 1 ; algorithmes de chiffrement documentés à 20 %, rotation des clés à 40 % ; criticité 4, très haute.</p>
+  <div class="scroll"><table>
+    <thead><tr><th data-fr="Règle" data-en="Rule">Règle</th><th data-fr="Sur NexaCrypt Engine" data-en="On NexaCrypt Engine">Sur NexaCrypt Engine</th><th data-fr="Résultat" data-en="Result">Résultat</th></tr></thead>
+    <tbody>
+      <tr><td data-fr="Bus Factor de 1 : point de défaillance unique" data-en="Bus Factor of 1: single point of failure">Bus Factor de 1 : point de défaillance unique</td><td data-fr="Bus Factor de 1" data-en="Bus Factor of 1">Bus Factor de 1</td><td data-fr="facteur créé" data-en="factor created">facteur créé</td></tr>
+      <tr><td data-fr="Bus Factor de 0 : connaissance sans porteur autonome" data-en="Bus Factor of 0: knowledge item with no autonomous holder">Bus Factor de 0 : connaissance sans porteur autonome</td><td data-fr="Bus Factor de 1" data-en="Bus Factor of 1">Bus Factor de 1</td><td data-fr="rien" data-en="nothing">rien</td></tr>
+      <tr><td rowspan="2" data-fr="Connaissance documentée à moins de 40 %, sur un actif de criticité haute ou très haute : dette documentaire" data-en="Knowledge item less than 40% documented, on an asset of high or very high criticality: documentation debt">Connaissance documentée à moins de 40 %, sur un actif de criticité haute ou très haute : dette documentaire</td><td data-fr="Algorithmes de chiffrement, 20 %" data-en="Encryption algorithms, 20%">Algorithmes de chiffrement, 20 %</td><td data-fr="facteur créé" data-en="factor created">facteur créé</td></tr>
+      <tr><td data-fr="Rotation des clés, 40 %" data-en="Key rotation, 40%">Rotation des clés, 40 %</td><td data-fr="rien : 40 % n'est pas moins de 40 %" data-en="nothing: 40% is not less than 40%">rien : 40 % n'est pas moins de 40 %</td></tr>
+      <tr class="res"><td data-fr="Actif de criticité haute ou très haute portant un facteur : risque critique" data-en="Asset of high or very high criticality carrying a factor: critical risk">Actif de criticité haute ou très haute portant un facteur : risque critique</td><td data-fr="très haute, deux facteurs" data-en="very high, two factors">très haute, deux facteurs</td><td data-fr="risque créé" data-en="risk created">risque créé</td></tr>
+    </tbody>
+  </table></div>
+  <p data-fr="Facteurs et risque restent actifs tant que leur condition tient. Quand elle disparaît, ils sont levés, à leur date effective, jamais effacés : l'historique montre quand la situation a changé." data-en="Factors and risk remain active as long as their condition holds. When it disappears, they are lifted with effect from that date, never erased: the history shows when the situation changed.">Facteurs et risque restent actifs tant que leur condition tient. Quand elle disparaît, ils sont levés, à leur date effective, jamais effacés : l'historique montre quand la situation a changé.</p>
+  <p class="w-regle" data-fr="Les valeurs de ces règles (1, 0, 40 %, haute) sont des seuils de tolérance. Ils décident des alertes, pas des mesures : relever le seuil de documentation à 50 % ajouterait une dette documentaire sur la rotation des clés, dont la Coverage resterait de 40 %." data-en="The values in these rules (1, 0, 40%, high) are tolerance thresholds. They determine the alerts, not the measurements: raising the documentation threshold to 50% would add documentation debt on key rotation, whose Coverage would remain 40%.">Les valeurs de ces règles (1, 0, 40 %, haute) sont des seuils de tolérance. Ils décident des alertes, pas des mesures : relever le seuil de documentation à 50 % ajouterait une dette documentaire sur la rotation des clés, dont la Coverage resterait de 40 %.</p>
+  <p class="w-voir" data-fr="Voir aussi : <button type=&quot;button&quot; class=&quot;calc&quot; data-f=&quot;actions&quot;>ce qui lèverait ce risque</button>" data-en="See also: <button type=&quot;button&quot; class=&quot;calc&quot; data-f=&quot;actions&quot;>what would lift this risk</button>">Voir aussi : <button type="button" class="calc" data-f="actions">ce qui lèverait ce risque</button></p>
+</template>
+
+<template id="w-actions">
+  <p class="w-brique" data-fr="Actions et décisions" data-en="Actions and decisions">Actions et décisions</p>
+  <h2 id="f-titre" data-fr="Une action simulée avant d'être engagée" data-en="An action simulated before any commitment">Une action simulée avant d'être engagée</h2>
+  <p data-fr="Une action de résilience entre dans l'ontologie comme le reste, par un fait validé tiré d'un plan d'action : son échéance, son responsable, son coût s'il est connu, et ses effets prévus, ce qu'elle doit changer. Un effet prévu s'écrit comme un fait; il décrit une intention et non un état." data-en="A resilience action enters the ontology like everything else, through a validated fact drawn from an action plan: its deadline, its owner, its cost if known, and its planned effects, what it is meant to change. A planned effect is written like a fact; it describes an intention, not a state.">Une action de résilience entre dans l'ontologie comme le reste, par un fait validé tiré d'un plan d'action : son échéance, son responsable, son coût s'il est connu, et ses effets prévus, ce qu'elle doit changer. Un effet prévu s'écrit comme un fait; il décrit une intention et non un état.</p>
+  <p data-fr="<strong>L'action, telle que l'Article 2 l'a publiée</strong> : « Former un second développeur à intervenir seul sur le module. » Échéance : 3 mois. Indicateur de succès : « Bus Factor passe de 1 à 2. »" data-en="<strong>The action, as published in Article 2</strong>: 'Train a second developer to intervene alone on the module.' Deadline: 3 months. Success indicator: 'Bus Factor rises from 1 to 2.'"><strong>L'action, telle que l'Article 2 l'a publiée</strong> : « Former un second développeur à intervenir seul sur le module. » Échéance : 3 mois. Indicateur de succès : « Bus Factor passe de 1 à 2. »</p>
+  <p data-fr="<strong>Son effet prévu</strong> : un second développeur, au moins au niveau Intermédiaire, sur les deux connaissances de NexaCrypt Engine." data-en="<strong>Its planned effect</strong>: a second developer, at Intermediate level or above, on both of NexaCrypt Engine's knowledge items."><strong>Son effet prévu</strong> : un second développeur, au moins au niveau Intermédiaire, sur les deux connaissances de NexaCrypt Engine.</p>
+  <p data-fr="<strong>La simulation.</strong> Le modèle applique cet effet à une copie de l'ontologie, recalcule sur la copie, et compare :" data-en="<strong>The simulation.</strong> The model applies this effect to a copy of the ontology, recalculates on the copy, and compares:"><strong>La simulation.</strong> Le modèle applique cet effet à une copie de l'ontologie, recalcule sur la copie, et compare :</p>
+  <div class="scroll"><table>
+    <thead><tr><th></th><th data-fr="Situation réelle" data-en="Actual situation">Situation réelle</th><th data-fr="Copie simulée" data-en="Simulated copy">Copie simulée</th></tr></thead>
+    <tbody>
+      <tr><td data-fr="Bus Factor de NexaCrypt Engine" data-en="NexaCrypt Engine Bus Factor">Bus Factor de NexaCrypt Engine</td><td class="num">1</td><td class="num">2</td></tr>
+      <tr><td data-fr="Point de défaillance unique" data-en="Single point of failure">Point de défaillance unique</td><td data-fr="actif" data-en="active">actif</td><td data-fr="levé" data-en="lifted">levé</td></tr>
+      <tr><td data-fr="Dette documentaire (algorithmes de chiffrement, 20 %)" data-en="Documentation debt (encryption algorithms, 20%)">Dette documentaire (algorithmes de chiffrement, 20 %)</td><td>active</td><td>active</td></tr>
+      <tr class="res"><td data-fr="Risque critique sur l'Engine" data-en="Critical risk on the Engine">Risque critique sur l'Engine</td><td data-fr="actif" data-en="active">actif</td><td data-fr="actif" data-en="active">actif</td></tr>
+    </tbody>
+  </table></div>
+  <p data-fr="L'indicateur de succès de l'Article 2 est atteint, mais le risque critique demeure : la dette documentaire le maintient. Le lever demande aussi de documenter les algorithmes de chiffrement à 40 % au moins. Aucun coût n'est publié pour cette formation : le modèle ne l'invente pas." data-en="Article 2's success indicator is met, but the critical risk remains: the documentation debt keeps it in place. Lifting it also requires documenting the encryption algorithms to at least 40%. No cost has been published for this training: the model does not invent one.">L'indicateur de succès de l'Article 2 est atteint, mais le risque critique demeure : la dette documentaire le maintient. Le lever demande aussi de documenter les algorithmes de chiffrement à 40 % au moins. Aucun coût n'est publié pour cette formation : le modèle ne l'invente pas.</p>
+  <p class="w-regle" data-fr="Une fois l'action décidée, une décision la relie à une copie datée de ce qui l'a justifiée : l'effet annoncé et le coût retenu. La décision garde aussi la trace de la personne qui l'a prise et des connaissances sur lesquelles le choix s'appuyait. Plus tard, de nouveaux faits validés établissent ce que la formation a réellement changé, et le modèle les compare à l'effet annoncé. Le départ d'une personne se simule de la même façon : retirée de la copie, elle laisse voir ce qui dépendait d'elle." data-en="Once the action is decided, a decision links it to a dated copy of what justified it: the stated effect and the agreed cost. The decision also keeps track of the person who made it and of the knowledge the choice relied on. Later, new validated facts establish what the training actually changed, and the model compares them with the stated effect. A person's departure is simulated in the same way: removing them from the copy reveals what depended on them.">Une fois l'action décidée, une décision la relie à une copie datée de ce qui l'a justifiée : l'effet annoncé et le coût retenu. La décision garde aussi la trace de la personne qui l'a prise et des connaissances sur lesquelles le choix s'appuyait. Plus tard, de nouveaux faits validés établissent ce que la formation a réellement changé, et le modèle les compare à l'effet annoncé. Le départ d'une personne se simule de la même façon : retirée de la copie, elle laisse voir ce qui dépendait d'elle.</p>
+</template>
+
+<script>
+  function traduire(racine, lang) {
+    racine.querySelectorAll('[data-fr]').forEach(function(el) {
+      var val = el.getAttribute('data-' + lang);
+      if (!val) return;
+      var frVal = el.getAttribute('data-fr') || '';
+      var enVal = el.getAttribute('data-en') || '';
+      if (frVal.indexOf('<') !== -1 || enVal.indexOf('<') !== -1) { el.innerHTML = val; } else { el.textContent = val; }
+    });
+    racine.querySelectorAll('[data-aria-fr]').forEach(function(el) {
+      var val = el.getAttribute('data-aria-' + lang);
+      if (val) el.setAttribute('aria-label', val);
+    });
+  }
+  function applyLang(lang) {
+    document.documentElement.lang = lang;
+    document.querySelectorAll('.lang-btn').forEach(function(b) { b.classList.toggle('active', b.dataset.lang === lang); });
+    traduire(document, lang);
+  }
+  function setLang(lang) { try { localStorage.setItem('lang', lang); } catch (e) {} applyLang(lang); }
+  document.addEventListener('DOMContentLoaded', function() {
+    var saved = 'fr';
+    try { saved = localStorage.getItem('lang') || 'fr'; } catch (e) {}
+    applyLang(saved);
+  });
+</script>
+<script>
+(function () {
+  var ordre = ['actifs', 'connaissances', 'personnes', 'activites', 'preuves', 'risques', 'actions'];
+  var dlg = document.getElementById('fenetre');
+  var corps = document.getElementById('f-corps');
+  if (!dlg || !corps) return;
+  var courant = null;
+  var declencheur = null;
+
+  function afficher(f) {
+    var t = document.getElementById('w-' + f);
+    if (!t) return;
+    corps.innerHTML = '';
+    corps.appendChild(t.content.cloneNode(true));
+    traduire(corps, document.documentElement.lang === 'en' ? 'en' : 'fr');
+    corps.classList.remove('entre');
+    void corps.offsetWidth;
+    corps.classList.add('entre');
+    corps.scrollTop = 0;
+    courant = f;
+    var i = ordre.indexOf(f);
+    dlg.querySelectorAll('.f-onglets button').forEach(function (b) {
+      b.setAttribute('aria-current', b.getAttribute('data-f') === f ? 'true' : 'false');
+    });
+    dlg.querySelector('.f-prec').disabled = i <= 0;
+    dlg.querySelector('.f-suiv').disabled = i >= ordre.length - 1;
+    document.querySelectorAll('.brique').forEach(function (b) {
+      if (b.getAttribute('data-f') === f) b.classList.add('vue');
+    });
+    var onglet = dlg.querySelector('.f-onglets button[data-f="' + f + '"]');
+    if (onglet && onglet.scrollIntoView) onglet.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+    var h = corps.querySelector('h2');
+    if (h) { h.setAttribute('tabindex', '-1'); h.focus({ preventScroll: true }); }
+  }
+
+  function ouvrir(f, source) {
+    if (!dlg.open) {
+      declencheur = source || document.activeElement;
+      if (typeof dlg.showModal === 'function') dlg.showModal(); else dlg.setAttribute('open', '');
+      document.documentElement.classList.add('fenetre-ouverte');
+    }
+    afficher(f);
+  }
+
+  function apresFermeture() {
+    document.documentElement.classList.remove('fenetre-ouverte');
+    if (declencheur && typeof declencheur.focus === 'function') declencheur.focus();
+    declencheur = null;
+  }
+
+  function fermer() {
+    if (typeof dlg.close === 'function') dlg.close();
+    else { dlg.removeAttribute('open'); apresFermeture(); }
+  }
+
+  dlg.addEventListener('close', apresFermeture);
+
+  document.addEventListener('click', function (e) {
+    var el = e.target.closest ? e.target.closest('[data-f]') : null;
+    if (!el) return;
+    if (el.classList.contains('brique') || el.classList.contains('calc') || el.closest('.f-onglets')) {
+      e.preventDefault();
+      ouvrir(el.getAttribute('data-f'), el);
+    }
+  });
+
+  document.querySelectorAll('.brique').forEach(function (b) {
+    b.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); ouvrir(b.getAttribute('data-f'), b); }
+    });
+  });
+
+  dlg.querySelector('.f-fermer').addEventListener('click', fermer);
+  dlg.querySelector('.f-prec').addEventListener('click', function () {
+    var i = ordre.indexOf(courant); if (i > 0) afficher(ordre[i - 1]);
+  });
+  dlg.querySelector('.f-suiv').addEventListener('click', function () {
+    var i = ordre.indexOf(courant); if (i < ordre.length - 1) afficher(ordre[i + 1]);
+  });
+  dlg.addEventListener('click', function (e) { if (e.target === dlg) fermer(); });
+  dlg.addEventListener('keydown', function (e) {
+    var i = ordre.indexOf(courant);
+    if (e.key === 'ArrowRight' && i < ordre.length - 1) { e.preventDefault(); afficher(ordre[i + 1]); }
+    if (e.key === 'ArrowLeft' && i > 0) { e.preventDefault(); afficher(ordre[i - 1]); }
+  });
+})();
+</script>
+</body>
+</html>
